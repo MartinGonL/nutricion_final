@@ -8,7 +8,7 @@ package nutricionista;
  *
  * @author IK
  */
-public class Nutricionista {
+public class Prueba {
 
     /**
      * @param args the command line arguments
