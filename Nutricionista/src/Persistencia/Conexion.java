@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package accesoDatos;
+package Persistencia;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,7 +27,7 @@ public class Conexion {
             try {
                 Class.forName("org.mariadb.jdbc.Driver");
                 
-                connection = DriverManager.getConnection ("jdbc:mysql://localhost/test", "root", "");
+                connection = DriverManager.getConnection ("jdbc:mysql://localhost/nutricionista", "root", "");
             } catch (ClassNotFoundException ex) {
                 JOptionPane.showMessageDialog(null, "Clase Conexion: Error al cargar Driver");
             } catch (SQLException ex) {
