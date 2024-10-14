@@ -2,12 +2,13 @@
 
 <ClassDiagram name="Nutricionista">
   <ClassDiagramComponents>
-    <Class name="Comida" package="Modelo" visibility="public" xPosition="616.0" yPosition="20.0">
+    <Class name="Comida" package="Modelo" visibility="public" xPosition="881.0" yPosition="49.0">
       <Fields>
         <Field name="comida" type="String" visibility="private"/>
         <Field name="detalle" type="String" visibility="private"/>
         <Field name="cantCalorias" type="int" visibility="private"/>
         <Field name="id_comida" type="int" visibility="private"/>
+        <Field name="estado" type="Estado" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public"/>
@@ -38,7 +39,7 @@
         <Method name="toString" returnType="String" visibility="public"/>
       </Methods>
     </Class>
-    <Class name="Dieta" package="Modelo" visibility="public" xPosition="46.0" yPosition="360.0">
+    <Class name="Dieta" package="Modelo" visibility="public" xPosition="61.0" yPosition="536.0">
       <Fields>
         <Field name="idDieta" type="int" visibility="private"/>
         <Field name="nombre" type="String" visibility="private"/>
@@ -47,6 +48,7 @@
         <Field name="pesoInicial" type="double" visibility="private"/>
         <Field name="pesoFinal" type="double" visibility="private"/>
         <Field name="fechaFinal" type="LocalDate" visibility="private"/>
+        <Field name="estado" type="Estado" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public">
@@ -90,11 +92,12 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="DietaComida" package="Modelo" visibility="public" xPosition="636.0" yPosition="513.0">
+    <Class name="DietaComida" package="Modelo" visibility="public" xPosition="919.0" yPosition="613.0">
       <Fields>
         <Field name="idDietaComida" type="int" visibility="private"/>
         <Field name="comida" type="Comida" visibility="private"/>
         <Field name="dieta" type="Dieta" visibility="private"/>
+        <Field name="estado" type="Estado" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public">
@@ -125,6 +128,7 @@
         <Field name="domicilio" type="String" visibility="private"/>
         <Field name="telefono" type="String" visibility="private"/>
         <Field name="id_paciente" type="int" visibility="private"/>
+        <Field name="estado" type="Estado" visibility="private"/>
       </Fields>
       <Constructors>
         <Constructor visibility="public"/>
@@ -163,6 +167,7 @@
   </ClassDiagramComponents>
   <ClassDiagramRelations>
     <HasRelation name="Tiene" source="Modelo.DietaComida" target="Modelo.Dieta" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
+    <HasRelation name="Tiene" source="Modelo.DietaComida" target="Modelo.Comida" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
     <HasRelation name="Tiene" source="Modelo.Dieta" target="Modelo.Paciente" type="Default" sourceCardinality="0..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>

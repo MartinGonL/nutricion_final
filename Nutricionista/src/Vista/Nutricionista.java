@@ -4,6 +4,9 @@
  */
 package Vista;
 
+import Persistencia.Conexion;
+import com.sun.jdi.connect.spi.Connection;
+
 /**
  *
  * @author IK
@@ -14,7 +17,8 @@ public class Nutricionista {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+             Conexion a = new Conexion();
+             a.conectar();
     }
     
 }
