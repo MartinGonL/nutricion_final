@@ -1,30 +1,41 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author IK
- */
+import java.util.Objects;
+
 public class Paciente {
     
+    private Integer id_paciente;
+    private Integer dni;
     private String nombre;
-    private int dni;
+    private String apellido;
     private String domicilio;
     private String telefono;
-    private int id_paciente;
+
+    public Paciente(Integer dni, String nombre, String apellido, String domicilio, String telefono) {
+        this.dni = dni;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.domicilio = domicilio;
+        this.telefono = telefono;
+    }
 
     public Paciente() {
     }
 
-    public Paciente(String nombre, int dni, String domicilio, String telefono, int id_paciente) {
-        this.nombre = nombre;
-        this.dni = dni;
-        this.domicilio = domicilio;
-        this.telefono = telefono;
+    public Integer getId_paciente() {
+        return id_paciente;
+    }
+
+    public void setId_paciente(Integer id_paciente) {
         this.id_paciente = id_paciente;
+    }
+
+    public Integer getDni() {
+        return dni;
+    }
+
+    public void setDni(Integer dni) {
+        this.dni = dni;
     }
 
     public String getNombre() {
@@ -35,12 +46,12 @@ public class Paciente {
         this.nombre = nombre;
     }
 
-    public int getDni() {
-        return dni;
+    public String getApellido() {
+        return apellido;
     }
 
-    public void setDni(int dni) {
-        this.dni = dni;
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
     }
 
     public String getDomicilio() {
@@ -59,33 +70,50 @@ public class Paciente {
         this.telefono = telefono;
     }
 
-    public int getId_paciente() {
-        return id_paciente;
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 83 * hash + Objects.hashCode(this.id_paciente);
+        hash = 83 * hash + Objects.hashCode(this.dni);
+        hash = 83 * hash + Objects.hashCode(this.nombre);
+        hash = 83 * hash + Objects.hashCode(this.apellido);
+        hash = 83 * hash + Objects.hashCode(this.domicilio);
+        hash = 83 * hash + Objects.hashCode(this.telefono);
+        return hash;
     }
 
-    public void setId_paciente(int id_paciente) {
-        this.id_paciente = id_paciente;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Paciente other = (Paciente) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.apellido, other.apellido)) {
+            return false;
+        }
+        if (!Objects.equals(this.domicilio, other.domicilio)) {
+            return false;
+        }
+        if (!Objects.equals(this.telefono, other.telefono)) {
+            return false;
+        }
+        if (!Objects.equals(this.id_paciente, other.id_paciente)) {
+            return false;
+        }
+        return Objects.equals(this.dni, other.dni);
     }
 
     @Override
     public String toString() {
-        return "Paciente{" + "nombre=" + nombre + ", dni=" + dni + ", domicilio=" + domicilio + ", telefono=" + telefono + ", id_paciente=" + id_paciente + '}';
+        return "Paciente{" + "id_paciente=" + id_paciente + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", domicilio=" + domicilio + ", telefono=" + telefono + '}';
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }

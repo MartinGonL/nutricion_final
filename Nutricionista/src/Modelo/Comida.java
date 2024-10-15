@@ -1,35 +1,37 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Modelo;
 
-/**
- *
- * @author IK
- */
+import java.util.Objects;
+
 public class Comida {
-    private String comida;
+    
+    private Integer id_comida;
+    private String nombre;
     private String detalle;
-    private int cantCalorias;
-    private int id_comida;
+    private Double cantCalorias;
+
+    public Comida(String nombre, String detalle, Double cantCalorias) {
+        this.nombre = nombre;
+        this.detalle = detalle;
+        this.cantCalorias = cantCalorias;
+    }
 
     public Comida() {
     }
 
-    public Comida(String comida, String detalle, int cantCalorias, int id_comida) {
-        this.comida = comida;
-        this.detalle = detalle;
-        this.cantCalorias = cantCalorias;
+    public Integer getId_comida() {
+        return id_comida;
+    }
+
+    public void setId_comida(Integer id_comida) {
         this.id_comida = id_comida;
     }
 
-    public String getComida() {
-        return comida;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setComida(String comida) {
-        this.comida = comida;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getDetalle() {
@@ -40,48 +42,50 @@ public class Comida {
         this.detalle = detalle;
     }
 
-    public int getCantCalorias() {
+    public Double getCantCalorias() {
         return cantCalorias;
     }
 
-    public void setCantCalorias(int cantCalorias) {
+    public void setCantCalorias(Double cantCalorias) {
         this.cantCalorias = cantCalorias;
     }
 
-    public int getId_comida() {
-        return id_comida;
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 17 * hash + Objects.hashCode(this.id_comida);
+        hash = 17 * hash + Objects.hashCode(this.nombre);
+        hash = 17 * hash + Objects.hashCode(this.detalle);
+        hash = 17 * hash + Objects.hashCode(this.cantCalorias);
+        return hash;
     }
 
-    public void setId_comida(int id_comida) {
-        this.id_comida = id_comida;
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Comida other = (Comida) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.detalle, other.detalle)) {
+            return false;
+        }
+        if (!Objects.equals(this.id_comida, other.id_comida)) {
+            return false;
+        }
+        return Objects.equals(this.cantCalorias, other.cantCalorias);
     }
 
     @Override
     public String toString() {
-        return "Comida{" + "comida=" + comida + ", detalle=" + detalle + ", cantCalorias=" + cantCalorias + ", id_comida=" + id_comida + '}';
+        return "Comida{" + "id_comida=" + id_comida + ", nombre=" + nombre + ", detalle=" + detalle + ", cantCalorias=" + cantCalorias + '}';
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
 }
