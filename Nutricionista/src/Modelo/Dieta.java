@@ -1,7 +1,5 @@
 /**
- * Esta calse fue adaptada para interactuar con una BDD. Por lo que su principal objetivo es la recuperacion y modificacion de datos, 
- * NO la de crear objetos. Es por esta razon que el contructor sin parametros es publico y solo cuenta con un metodo para establecer la conexion 
- * a la BDD, mientras que el contructor con parametros es privado y su unico propocito es satisfacer al metodo 'llegaronAlPesoDeseado()'.
+ * Esta calse fue adaptada para interactuar con una BDD. Por lo que su principal objetivo es la recuperacion y modificacion de datos.
  * 
  * Los metodos 'cambiarPesoDeseado()' y 'actualizarPesoAct()' fueron descartados devido a la modificacion realizada a los metodos getter y setter.
  */
@@ -16,6 +14,8 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 
 import java.util.ArrayList;
+import java.util.Objects;
+import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -292,13 +292,12 @@ public class Dieta {
     }
 
     /*Controlar este metodo*/
-    public void setSQLTotalDeCalorias(Float TotalDeCalorias, String dni) {
+    public void setSQLTotalDeCalorias(String dni, String idDieta) {
         String SQL = "UPDATE Dieta " + 
                      "SET totalDeCalorias=(SELECT valorTotal " + 
                                           "FROM Dieta a " + 
-                                          "JOIN Comida b (ON a.ID_Dieta = b.ID_Dieta) " + 
-                                          "JOIN Receta c (ON b.NombreC = c.NombreC) " + 
-                                          "WHERE a.dni=" + dni + ") " + 
+                                          "JOIN Menu b (ON a.ID_Dieta = b.ID_Dieta) " + 
+                                          "WHERE a.ID_Dieta=" + idDieta + ") " + 
                      "WHERE dni=" + dni;
         try 
         {
@@ -361,16 +360,26 @@ public class Dieta {
         }
     }
 
-    public ArrayList<Menu> getMenus(String idDieta) {
-        String SQL = "SELECT * FROM Menu WHERE ID_Dieta=" + idDieta;
+    public ArrayList<Menu> getSQLMenus(String idDieta) {
+        String SQL = "SELECT * FROM Menu a JOIN Receta b (ON a.NombreM=b.NombreM) WHERE ID_Dieta=" + idDieta;
+        menus.clear();
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
             resultado = sentencia.executeQuery();
-            
             while (resultado.next()) 
             {
-                pesoFinal = resultado.getFloat("pesoFinal");
+                int idDieta1 = resultado.getInt("ID_Dieta");
+                String name = resultado.getString("nombre");
+                String nombreIng = resultado.getString("NombreI");
+                float cantidadIng = resultado.getFloat("cantidadI");
+                String dia = resultado.getString("dia");
+                String momentoDelDia = resultado.getString("momentoDelDia");
+                int porciones = resultado.getInt("porciones");
+                float caloriasValorTotal = resultado.getFloat("caloriasValorTotal");
+                
+                Menu menu = new Menu(idDieta1, name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
+                menus.add(menu);
             }
         } 
         catch (SQLException ex) 
@@ -381,8 +390,92 @@ public class Dieta {
         return menus;
     }
 
-    public void setMenus(ArrayList<Menu> menus, String dni) {
-        this.menus = menus;
+    public void setMenus(Menu menu, String idDieta) {
+        //Llamar al contructor SQL de menu.
+//        String SQL = "UPDATE Dieta SET pesoFinal=" + pesoFinal + " WHERE ID_Dieta=" + idDieta;
+//        try 
+//        {
+//            sentencia = conexion.prepareStatement(SQL);
+//            int filas = sentencia.executeUpdate();
+//            
+//            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+//        } 
+//        catch (SQLException ex) 
+//        {
+//            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+//        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 17 * hash + Objects.hashCode(this.ID_Dieta);
+        hash = 17 * hash + Objects.hashCode(this.nombre);
+        hash = 17 * hash + Objects.hashCode(this.fechaInicio);
+        hash = 17 * hash + Objects.hashCode(this.fechaFin);
+        hash = 17 * hash + Objects.hashCode(this.pesoInicial);
+        hash = 17 * hash + Objects.hashCode(this.pesoFinal);
+        hash = 17 * hash + Objects.hashCode(this.totalDeCalorias);
+        hash = 17 * hash + Objects.hashCode(this.paciente);
+        hash = 17 * hash + Objects.hashCode(this.menus);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Dieta other = (Dieta) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaInicio, other.fechaInicio)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaFin, other.fechaFin)) {
+            return false;
+        }
+        if (!Objects.equals(this.pesoInicial, other.pesoInicial)) {
+            return false;
+        }
+        if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
+            return false;
+        }
+        if (!Objects.equals(this.totalDeCalorias, other.totalDeCalorias)) {
+            return false;
+        }
+        if (!Objects.equals(this.paciente, other.paciente)) {
+            return false;
+        }
+        return Objects.equals(this.menus, other.menus);
+    }
+
+    @Override
+    public String toString() {
+        return "Dieta:\nID Dieta: " + ID_Dieta + ".\n Nombre: " + nombre + ".\n Fecha Inicio: " + fechaInicio + ".\n Fecha Fin: " + fechaFin + ".\n Peso Inicial: " + pesoInicial + ".\n Peso Final: " + pesoFinal + ".\n Total De Calorias: " + totalDeCalorias + ".\n Paciente: " + paciente.toString() + ".\n Menus: " + menus + ".\n";
     }
     
+    //Metodos Solicitados.
+    //--------------------------------------------------------------------------
+    
+    public void cargarPesoYfinalizar(float pesoFin, String dni) {
+        LocalDate fechaActual = LocalDate.now();
+        getSQLFechaFin(dni);
+        
+        if (fechaActual.compareTo(fechaFin) >= 0) {
+            
+        }
+    }
+    
+    //--------------------------------------------------------------------------
 }

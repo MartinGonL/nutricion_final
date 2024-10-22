@@ -24,4 +24,7 @@ hs_err_pid*
 replay_pid*
 /Nutricionista/build/
 *.xml
+<<<<<<< Updated upstream
 *.xml
+=======
+>>>>>>> Stashed changes
