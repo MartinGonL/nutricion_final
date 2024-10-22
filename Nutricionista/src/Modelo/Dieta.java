@@ -7,19 +7,25 @@ import java.util.Objects;
 public class Dieta {
     
     private Integer idDieta;
-    private ArrayList<Comida> comidas = new ArrayList();
+    private ArrayList<Alimento> listA = new ArrayList();
+    private ArrayList<menuDiario> menu = new ArrayList();
+    private LocalDate fechainicial;
+    private LocalDate fechaFinal;
     private Paciente paciente;
     private Double pesoInicial;
     private Double pesoFinal;
-    private LocalDate fechainicial;
-    private LocalDate fechaFinal;
+    private Double totalCalorias;
+    private Boolean estado;
 
-    public Dieta(Paciente paciente, Double pesoInicial, Double pesoFinal, LocalDate fechainicial, LocalDate fechaFinal) {
+    public Dieta(Integer idDieta, LocalDate fechainicial, LocalDate fechaFinal, Paciente paciente, Double pesoInicial, Double pesoFinal, Double totalCalorias, Boolean estado) {
+        this.idDieta = idDieta;
+        this.fechainicial = fechainicial;
+        this.fechaFinal = fechaFinal;
         this.paciente = paciente;
         this.pesoInicial = pesoInicial;
         this.pesoFinal = pesoFinal;
-        this.fechainicial = fechainicial;
-        this.fechaFinal = fechaFinal;
+        this.totalCalorias = totalCalorias;
+        this.estado = estado;
     }
 
     public Dieta() {
@@ -33,12 +39,38 @@ public class Dieta {
         this.idDieta = idDieta;
     }
 
-    public ArrayList<Comida> getComidas() {
-        return comidas;
+    public ArrayList<Alimento> getListA() {
+        return listA;
     }
 
-    public void setComidas(ArrayList<Comida> comidas) {
-        this.comidas = comidas;
+    public void setListA(ArrayList<Alimento> listA) {
+        this.listA = listA;
+    }
+
+    public ArrayList<menuDiario> getListM() {
+        return listM;
+    }
+
+    public void setListM(ArrayList<menuDiario> listM) {
+        this.listM = listM;
+    }
+
+
+
+    public LocalDate getFechainicial() {
+        return fechainicial;
+    }
+
+    public void setFechainicial(LocalDate fechainicial) {
+        this.fechainicial = fechainicial;
+    }
+
+    public LocalDate getFechaFinal() {
+        return fechaFinal;
+    }
+
+    public void setFechaFinal(LocalDate fechaFinal) {
+        this.fechaFinal = fechaFinal;
     }
 
     public Paciente getPaciente() {
@@ -65,32 +97,35 @@ public class Dieta {
         this.pesoFinal = pesoFinal;
     }
 
-    public LocalDate getFechainicial() {
-        return fechainicial;
+    public Double getTotalCalorias() {
+        return totalCalorias;
     }
 
-    public void setFechainicial(LocalDate fechainicial) {
-        this.fechainicial = fechainicial;
+    public void setTotalCalorias(Double totalCalorias) {
+        this.totalCalorias = totalCalorias;
     }
 
-    public LocalDate getFechaFinal() {
-        return fechaFinal;
+    public Boolean getEstado() {
+        return estado;
     }
 
-    public void setFechaFinal(LocalDate fechaFinal) {
-        this.fechaFinal = fechaFinal;
+    public void setEstado(Boolean estado) {
+        this.estado = estado;
     }
 
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 53 * hash + Objects.hashCode(this.idDieta);
-        hash = 53 * hash + Objects.hashCode(this.comidas);
-        hash = 53 * hash + Objects.hashCode(this.paciente);
-        hash = 53 * hash + Objects.hashCode(this.pesoInicial);
-        hash = 53 * hash + Objects.hashCode(this.pesoFinal);
-        hash = 53 * hash + Objects.hashCode(this.fechainicial);
-        hash = 53 * hash + Objects.hashCode(this.fechaFinal);
+        hash = 13 * hash + Objects.hashCode(this.idDieta);
+        hash = 13 * hash + Objects.hashCode(this.listA);
+        hash = 13 * hash + Objects.hashCode(this.menu);
+        hash = 13 * hash + Objects.hashCode(this.fechainicial);
+        hash = 13 * hash + Objects.hashCode(this.fechaFinal);
+        hash = 13 * hash + Objects.hashCode(this.paciente);
+        hash = 13 * hash + Objects.hashCode(this.pesoInicial);
+        hash = 13 * hash + Objects.hashCode(this.pesoFinal);
+        hash = 13 * hash + Objects.hashCode(this.totalCalorias);
+        hash = 13 * hash + Objects.hashCode(this.estado);
         return hash;
     }
 
@@ -109,7 +144,16 @@ public class Dieta {
         if (!Objects.equals(this.idDieta, other.idDieta)) {
             return false;
         }
-        if (!Objects.equals(this.comidas, other.comidas)) {
+        if (!Objects.equals(this.listA, other.listA)) {
+            return false;
+        }
+        if (!Objects.equals(this.menu, other.menu)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechainicial, other.fechainicial)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaFinal, other.fechaFinal)) {
             return false;
         }
         if (!Objects.equals(this.paciente, other.paciente)) {
@@ -121,14 +165,17 @@ public class Dieta {
         if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
             return false;
         }
-        if (!Objects.equals(this.fechainicial, other.fechainicial)) {
+        if (!Objects.equals(this.totalCalorias, other.totalCalorias)) {
             return false;
         }
-        return Objects.equals(this.fechaFinal, other.fechaFinal);
+        return Objects.equals(this.estado, other.estado);
     }
 
     @Override
     public String toString() {
-        return "Dieta{" + "idDieta=" + idDieta + ", comidas=" + comidas + ", paciente=" + paciente + ", pesoInicial=" + pesoInicial + ", pesoFinal=" + pesoFinal + ", fechainicial=" + fechainicial + ", fechaFinal=" + fechaFinal + '}';
+        return "Dieta{" + "idDieta=" + idDieta + ", listA=" + listA + ", menu=" + menu + ", fechainicial=" + fechainicial + ", fechaFinal=" + fechaFinal + ", paciente=" + paciente + ", pesoInicial=" + pesoInicial + ", pesoFinal=" + pesoFinal + ", totalCalorias=" + totalCalorias + ", estado=" + estado + '}';
     }
+    
+    
+    
 }

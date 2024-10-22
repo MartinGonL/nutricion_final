@@ -4,38 +4,39 @@ import java.util.Objects;
 
 public class Paciente {
     
-    private Integer id_paciente;
-    private Integer dni;
+    private Integer pacienteNro;
+    private Integer edad;
     private String nombre;
     private String apellido;
-    private String domicilio;
-    private String telefono;
+    private Integer altura;
+    private Integer pesoBuscado;
 
-    public Paciente(Integer dni, String nombre, String apellido, String domicilio, String telefono) {
-        this.dni = dni;
+    public Paciente(Integer pacienteNro, Integer edad, String nombre, String apellido, Integer altura, Integer pesoBuscado) {
+        this.pacienteNro = pacienteNro;
+        this.edad = edad;
         this.nombre = nombre;
         this.apellido = apellido;
-        this.domicilio = domicilio;
-        this.telefono = telefono;
+        this.altura = altura;
+        this.pesoBuscado = pesoBuscado;
     }
 
     public Paciente() {
     }
 
-    public Integer getId_paciente() {
-        return id_paciente;
+    public Integer getPacienteNro() {
+        return pacienteNro;
     }
 
-    public void setId_paciente(Integer id_paciente) {
-        this.id_paciente = id_paciente;
+    public void setPacienteNro(Integer pacienteNro) {
+        this.pacienteNro = pacienteNro;
     }
 
-    public Integer getDni() {
-        return dni;
+    public Integer getEdad() {
+        return edad;
     }
 
-    public void setDni(Integer dni) {
-        this.dni = dni;
+    public void setEdad(Integer edad) {
+        this.edad = edad;
     }
 
     public String getNombre() {
@@ -54,31 +55,31 @@ public class Paciente {
         this.apellido = apellido;
     }
 
-    public String getDomicilio() {
-        return domicilio;
+    public Integer getAltura() {
+        return altura;
     }
 
-    public void setDomicilio(String domicilio) {
-        this.domicilio = domicilio;
+    public void setAltura(Integer altura) {
+        this.altura = altura;
     }
 
-    public String getTelefono() {
-        return telefono;
+    public Integer getPesoBuscado() {
+        return pesoBuscado;
     }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
+    public void setPesoBuscado(Integer pesoBuscado) {
+        this.pesoBuscado = pesoBuscado;
     }
 
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.id_paciente);
-        hash = 83 * hash + Objects.hashCode(this.dni);
-        hash = 83 * hash + Objects.hashCode(this.nombre);
-        hash = 83 * hash + Objects.hashCode(this.apellido);
-        hash = 83 * hash + Objects.hashCode(this.domicilio);
-        hash = 83 * hash + Objects.hashCode(this.telefono);
+        hash = 41 * hash + Objects.hashCode(this.pacienteNro);
+        hash = 41 * hash + Objects.hashCode(this.edad);
+        hash = 41 * hash + Objects.hashCode(this.nombre);
+        hash = 41 * hash + Objects.hashCode(this.apellido);
+        hash = 41 * hash + Objects.hashCode(this.altura);
+        hash = 41 * hash + Objects.hashCode(this.pesoBuscado);
         return hash;
     }
 
@@ -100,20 +101,23 @@ public class Paciente {
         if (!Objects.equals(this.apellido, other.apellido)) {
             return false;
         }
-        if (!Objects.equals(this.domicilio, other.domicilio)) {
+        if (!Objects.equals(this.pacienteNro, other.pacienteNro)) {
             return false;
         }
-        if (!Objects.equals(this.telefono, other.telefono)) {
+        if (!Objects.equals(this.edad, other.edad)) {
             return false;
         }
-        if (!Objects.equals(this.id_paciente, other.id_paciente)) {
+        if (!Objects.equals(this.altura, other.altura)) {
             return false;
         }
-        return Objects.equals(this.dni, other.dni);
+        return Objects.equals(this.pesoBuscado, other.pesoBuscado);
     }
 
     @Override
     public String toString() {
-        return "Paciente{" + "id_paciente=" + id_paciente + ", dni=" + dni + ", nombre=" + nombre + ", apellido=" + apellido + ", domicilio=" + domicilio + ", telefono=" + telefono + '}';
+        return "Paciente{" + "pacienteNro=" + pacienteNro + ", edad=" + edad + ", nombre=" + nombre + ", apellido=" + apellido + ", altura=" + altura + ", pesoBuscado=" + pesoBuscado + '}';
     }
+    
+
+   
 }
