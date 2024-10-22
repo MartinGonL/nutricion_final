@@ -1,7 +1,7 @@
 /**
  * Esta calse fue adaptada para interactuar con una BDD. Por lo que su principal objetivo es la recuperacion y modificacion de datos.
  * 
- * Los metodos 'cambiarPesoDeseado()' y 'actualizarPesoAct()' fueron descartados devido a la modificacion realizada a los metodos getter y setter.
+ * El metodo 'addRenglon()' fue descartado devido a la modificacion realizada a los metodos getter y setter.
  */
 package Modelo;
 
@@ -15,7 +15,6 @@ import java.time.LocalDate;
 
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.TreeMap;
 
 import javax.swing.JOptionPane;
 
@@ -29,7 +28,7 @@ public class Dieta {
     private Float pesoFinal;
     private Float totalDeCalorias;
     private Paciente paciente;
-    private ArrayList<Menu> menus = new ArrayList();
+    private final ArrayList<Menu> dietaDiaria = new ArrayList();
 
     private Connection conexion;
     private PreparedStatement sentencia;
@@ -38,7 +37,99 @@ public class Dieta {
     public Dieta() {
         conectar();
     }
-   
+
+    public Integer getID_Dieta() {
+        return ID_Dieta;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public LocalDate getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public LocalDate getFechaFin() {
+        return fechaFin;
+    }
+
+    public Float getPesoInicial() {
+        return pesoInicial;
+    }
+
+    public Float getPesoFinal() {
+        return pesoFinal;
+    }
+
+    public Float getTotalDeCalorias() {
+        return totalDeCalorias;
+    }
+
+    public Paciente getPaciente() {
+        return paciente;
+    }
+
+    public ArrayList<Menu> getDietaDiaria() {
+        return dietaDiaria;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.ID_Dieta);
+        hash = 97 * hash + Objects.hashCode(this.nombre);
+        hash = 97 * hash + Objects.hashCode(this.fechaInicio);
+        hash = 97 * hash + Objects.hashCode(this.fechaFin);
+        hash = 97 * hash + Objects.hashCode(this.pesoInicial);
+        hash = 97 * hash + Objects.hashCode(this.pesoFinal);
+        hash = 97 * hash + Objects.hashCode(this.totalDeCalorias);
+        hash = 97 * hash + Objects.hashCode(this.paciente);
+        hash = 97 * hash + Objects.hashCode(this.dietaDiaria);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Dieta other = (Dieta) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaInicio, other.fechaInicio)) {
+            return false;
+        }
+        if (!Objects.equals(this.fechaFin, other.fechaFin)) {
+            return false;
+        }
+        if (!Objects.equals(this.pesoInicial, other.pesoInicial)) {
+            return false;
+        }
+        if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
+            return false;
+        }
+        if (!Objects.equals(this.totalDeCalorias, other.totalDeCalorias)) {
+            return false;
+        }
+        if (!Objects.equals(this.paciente, other.paciente)) {
+            return false;
+        }
+        return Objects.equals(this.dietaDiaria, other.dietaDiaria);
+    }
+    
+    //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
+    
     /*Realizo la conexion*/
     private void conectar() {
         try 
@@ -59,9 +150,9 @@ public class Dieta {
     }
     
     /*Contructor SQL*/
-    public Dieta(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoInicial, Float pesoFinal, Float totalDeCalorias, Integer DNI) {
-        String SQL = "INSERT INTO Dieta(nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, TotalDeCalorias, DNI) " + 
-                     "VALUES ('" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoInicial + ", " + pesoFinal + ", " + totalDeCalorias + ", " + DNI + ")";
+    public void SQLDieta(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoInicial, Float pesoFinal, Integer DNI) {
+        String SQL = "INSERT INTO Dieta(nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, DNI) " + 
+                     "VALUES ('" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoInicial + ", " + pesoFinal + ", " + DNI + ")";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -85,7 +176,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                nombre = resultado.getString("ID_Dieta");
+                ID_Dieta = resultado.getInt("ID_Dieta");
             }
         } 
         catch (SQLException ex) 
@@ -140,7 +231,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                fechaInicio = resultado.getDate("fechaInicio");
+                fechaInicio = LocalDate.parse(resultado.getString("fechaInicio"));
             }
         } 
         catch (SQLException ex) 
@@ -175,7 +266,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                fechaFin = resultado.getDate("fechaFin");
+                fechaFin = LocalDate.parse(resultado.getString("fechaFin"));
             }
         } 
         catch (SQLException ex) 
@@ -291,13 +382,12 @@ public class Dieta {
         return totalDeCalorias;
     }
 
-    /*Controlar este metodo*/
-    public void setSQLTotalDeCalorias(String dni, String idDieta) {
+    /*Hacerlo de uso privado*/
+    private void setSQLTotalDeCalorias(String dni, String idDieta) {
         String SQL = "UPDATE Dieta " + 
-                     "SET totalDeCalorias=(SELECT valorTotal " + 
-                                          "FROM Dieta a " + 
-                                          "JOIN Menu b (ON a.ID_Dieta = b.ID_Dieta) " + 
-                                          "WHERE a.ID_Dieta=" + idDieta + ") " + 
+                     "SET totalDeCalorias=(SELECT caloriasValorTotal " + 
+                                          "FROM Menu " + 
+                                          "WHERE ID_Dieta=" + idDieta + ") " + 
                      "WHERE dni=" + dni;
         try 
         {
@@ -360,16 +450,18 @@ public class Dieta {
         }
     }
 
-    public ArrayList<Menu> getSQLMenus(String idDieta) {
+    public ArrayList<Menu> getSQLDietaDiaria(String idDieta) {
         String SQL = "SELECT * FROM Menu a JOIN Receta b (ON a.NombreM=b.NombreM) WHERE ID_Dieta=" + idDieta;
-        menus.clear();
+        dietaDiaria.clear();
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
             resultado = sentencia.executeQuery();
+            
             while (resultado.next()) 
             {
                 int idDieta1 = resultado.getInt("ID_Dieta");
+                int idMenu = resultado.getInt("ID_Menu");
                 String name = resultado.getString("nombre");
                 String nombreIng = resultado.getString("NombreI");
                 float cantidadIng = resultado.getFloat("cantidadI");
@@ -378,8 +470,8 @@ public class Dieta {
                 int porciones = resultado.getInt("porciones");
                 float caloriasValorTotal = resultado.getFloat("caloriasValorTotal");
                 
-                Menu menu = new Menu(idDieta1, name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
-                menus.add(menu);
+                Menu menu = new Menu(idDieta1, idMenu, name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
+                dietaDiaria.add(menu);
             }
         } 
         catch (SQLException ex) 
@@ -387,86 +479,25 @@ public class Dieta {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
         
-        return menus;
+        return dietaDiaria;
     }
 
-    public void setMenus(Menu menu, String idDieta) {
-        //Llamar al contructor SQL de menu.
-//        String SQL = "UPDATE Dieta SET pesoFinal=" + pesoFinal + " WHERE ID_Dieta=" + idDieta;
-//        try 
-//        {
-//            sentencia = conexion.prepareStatement(SQL);
-//            int filas = sentencia.executeUpdate();
-//            
-//            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
-//        } 
-//        catch (SQLException ex) 
-//        {
-//            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-//        }
+    public void setSQLDietaDiaria(Integer idDieta, String nombre, String dia, String momentoDelDia, Integer porciones, String dni) {
+        dietaDiaria.clear();
+        getSQLDietaDiaria(idDieta.toString());
+       
+        if (dietaDiaria.size() < 35) 
+        {    
+            Menu menu = new Menu();
+
+            menu.SQLMenu(idDieta, nombre, dia, momentoDelDia, porciones);
+
+            setSQLTotalDeCalorias(dni, idDieta.toString());
+        }
+        else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 17 * hash + Objects.hashCode(this.ID_Dieta);
-        hash = 17 * hash + Objects.hashCode(this.nombre);
-        hash = 17 * hash + Objects.hashCode(this.fechaInicio);
-        hash = 17 * hash + Objects.hashCode(this.fechaFin);
-        hash = 17 * hash + Objects.hashCode(this.pesoInicial);
-        hash = 17 * hash + Objects.hashCode(this.pesoFinal);
-        hash = 17 * hash + Objects.hashCode(this.totalDeCalorias);
-        hash = 17 * hash + Objects.hashCode(this.paciente);
-        hash = 17 * hash + Objects.hashCode(this.menus);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Dieta other = (Dieta) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
-            return false;
-        }
-        if (!Objects.equals(this.fechaInicio, other.fechaInicio)) {
-            return false;
-        }
-        if (!Objects.equals(this.fechaFin, other.fechaFin)) {
-            return false;
-        }
-        if (!Objects.equals(this.pesoInicial, other.pesoInicial)) {
-            return false;
-        }
-        if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
-            return false;
-        }
-        if (!Objects.equals(this.totalDeCalorias, other.totalDeCalorias)) {
-            return false;
-        }
-        if (!Objects.equals(this.paciente, other.paciente)) {
-            return false;
-        }
-        return Objects.equals(this.menus, other.menus);
-    }
-
-    @Override
-    public String toString() {
-        return "Dieta:\nID Dieta: " + ID_Dieta + ".\n Nombre: " + nombre + ".\n Fecha Inicio: " + fechaInicio + ".\n Fecha Fin: " + fechaFin + ".\n Peso Inicial: " + pesoInicial + ".\n Peso Final: " + pesoFinal + ".\n Total De Calorias: " + totalDeCalorias + ".\n Paciente: " + paciente.toString() + ".\n Menus: " + menus + ".\n";
-    }
-    
-    //Metodos Solicitados.
-    //--------------------------------------------------------------------------
+    //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
     public void cargarPesoYfinalizar(float pesoFin, String dni) {
         LocalDate fechaActual = LocalDate.now();
@@ -477,5 +508,46 @@ public class Dieta {
         }
     }
     
-    //--------------------------------------------------------------------------
+    public void imprimirDietaDiaria(String idDieta) {
+        getSQLDietaDiaria(idDieta);
+        
+        for (Menu dieta : dietaDiaria) 
+        {
+            System.out.println(dieta.toString());
+        }
+    }
+    
+    /*La dieta diaria cubrira de 3 a 7 dias y cada dia tendra 5 comidas. 
+      Retornara un objeto del tipo menu para luego poder usar el numero de ID del mismo para poder realizar
+      las modificaciones necesarias.*/
+    public Menu modificarDietaDiaria(String idDieta, String dia, String comida) {
+        getSQLDietaDiaria(idDieta);
+        
+        Menu menu = new Menu();
+//        String diaDieta = "";
+//        String comidaDieta = "";
+        
+        for (Menu dieta : dietaDiaria) 
+        {
+            String diaDieta = dieta.getSQLDia(dieta.getNombre());
+            String comidaDieta = dieta.getSQLMomentoDelDia(dieta.getNombre());
+            
+            if (diaDieta.equals(dia) & comidaDieta.equals(comida)) menu = dieta;
+        }
+        
+        return menu;
+    }
+    
+    public void armarDietaDiaria(Integer idDieta, String nombre, String dia, String momentoDelDia, Integer porciones, String dni) {
+        getSQLDietaDiaria(idDieta.toString());
+        
+        if (dietaDiaria.size() < 35)
+        {
+            setSQLDietaDiaria(idDieta, nombre, dia, momentoDelDia, porciones, dni);
+        }
+        else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
+    }
+    
+    public void generarDietaDiara(String ingrediente1, String ingrediente2, String ingrediente3, String idDieta) {
+    }
 }

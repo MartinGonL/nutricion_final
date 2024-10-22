@@ -11,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
@@ -44,6 +43,87 @@ public class Paciente {
         this.pesoBuscado = pesoBuscado;
     }
 
+    public Integer getDNI() {
+        return DNI;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public Integer getEdad() {
+        return edad;
+    }
+
+    public Float getAltura() {
+        return altura;
+    }
+
+    public Float getPesoActual() {
+        return pesoActual;
+    }
+
+    public Float getPesoBuscado() {
+        return pesoBuscado;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 47 * hash + Objects.hashCode(this.DNI);
+        hash = 47 * hash + Objects.hashCode(this.nombre);
+        hash = 47 * hash + Objects.hashCode(this.apellido);
+        hash = 47 * hash + Objects.hashCode(this.edad);
+        hash = 47 * hash + Objects.hashCode(this.altura);
+        hash = 47 * hash + Objects.hashCode(this.pesoActual);
+        hash = 47 * hash + Objects.hashCode(this.pesoBuscado);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Paciente other = (Paciente) obj;
+        if (!Objects.equals(this.nombre, other.nombre)) {
+            return false;
+        }
+        if (!Objects.equals(this.apellido, other.apellido)) {
+            return false;
+        }
+        if (!Objects.equals(this.DNI, other.DNI)) {
+            return false;
+        }
+        if (!Objects.equals(this.edad, other.edad)) {
+            return false;
+        }
+        if (!Objects.equals(this.altura, other.altura)) {
+            return false;
+        }
+        if (!Objects.equals(this.pesoActual, other.pesoActual)) {
+            return false;
+        }
+        return Objects.equals(this.pesoBuscado, other.pesoBuscado);
+    }
+    
+    @Override
+    public String toString() {
+        return "Paciente:\nDNI: " + DNI + ".\nNombre: " + nombre + ".\nApellido: " + apellido + ".Edad: " + edad + ".\nAltura: " + altura + ".\nPeso Actual: " + pesoActual + ".\nPeso Buscado: " + pesoBuscado + ".\n";
+    }
+    
+    //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
+    
     /*Realizo la conexion*/
     private void conectar() {
         try 
@@ -291,59 +371,7 @@ public class Paciente {
         }
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 29 * hash + Objects.hashCode(this.DNI);
-        hash = 29 * hash + Objects.hashCode(this.nombre);
-        hash = 29 * hash + Objects.hashCode(this.apellido);
-        hash = 29 * hash + Objects.hashCode(this.edad);
-        hash = 29 * hash + Objects.hashCode(this.altura);
-        hash = 29 * hash + Objects.hashCode(this.pesoActual);
-        hash = 29 * hash + Objects.hashCode(this.pesoBuscado);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Paciente other = (Paciente) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
-            return false;
-        }
-        if (!Objects.equals(this.apellido, other.apellido)) {
-            return false;
-        }
-        if (!Objects.equals(this.DNI, other.DNI)) {
-            return false;
-        }
-        if (!Objects.equals(this.edad, other.edad)) {
-            return false;
-        }
-        if (!Objects.equals(this.altura, other.altura)) {
-            return false;
-        }
-        if (!Objects.equals(this.pesoActual, other.pesoActual)) {
-            return false;
-        }
-        return Objects.equals(this.pesoBuscado, other.pesoBuscado);
-    }
-
-    @Override
-    public String toString() {
-        return "Paciente:\nDNI: " + DNI + ".\nNombre: " + nombre + ".\nApellido: " + apellido + ".Edad: " + edad + ".\nAltura: " + altura + ".\nPeso Actual: " + pesoActual + ".\nPeso Buscado: " + pesoBuscado + ".\n";
-    }
-    
-    //Metodos Solicitados.
-    //--------------------------------------------------------------------------
+    //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
     public Float seAcercaAlPeso(String dni, Float pesoAct) {
         Float result = 0F;
@@ -403,7 +431,5 @@ public class Paciente {
         
         return pacientes;
     }
-    
-    //--------------------------------------------------------------------------
 }
 /**/
