@@ -47,12 +47,12 @@ public class Dieta {
         this.listA = listA;
     }
 
-    public ArrayList<menuDiario> getListM() {
-        return listM;
+    public ArrayList<menuDiario> getMenu() {
+        return menu;
     }
 
-    public void setListM(ArrayList<menuDiario> listM) {
-        this.listM = listM;
+    public void setListM(ArrayList<menuDiario> menu) {
+        this.menu = menu;
     }
 
 
