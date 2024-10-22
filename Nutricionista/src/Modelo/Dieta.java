@@ -1,181 +1,388 @@
+/**
+ * Esta calse fue adaptada para interactuar con una BDD. Por lo que su principal objetivo es la recuperacion y modificacion de datos, 
+ * NO la de crear objetos. Es por esta razon que el contructor sin parametros es publico y solo cuenta con un metodo para establecer la conexion 
+ * a la BDD, mientras que el contructor con parametros es privado y su unico propocito es satisfacer al metodo 'llegaronAlPesoDeseado()'.
+ * 
+ * Los metodos 'cambiarPesoDeseado()' y 'actualizarPesoAct()' fueron descartados devido a la modificacion realizada a los metodos getter y setter.
+ */
 package Modelo;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import java.time.LocalDate;
+
 import java.util.ArrayList;
-import java.util.Objects;
+
+import javax.swing.JOptionPane;
 
 public class Dieta {
     
-    private Integer idDieta;
-    private ArrayList<Alimento> listA = new ArrayList();
-    private ArrayList<menuDiario> menu = new ArrayList();
-    private LocalDate fechainicial;
-    private LocalDate fechaFinal;
+    private Integer ID_Dieta;
+    private String nombre;
+    private LocalDate fechaInicio;
+    private LocalDate fechaFin;
+    private Float pesoInicial;
+    private Float pesoFinal;
+    private Float totalDeCalorias;
     private Paciente paciente;
-    private Double pesoInicial;
-    private Double pesoFinal;
-    private Double totalCalorias;
-    private Boolean estado;
+    private ArrayList<Menu> menus = new ArrayList();
 
-    public Dieta(Integer idDieta, LocalDate fechainicial, LocalDate fechaFinal, Paciente paciente, Double pesoInicial, Double pesoFinal, Double totalCalorias, Boolean estado) {
-        this.idDieta = idDieta;
-        this.fechainicial = fechainicial;
-        this.fechaFinal = fechaFinal;
-        this.paciente = paciente;
-        this.pesoInicial = pesoInicial;
-        this.pesoFinal = pesoFinal;
-        this.totalCalorias = totalCalorias;
-        this.estado = estado;
-    }
-
+    private Connection conexion;
+    private PreparedStatement sentencia;
+    private ResultSet resultado;
+    
     public Dieta() {
+        conectar();
+    }
+   
+    /*Realizo la conexion*/
+    private void conectar() {
+        try 
+        {
+            Class.forName("org.mariadb.jdbc.Driver");
+            
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost/Nutricionista", "root", "");
+            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al establecer la Conexion.");
+        }
+    }
+    
+    /*Contructor SQL*/
+    public Dieta(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoInicial, Float pesoFinal, Float totalDeCalorias, Integer DNI) {
+        String SQL = "INSERT INTO Dieta(nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, TotalDeCalorias, DNI) " + 
+                     "VALUES ('" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoInicial + ", " + pesoFinal + ", " + totalDeCalorias + ", " + DNI + ")";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Dieta Creada.");
+
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public Integer getIdDieta() {
-        return idDieta;
+    public Integer getSQLID_Dieta(String dni) {
+        String SQL = "SELECT ID_Dieta FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                nombre = resultado.getString("ID_Dieta");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return ID_Dieta;
     }
 
-    public void setIdDieta(Integer idDieta) {
-        this.idDieta = idDieta;
+    public String getSQLNombre(String dni) {
+        String SQL = "SELECT nombre FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                nombre = resultado.getString("nombre");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return nombre;
     }
 
-    public ArrayList<Alimento> getListA() {
-        return listA;
+    public void setSQLNombre(String nombre, String dni) {
+        String SQL = "UPDATE Dieta SET nombre='" + nombre + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public void setListA(ArrayList<Alimento> listA) {
-        this.listA = listA;
+    public LocalDate getSQLFechaInicio(String dni) {
+        String SQL = "SELECT fechaInicio FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                fechaInicio = resultado.getDate("fechaInicio");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return fechaInicio;
     }
 
-    public ArrayList<menuDiario> getMenu() {
-        return menu;
+    public void setSQLFechaInicio(LocalDate fechaInicio, String dni) {
+        String SQL = "UPDATE Dieta SET fechaInicio='" + fechaInicio + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public void setListM(ArrayList<menuDiario> menu) {
-        this.menu = menu;
+    public LocalDate getSQLFechaFin(String dni) {
+        String SQL = "SELECT fechaFin FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                fechaFin = resultado.getDate("fechaFin");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return fechaFin;
     }
 
-
-
-    public LocalDate getFechainicial() {
-        return fechainicial;
+    public void setSQLFechaFin(LocalDate fechaFin, String dni) {
+        String SQL = "UPDATE Dieta SET fechaFin='" + fechaFin + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public void setFechainicial(LocalDate fechainicial) {
-        this.fechainicial = fechainicial;
-    }
-
-    public LocalDate getFechaFinal() {
-        return fechaFinal;
-    }
-
-    public void setFechaFinal(LocalDate fechaFinal) {
-        this.fechaFinal = fechaFinal;
-    }
-
-    public Paciente getPaciente() {
-        return paciente;
-    }
-
-    public void setPaciente(Paciente paciente) {
-        this.paciente = paciente;
-    }
-
-    public Double getPesoInicial() {
+    public Float getSQLPesoInicial(String dni) {
+        String SQL = "SELECT pesoInicial FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                pesoInicial = resultado.getFloat("pesoInicial");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
         return pesoInicial;
     }
 
-    public void setPesoInicial(Double pesoInicial) {
-        this.pesoInicial = pesoInicial;
+    public void setSQLPesoInicial(Float pesoInicial, String dni) {
+        String SQL = "UPDATE Dieta SET pesoInicial=" + pesoInicial + " WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public Double getPesoFinal() {
+    public Float getSQLPesoFinal(String dni) {
+        String SQL = "SELECT pesoFinal FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                pesoFinal = resultado.getFloat("pesoFinal");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
         return pesoFinal;
     }
 
-    public void setPesoFinal(Double pesoFinal) {
-        this.pesoFinal = pesoFinal;
+    public void setSQLPesoFinal(Float pesoFinal, String dni) {
+        String SQL = "UPDATE Dieta SET pesoFinal=" + pesoFinal + " WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public Double getTotalCalorias() {
-        return totalCalorias;
+    public Float getSQLTotalDeCalorias(String dni) {
+        String SQL = "SELECT totalDeCalorias FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                totalDeCalorias = resultado.getFloat("totalDeCalorias");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return totalDeCalorias;
     }
 
-    public void setTotalCalorias(Double totalCalorias) {
-        this.totalCalorias = totalCalorias;
+    /*Controlar este metodo*/
+    public void setSQLTotalDeCalorias(Float TotalDeCalorias, String dni) {
+        String SQL = "UPDATE Dieta " + 
+                     "SET totalDeCalorias=(SELECT valorTotal " + 
+                                          "FROM Dieta a " + 
+                                          "JOIN Comida b (ON a.ID_Dieta = b.ID_Dieta) " + 
+                                          "JOIN Receta c (ON b.NombreC = c.NombreC) " + 
+                                          "WHERE a.dni=" + dni + ") " + 
+                     "WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    public Boolean getEstado() {
-        return estado;
+    public Paciente getSQLPaciente(String dni) {
+        String SQL = "SELECT dni, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Dieta a JOIN Paciente b (ON a.dni=b.dni) WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                int DNI = resultado.getInt("dni");
+                String name = resultado.getString("nombre");
+                String apellido = resultado.getString("apellido");
+                int edad = resultado.getInt("edad");
+                float altura = resultado.getFloat("altura");
+                float pesoActual = resultado.getFloat("pesoActual");
+                float pesoBuscado = resultado.getFloat("pesoBuscado");
+                
+                paciente = new Paciente(DNI, name, apellido, edad, altura, pesoActual, pesoBuscado);
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return paciente;
     }
 
-    public void setEstado(Boolean estado) {
-        this.estado = estado;
+    /*Controlar este metodo*/
+    public void setSQLPaciente(String dni, String idDieta) {
+        String SQL = "UPDATE Dieta " + 
+                     "SET dni=(SELECT dni " + 
+                              "FROM Paciente " + 
+                              "WHERE dni=" + dni + ") " +  
+                     "WHERE ID_Dieta=" + idDieta;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 5;
-        hash = 13 * hash + Objects.hashCode(this.idDieta);
-        hash = 13 * hash + Objects.hashCode(this.listA);
-        hash = 13 * hash + Objects.hashCode(this.menu);
-        hash = 13 * hash + Objects.hashCode(this.fechainicial);
-        hash = 13 * hash + Objects.hashCode(this.fechaFinal);
-        hash = 13 * hash + Objects.hashCode(this.paciente);
-        hash = 13 * hash + Objects.hashCode(this.pesoInicial);
-        hash = 13 * hash + Objects.hashCode(this.pesoFinal);
-        hash = 13 * hash + Objects.hashCode(this.totalCalorias);
-        hash = 13 * hash + Objects.hashCode(this.estado);
-        return hash;
+    public ArrayList<Menu> getMenus(String idDieta) {
+        String SQL = "SELECT * FROM Menu WHERE ID_Dieta=" + idDieta;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                pesoFinal = resultado.getFloat("pesoFinal");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return menus;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Dieta other = (Dieta) obj;
-        if (!Objects.equals(this.idDieta, other.idDieta)) {
-            return false;
-        }
-        if (!Objects.equals(this.listA, other.listA)) {
-            return false;
-        }
-        if (!Objects.equals(this.menu, other.menu)) {
-            return false;
-        }
-        if (!Objects.equals(this.fechainicial, other.fechainicial)) {
-            return false;
-        }
-        if (!Objects.equals(this.fechaFinal, other.fechaFinal)) {
-            return false;
-        }
-        if (!Objects.equals(this.paciente, other.paciente)) {
-            return false;
-        }
-        if (!Objects.equals(this.pesoInicial, other.pesoInicial)) {
-            return false;
-        }
-        if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
-            return false;
-        }
-        if (!Objects.equals(this.totalCalorias, other.totalCalorias)) {
-            return false;
-        }
-        return Objects.equals(this.estado, other.estado);
+    public void setMenus(ArrayList<Menu> menus, String dni) {
+        this.menus = menus;
     }
-
-    @Override
-    public String toString() {
-        return "Dieta{" + "idDieta=" + idDieta + ", listA=" + listA + ", menu=" + menu + ", fechainicial=" + fechainicial + ", fechaFinal=" + fechaFinal + ", paciente=" + paciente + ", pesoInicial=" + pesoInicial + ", pesoFinal=" + pesoFinal + ", totalCalorias=" + totalCalorias + ", estado=" + estado + '}';
-    }
-    
-    
     
 }
