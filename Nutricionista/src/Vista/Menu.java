@@ -1,7 +1,7 @@
 package Vista;
 
 public class Menu extends javax.swing.JFrame {
-
+    private Ingredientes ing;
     public Menu() {
         initComponents();
     }
@@ -35,6 +35,11 @@ public class Menu extends javax.swing.JFrame {
         pacienteJM.setText("Pacientes");
 
         pacienteJMI.setText("Formulario Paciente");
+        pacienteJMI.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pacienteJMIActionPerformed(evt);
+            }
+        });
         pacienteJM.add(pacienteJMI);
 
         menuJMB.add(pacienteJM);
@@ -77,6 +82,19 @@ public class Menu extends javax.swing.JFrame {
     private void menuJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuJMIActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuJMIActionPerformed
+
+    private void pacienteJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacienteJMIActionPerformed
+        jDesktopPane1.removeAll();
+        jDesktopPane1.repaint();
+
+        ing = new Ingredientes();
+        ing.setVisible(true);
+
+        jDesktopPane1.add(ing);
+        jDesktopPane1.moveToFront(ing);
+
+        
+    }//GEN-LAST:event_pacienteJMIActionPerformed
 
     public static void main(String args[]) {
         try {
