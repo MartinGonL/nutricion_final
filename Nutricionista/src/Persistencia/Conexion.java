@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Persistencia;
 
 import java.sql.Connection;
@@ -9,22 +5,17 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author santi
- */
 public class Conexion {
     
-    private static Connection conexion;
+    private static Connection conect;
+    private static Conexion conexion;
 
-    public Conexion() {}
-    
-    public static Connection getConexion (){
+    private Conexion() {
         try 
         {
             Class.forName("org.mariadb.jdbc.Driver");
             
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/nutricionista", "root", "");
+            conect = DriverManager.getConnection("jdbc:mysql://localhost/nutricionista", "root", "");
             JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
         } 
         catch (ClassNotFoundException ex) 
@@ -35,7 +26,17 @@ public class Conexion {
         {
             JOptionPane.showInternalMessageDialog(null, "Error al establecer la Coneccion.");
         }
+    }
+    
+    public static Connection getConexion (){
+        if (conexion == null) {
+            conexion = new Conexion();
+        }
         
-        return conexion;
+        return conect;
+    }
+    
+    public static void main(String[] args) {
+        Conexion.getConexion();
     }
 }
