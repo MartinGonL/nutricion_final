@@ -2,56 +2,40 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/*package Persistencia;
+package Persistencia;
 
-import com.mysql.jdbc.PreparedStatement;
-import java.util.Map;
-import java.util.TreeMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 
 /**
  *
- * @author IK
+ * @author santi
  */
-/*public class Pruebaa {
-     static Conexion b = new Conexion();
-             
-    private static PreparedStatement sentencia;
-    public static void cargarDato(String nombreRelacion, TreeMap<String, String> datos) {
-        String atributos = "INSTERT INTO `" + nombreRelacion + "` (";
-        String valores = "VALUES (";
-        int count = 0;
-        
-        for (Map.Entry<String, String> dato : datos.entrySet()) 
-        {
-            String org = ((datos.size()-1) == count) ? ") " : ", ";
-            try 
-            {
-                atributos += dato.getKey() + org;
-                if (Integer.parseInt(dato.getValue())*0 == 0) valores += dato.getValue() + org;
-            } 
-            catch (NumberFormatException ex) 
-            {
-                valores += "'" + dato.getValue() + "'" + org;
-            }
-            count++;
-        }
-        
-        String SQL = atributos + valores;
-        System.out.println(SQL);
+public class Conexion {
+    
+    private static Connection conexion;
+
+    public Conexion() {}
+    
+    public static Connection getConexion (){
         try 
         {
-            sentencia = b.prepareStatement(SQL);
+            Class.forName("org.mariadb.jdbc.Driver");
             
-            int filas = sentencia.executeUpdate();
-            if (filas > 0) 
-            {
-                JOptionPane.showInternalMessageDialog(null, "Dato cargado con exito.");
-            }
+            conexion = DriverManager.getConnection("jdbc:mysql://localhost/nutricionista", "root", "");
+            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
+        } 
+        catch (ClassNotFoundException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
         }
-       // catch (SQLException ex) 
-      //  {
-        //    JOptionPane.showInternalMessageDialog(null, "Falla en la Sintaxis.");
-        //}
-    } // ------------> Probar
-}*/
+        catch (SQLException ex) 
+        {
+            JOptionPane.showInternalMessageDialog(null, "Error al establecer la Coneccion.");
+        }
+        
+        return conexion;
+    }
+}
