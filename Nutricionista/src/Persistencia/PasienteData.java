@@ -16,26 +16,7 @@ public class PasienteData {
     private static ResultSet resultado;
 
     public PasienteData() {
-        try 
-        {
-            Class.forName("org.mariadb.jdbc.Driver");
-        } 
-        catch (ClassNotFoundException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
-        }
-    }
-
-    public static void conectar() {
-        try 
-        {
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/nutricionista", "root", "");
-            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showInternalMessageDialog(null, "Error al establecer la Coneccion.");
-        }
+        PasienteData.conexion = Conexion.getConexion();
     }
     
     public static void cargarDato(String nombreRelacion, TreeMap<String, String> datos) {

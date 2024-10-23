@@ -29,14 +29,11 @@ public class Conexion {
     }
     
     public static Connection getConexion (){
-        if (conexion == null) {
+        if (conexion == null) 
+        {
             conexion = new Conexion();
         }
         
         return conect;
-    }
-    
-    public static void main(String[] args) {
-        Conexion.getConexion();
     }
 }
