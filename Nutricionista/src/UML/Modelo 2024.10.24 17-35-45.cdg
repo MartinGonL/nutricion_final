@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<ClassDiagram name="Modelo">
+  <ClassDiagramComponents>
+    <Class name="Dieta" package="Modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+      <Fields>
+        <Field name="ID_Dieta" type="Integer" visibility="private"/>
+        <Field name="DNI" type="Integer" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="fechaInicio" type="LocalDate" visibility="private"/>
+        <Field name="fechaFin" type="LocalDate" visibility="private"/>
+        <Field name="pesoFinal" type="Float" visibility="private"/>
+        <Field name="totalDeCalorias" type="Float" visibility="private"/>
+        <Field name="paciente" type="Paciente" visibility="private"/>
+        <Field name="dietaDiaria" type="ArrayList&lt;Menu&gt;" visibility="private" isFinal="true"/>
+        <Field name="conexion" type="Connection" visibility="private" isFinal="true"/>
+        <Field name="sentencia" type="PreparedStatement" visibility="private"/>
+        <Field name="resultado" type="ResultSet" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+      </Constructors>
+      <Methods>
+        <Method name="getID_Dieta" returnType="Integer" visibility="public"/>
+        <Method name="getDNI" returnType="Integer" visibility="public"/>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getFechaInicio" returnType="LocalDate" visibility="public"/>
+        <Method name="getFechaFin" returnType="LocalDate" visibility="public"/>
+        <Method name="getPesoFinal" returnType="Float" visibility="public"/>
+        <Method name="getTotalDeCalorias" returnType="Float" visibility="public"/>
+        <Method name="getPaciente" returnType="Paciente" visibility="public"/>
+        <Method name="getDietaDiaria" returnType="ArrayList&lt;Menu&gt;" visibility="public"/>
+        <Method name="hashCode" returnType="int" visibility="public"/>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="SQLDieta" returnType="void" visibility="public">
+          <Argument type="Integer" name="DNI"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="LocalDate" name="fechaInicio"/>
+          <Argument type="LocalDate" name="fechaFin"/>
+          <Argument type="Float" name="pesoFinal"/>
+        </Method>
+        <Method name="getSQLID_Dieta" returnType="Integer" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLNombre" returnType="String" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLFechaInicio" returnType="LocalDate" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLFechaInicio" returnType="void" visibility="public">
+          <Argument type="LocalDate" name="fechaInicio"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLFechaFin" returnType="LocalDate" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLFechaFin" returnType="void" visibility="public">
+          <Argument type="LocalDate" name="fechaFin"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLPesoFinal" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLPesoFinal" returnType="void" visibility="public">
+          <Argument type="Float" name="pesoFinal"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLTotalDeCalorias" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLTotalDeCalorias" returnType="void" visibility="private">
+          <Argument type="String" name="dni"/>
+          <Argument type="String" name="idDieta"/>
+        </Method>
+        <Method name="getSQLPaciente" returnType="Paciente" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLPaciente" returnType="void" visibility="public">
+          <Argument type="String" name="dni"/>
+          <Argument type="String" name="idDieta"/>
+        </Method>
+        <Method name="getSQLDietaDiaria" returnType="ArrayList&lt;Menu&gt;" visibility="public">
+          <Argument type="String" name="idDieta"/>
+        </Method>
+        <Method name="setSQLDietaDiaria" returnType="void" visibility="public">
+          <Argument type="Integer" name="idDieta"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="momentoDelDia"/>
+          <Argument type="Integer" name="porciones"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="cargarPesoYfinalizar" returnType="void" visibility="public">
+          <Argument type="float" name="pesoFin"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="imprimirDietaDiaria" returnType="void" visibility="public">
+          <Argument type="String" name="idDieta"/>
+        </Method>
+        <Method name="modificarDietaDiaria" returnType="Menu" visibility="public">
+          <Argument type="String" name="idDieta"/>
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="comida"/>
+        </Method>
+        <Method name="armarDietaDiaria" returnType="void" visibility="public">
+          <Argument type="Integer" name="idDieta"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="momentoDelDia"/>
+          <Argument type="Integer" name="porciones"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="generarDietaDiara" returnType="void" visibility="public">
+          <Argument type="String" name="ingrediente1"/>
+          <Argument type="String" name="ingrediente2"/>
+          <Argument type="String" name="ingrediente3"/>
+          <Argument type="String" name="idDieta"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Ingredientes" package="Modelo" visibility="public" xPosition="320.0" yPosition="20.0">
+      <Fields/>
+      <Constructors/>
+      <Methods/>
+    </Class>
+    <Class name="Menu" package="Modelo" visibility="public" xPosition="620.0" yPosition="20.0">
+      <Fields>
+        <Field name="ID_Dieta" type="Integer" visibility="private"/>
+        <Field name="ID_Menu" type="Integer" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="ingredientes" type="TreeMap&lt;String, Float&gt;" visibility="private" isFinal="true"/>
+        <Field name="dia" type="String" visibility="private"/>
+        <Field name="momentoDelDia" type="String" visibility="private"/>
+        <Field name="porciones" type="Integer" visibility="private"/>
+        <Field name="caloriasValorTotal" type="Float" visibility="private"/>
+        <Field name="conexion" type="Connection" visibility="private"/>
+        <Field name="sentencia" type="PreparedStatement" visibility="private"/>
+        <Field name="resultado" type="ResultSet" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="Integer" name="ID_Dieta"/>
+          <Argument type="Integer" name="ID_Menu"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="nombreIng"/>
+          <Argument type="Float" name="cantidadIng"/>
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="momentoDelDia"/>
+          <Argument type="Integer" name="porciones"/>
+          <Argument type="Float" name="caloriasValorTotal"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getID_Dieta" returnType="Integer" visibility="public"/>
+        <Method name="getID_Menu" returnType="Integer" visibility="public"/>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getIngredientes" returnType="TreeMap&lt;String, Float&gt;" visibility="public"/>
+        <Method name="getDia" returnType="String" visibility="public"/>
+        <Method name="getMomentoDelDia" returnType="String" visibility="public"/>
+        <Method name="getPorciones" returnType="Integer" visibility="public"/>
+        <Method name="getCaloriasValorTotal" returnType="Float" visibility="public"/>
+        <Method name="hashCode" returnType="int" visibility="public"/>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="conectar" returnType="void" visibility="private"/>
+        <Method name="SQLMenu" returnType="void" visibility="public">
+          <Argument type="Integer" name="ID_Dieta"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="momentoDelDia"/>
+          <Argument type="Integer" name="porciones"/>
+        </Method>
+        <Method name="getSQLID_Dieta" returnType="Integer" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLID_Dieta" returnType="void" visibility="public">
+          <Argument type="Integer" name="ID_Dieta"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLID_Menu" returnType="Integer" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLNombre" returnType="String" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLIngredientes" returnType="TreeMap&lt;String, Float&gt;" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLIngredientes" returnType="void" visibility="public">
+          <Argument type="String" name="idMenu"/>
+          <Argument type="String" name="nameI"/>
+          <Argument type="float" name="cantidadI"/>
+        </Method>
+        <Method name="getSQLDia" returnType="String" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLDia" returnType="void" visibility="public">
+          <Argument type="String" name="dia"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLMomentoDelDia" returnType="String" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLMomentoDelDia" returnType="void" visibility="public">
+          <Argument type="String" name="momentoDelDia"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLPorciones" returnType="Integer" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLPorciones" returnType="void" visibility="public">
+          <Argument type="Integer" name="porciones"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="getSQLCaloriasValorTotal" returnType="Float" visibility="public">
+          <Argument type="String" name="idMenu"/>
+        </Method>
+        <Method name="setSQLCaloriasValorTotal" returnType="void" visibility="public">
+          <Argument type="Float" name="caloriasValorTotal"/>
+          <Argument type="String" name="idMenu"/>
+        </Method>
+      </Methods>
+    </Class>
+    <Class name="Paciente" package="Modelo" visibility="public" xPosition="920.0" yPosition="20.0">
+      <Fields>
+        <Field name="DNI" type="Integer" visibility="private"/>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="apellido" type="String" visibility="private"/>
+        <Field name="edad" type="Integer" visibility="private"/>
+        <Field name="altura" type="Float" visibility="private"/>
+        <Field name="pesoActual" type="Float" visibility="private"/>
+        <Field name="pesoBuscado" type="Float" visibility="private"/>
+        <Field name="conexion" type="Connection" visibility="private"/>
+        <Field name="sentencia" type="PreparedStatement" visibility="private"/>
+        <Field name="resultado" type="ResultSet" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="Integer" name="DNI"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="apellido"/>
+          <Argument type="Integer" name="edad"/>
+          <Argument type="Float" name="altura"/>
+          <Argument type="Float" name="pesoActual"/>
+          <Argument type="Float" name="pesoBuscado"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getDNI" returnType="Integer" visibility="public"/>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="getApellido" returnType="String" visibility="public"/>
+        <Method name="getEdad" returnType="Integer" visibility="public"/>
+        <Method name="getAltura" returnType="Float" visibility="public"/>
+        <Method name="getPesoActual" returnType="Float" visibility="public"/>
+        <Method name="getPesoBuscado" returnType="Float" visibility="public"/>
+        <Method name="hashCode" returnType="int" visibility="public"/>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="SQLPaciente" returnType="void" visibility="public">
+          <Argument type="Integer" name="DNI"/>
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="apellido"/>
+          <Argument type="Integer" name="edad"/>
+          <Argument type="Float" name="altura"/>
+          <Argument type="Float" name="pesoActual"/>
+          <Argument type="Float" name="pesoBuscado"/>
+        </Method>
+        <Method name="getSQLNombre" returnType="String" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLApellido" returnType="String" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLApellido" returnType="void" visibility="public">
+          <Argument type="String" name="apellido"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLEdad" returnType="Integer" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLEdad" returnType="void" visibility="public">
+          <Argument type="Integer" name="edad"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLAltura" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLAltura" returnType="void" visibility="public">
+          <Argument type="Float" name="altura"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLPesoActual" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLPesoActual" returnType="void" visibility="public">
+          <Argument type="Float" name="pesoActual"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="getSQLPesoBuscado" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="setSQLPesoBuscado" returnType="void" visibility="public">
+          <Argument type="Float" name="pesoBuscado"/>
+          <Argument type="String" name="dni"/>
+        </Method>
+        <Method name="seAcercaAlPeso" returnType="Float" visibility="public">
+          <Argument type="String" name="dni"/>
+          <Argument type="Float" name="pesoAct"/>
+        </Method>
+        <Method name="llegaronAlPesoDeseado" returnType="ArrayList&lt;Paciente&gt;" visibility="public"/>
+      </Methods>
+    </Class>
+  </ClassDiagramComponents>
+  <ClassDiagramRelations>
+    <HasRelation name="dietaDiaria" source="Modelo.Dieta" target="Modelo.Menu" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Menu&gt;"/>
+    <UseRelation source="Modelo.Dieta" target="Modelo.Menu" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="Modelo.Paciente" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="paciente" source="Modelo.Dieta" target="Modelo.Paciente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="Modelo.Dieta" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
+  </ClassDiagramRelations>
+</ClassDiagram>
