@@ -5,8 +5,9 @@
  */
 package Modelo;
 
+import Persistencia.Conexion;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,25 +22,29 @@ import javax.swing.JOptionPane;
 public class Dieta {
     
     private Integer ID_Dieta;
+    private Integer DNI;
     private String nombre;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
-    private Float pesoInicial;
     private Float pesoFinal;
     private Float totalDeCalorias;
     private Paciente paciente;
     private final ArrayList<Menu> dietaDiaria = new ArrayList();
 
-    private Connection conexion;
+    private final Connection conexion;
     private PreparedStatement sentencia;
     private ResultSet resultado;
     
     public Dieta() {
-        conectar();
+        this.conexion = Conexion.getConexion();
     }
 
     public Integer getID_Dieta() {
         return ID_Dieta;
+    }
+
+    public Integer getDNI() {
+        return DNI;
     }
 
     public String getNombre() {
@@ -52,10 +57,6 @@ public class Dieta {
 
     public LocalDate getFechaFin() {
         return fechaFin;
-    }
-
-    public Float getPesoInicial() {
-        return pesoInicial;
     }
 
     public Float getPesoFinal() {
@@ -81,7 +82,6 @@ public class Dieta {
         hash = 97 * hash + Objects.hashCode(this.nombre);
         hash = 97 * hash + Objects.hashCode(this.fechaInicio);
         hash = 97 * hash + Objects.hashCode(this.fechaFin);
-        hash = 97 * hash + Objects.hashCode(this.pesoInicial);
         hash = 97 * hash + Objects.hashCode(this.pesoFinal);
         hash = 97 * hash + Objects.hashCode(this.totalDeCalorias);
         hash = 97 * hash + Objects.hashCode(this.paciente);
@@ -113,9 +113,6 @@ public class Dieta {
         if (!Objects.equals(this.fechaFin, other.fechaFin)) {
             return false;
         }
-        if (!Objects.equals(this.pesoInicial, other.pesoInicial)) {
-            return false;
-        }
         if (!Objects.equals(this.pesoFinal, other.pesoFinal)) {
             return false;
         }
@@ -130,29 +127,10 @@ public class Dieta {
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
-    /*Realizo la conexion*/
-    private void conectar() {
-        try 
-        {
-            Class.forName("org.mariadb.jdbc.Driver");
-            
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/Nutricionista", "root", "");
-            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
-        } 
-        catch (ClassNotFoundException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al establecer la Conexion.");
-        }
-    }
-    
     /*Contructor SQL*/
-    public void SQLDieta(String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoInicial, Float pesoFinal, Integer DNI) {
-        String SQL = "INSERT INTO Dieta(nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, DNI) " + 
-                     "VALUES ('" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoInicial + ", " + pesoFinal + ", " + DNI + ")";
+    public void SQLDieta(Integer DNI, String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal) {
+        String SQL = "INSERT INTO Dieta(dni, nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, DNI) " + 
+                     "VALUES (" + DNI + ", '" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoFinal + ")";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -292,41 +270,6 @@ public class Dieta {
         }
     }
 
-    public Float getSQLPesoInicial(String dni) {
-        String SQL = "SELECT pesoInicial FROM Dieta WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) 
-            {
-                pesoInicial = resultado.getFloat("pesoInicial");
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-        
-        return pesoInicial;
-    }
-
-    public void setSQLPesoInicial(Float pesoInicial, String dni) {
-        String SQL = "UPDATE Dieta SET pesoInicial=" + pesoInicial + " WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-    }
-
     public Float getSQLPesoFinal(String dni) {
         String SQL = "SELECT pesoFinal FROM Dieta WHERE dni=" + dni;
         try 
@@ -411,7 +354,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                int DNI = resultado.getInt("dni");
+                int dni1 = resultado.getInt("dni");
                 String name = resultado.getString("nombre");
                 String apellido = resultado.getString("apellido");
                 int edad = resultado.getInt("edad");
@@ -419,7 +362,7 @@ public class Dieta {
                 float pesoActual = resultado.getFloat("pesoActual");
                 float pesoBuscado = resultado.getFloat("pesoBuscado");
                 
-                paciente = new Paciente(DNI, name, apellido, edad, altura, pesoActual, pesoBuscado);
+                paciente = new Paciente(dni1, name, apellido, edad, altura, pesoActual, pesoBuscado);
             }
         } 
         catch (SQLException ex) 
@@ -503,9 +446,11 @@ public class Dieta {
         LocalDate fechaActual = LocalDate.now();
         getSQLFechaFin(dni);
         
-        if (fechaActual.compareTo(fechaFin) >= 0) {
-            
+        if (fechaActual.compareTo(fechaFin) >= 0) 
+        {
+            setSQLPesoFinal(pesoFinal, dni);
         }
+        else JOptionPane.showMessageDialog(null, "Solo podra cargar su peso final el dia " + fechaFin);
     }
     
     public void imprimirDietaDiaria(String idDieta) {
@@ -517,9 +462,7 @@ public class Dieta {
         }
     }
     
-    /*La dieta diaria cubrira de 3 a 7 dias y cada dia tendra 5 comidas. 
-      Retornara un objeto del tipo menu para luego poder usar el numero de ID del mismo para poder realizar
-      las modificaciones necesarias.*/
+    /*Utilizar la funcion de JTable para modificar.*/
     public Menu modificarDietaDiaria(String idDieta, String dia, String comida) {
         getSQLDietaDiaria(idDieta);
         

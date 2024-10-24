@@ -1,12 +1,12 @@
 package Vista;
 
-import Persistencia.Conexion;
-import java.sql.Connection;
+import Modelo.Paciente;
 
 public class Testdeconsola {
     public static void main(String[] args) {
         
-        Connection con = Conexion.getConexion();
+        Paciente paciente = new Paciente();
         
+        paciente.SQLPaciente(87654321, "laura", "amaya", 21, 1.73f, 74F, 68F);
     }
 }

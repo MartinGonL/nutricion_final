@@ -8,12 +8,12 @@ package Vista;
  *
  * @author santi
  */
-public class Paciente extends javax.swing.JInternalFrame {
+public class PacienteIF extends javax.swing.JInternalFrame {
 
     /**
      * Creates new form Paciente
      */
-    public Paciente() {
+    public PacienteIF() {
         initComponents();
     }
 

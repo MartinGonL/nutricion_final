@@ -5,11 +5,13 @@
  */
 package Modelo;
 
-import java.sql.DriverManager;
+import Persistencia.Conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,7 +32,7 @@ public class Paciente {
     private ResultSet resultado;
 
     public Paciente() {
-        conectar();
+        this.conexion = Conexion.getConexion();
     }
 
     public Paciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado) {
@@ -73,14 +75,14 @@ public class Paciente {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 47 * hash + Objects.hashCode(this.DNI);
-        hash = 47 * hash + Objects.hashCode(this.nombre);
-        hash = 47 * hash + Objects.hashCode(this.apellido);
-        hash = 47 * hash + Objects.hashCode(this.edad);
-        hash = 47 * hash + Objects.hashCode(this.altura);
-        hash = 47 * hash + Objects.hashCode(this.pesoActual);
-        hash = 47 * hash + Objects.hashCode(this.pesoBuscado);
+        int hash = 3;
+        hash = 41 * hash + Objects.hashCode(this.DNI);
+        hash = 41 * hash + Objects.hashCode(this.nombre);
+        hash = 41 * hash + Objects.hashCode(this.apellido);
+        hash = 41 * hash + Objects.hashCode(this.edad);
+        hash = 41 * hash + Objects.hashCode(this.altura);
+        hash = 41 * hash + Objects.hashCode(this.pesoActual);
+        hash = 41 * hash + Objects.hashCode(this.pesoBuscado);
         return hash;
     }
 
@@ -116,37 +118,19 @@ public class Paciente {
         }
         return Objects.equals(this.pesoBuscado, other.pesoBuscado);
     }
-    
+
     @Override
     public String toString() {
         return "Paciente:\nDNI: " + DNI + ".\nNombre: " + nombre + ".\nApellido: " + apellido + ".Edad: " + edad + ".\nAltura: " + altura + ".\nPeso Actual: " + pesoActual + ".\nPeso Buscado: " + pesoBuscado + ".\n";
     }
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
-    
-    /*Realizo la conexion*/
-    private void conectar() {
-        try 
-        {
-            Class.forName("org.mariadb.jdbc.Driver");
-            
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/Nutricionista", "root", "");
-            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
-        } 
-        catch (ClassNotFoundException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al establecer la Conexion.");
-        }
-    }
-    
+
     /*Constructor SQL*/
     public void SQLPaciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado) {
-        String SQL = "INSERT INTO Paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado, ID_Dieta) " + 
+        String SQL = "INSERT INTO paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado) " + 
                      "VALUES (" + DNI + ", '" + nombre + "', '" + apellido + "', " + edad + ", " + altura + ", " + pesoActual + ", " + pesoBuscado + ")";
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -376,7 +360,7 @@ public class Paciente {
     public Float seAcercaAlPeso(String dni, Float pesoAct) {
         Float result = 0F;
         
-        String SQL = "SELECT pesoActual, pesoBuscado FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT pesoActual, pesoBuscado FROM Paciente WHERE DNI=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -403,7 +387,7 @@ public class Paciente {
     public ArrayList<Paciente> llegaronAlPesoDeseado() {
         ArrayList<Paciente> pacientes = new ArrayList();
         
-        String SQL = "SELECT * FROM Paciente WHERE pesoActual=pesoBuscado";
+        String SQL = "SELECT DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE pesoInicial=pesoFinal";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -411,7 +395,7 @@ public class Paciente {
             
             while (resultado.next()) 
             {
-                DNI = resultado.getInt("dni");
+                DNI = resultado.getInt("DNI");
                 nombre = resultado.getString("nombre");
                 apellido = resultado.getString("apellido");
                 edad = resultado.getInt("edad");
