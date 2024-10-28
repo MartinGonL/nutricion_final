@@ -1,18 +1,24 @@
 package Persistencia;
 
 import java.awt.Component;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Funciones {
+    private static Connection conexion;
+    private static PreparedStatement sentencia;
+    private static ResultSet resultado;
     
-    /**
-     * @param panel
-     * @return TreeMap con los param. necesarios para generar una sentencia SQL.
-     */
     public static TreeMap<String, String> parametros(JPanel panel) {
         TreeMap<String, String> data = new TreeMap();
 
@@ -65,9 +71,35 @@ public class Funciones {
             }
         }
     }
+    
     private void eliminarRegistro(String nombreTabla,String id, String valorID) {
-       if (valorID = int){     
-       }
-       String SQL = "DELETE FROM '" + nombreTabla + "' WHERE " + id + "=" + valorID ;
-       
+       conexion = Conexion.getConexion();
+       String SQL = "DELETE FROM '" + nombreTabla + "' WHERE " + id + "= '" + valorID + "' ";
+        try {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            if(filas > 0){
+                JOptionPane.showMessageDialog(null, "Dato Borrado Correctamente! ");
+            }
+        
+                
+        } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en la Sintaxis ");
+        }
+    }  
+        private void eliminarRegistro(String nombreTabla,String id, Integer valorID) {
+       conexion = Conexion.getConexion();
+       String SQL = "DELETE FROM '" + nombreTabla + "' WHERE " + id + "= " + valorID;
+        try {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            if(filas > 0){
+                JOptionPane.showMessageDialog(null, "Dato Borrado Correctamente! ");
+            }
+        
+                
+        } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(null, "Error en la Sintaxis ");
+        }
+    } 
 }
