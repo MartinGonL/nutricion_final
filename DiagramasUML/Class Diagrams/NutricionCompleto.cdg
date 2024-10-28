@@ -2,7 +2,7 @@
 
 <ClassDiagram name="Modelo">
   <ClassDiagramComponents>
-    <Class name="Dieta" package="Modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+    <Class name="Dieta" package="Modelo" visibility="public" xPosition="250.0" yPosition="408.0">
       <Fields>
         <Field name="ID_Dieta" type="Integer" visibility="private"/>
         <Field name="DNI" type="Integer" visibility="private"/>
@@ -90,12 +90,11 @@
           <Argument type="String" name="idDieta"/>
         </Method>
         <Method name="setSQLDietaDiaria" returnType="void" visibility="public">
-          <Argument type="Integer" name="idDieta"/>
+          <Argument type="String" name="dni"/>
           <Argument type="String" name="nombre"/>
           <Argument type="String" name="dia"/>
           <Argument type="String" name="momentoDelDia"/>
           <Argument type="Integer" name="porciones"/>
-          <Argument type="String" name="dni"/>
         </Method>
         <Method name="cargarPesoYfinalizar" returnType="void" visibility="public">
           <Argument type="float" name="pesoFin"/>
@@ -110,12 +109,11 @@
           <Argument type="String" name="comida"/>
         </Method>
         <Method name="armarDietaDiaria" returnType="void" visibility="public">
-          <Argument type="Integer" name="idDieta"/>
+          <Argument type="String" name="dni"/>
           <Argument type="String" name="nombre"/>
           <Argument type="String" name="dia"/>
           <Argument type="String" name="momentoDelDia"/>
           <Argument type="Integer" name="porciones"/>
-          <Argument type="String" name="dni"/>
         </Method>
         <Method name="generarDietaDiara" returnType="void" visibility="public">
           <Argument type="String" name="ingrediente1"/>
@@ -125,12 +123,51 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Ingredientes" package="Modelo" visibility="public" xPosition="1131.0" yPosition="300.0">
-      <Fields/>
-      <Constructors/>
-      <Methods/>
+    <Class name="Ingredientes" package="Modelo" visibility="public" xPosition="1092.0" yPosition="41.0">
+      <Fields>
+        <Field name="nombre" type="String" visibility="private"/>
+        <Field name="cantidadCaloriasEn100gs" type="float" visibility="private"/>
+        <Field name="conexion" type="Connection" visibility="private"/>
+        <Field name="sentencia" type="PreparedStatement" visibility="private"/>
+        <Field name="resultado" type="ResultSet" visibility="private"/>
+      </Fields>
+      <Constructors>
+        <Constructor visibility="public"/>
+        <Constructor visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="float" name="cantidadCaloriasEn100gs"/>
+        </Constructor>
+      </Constructors>
+      <Methods>
+        <Method name="getNombre" returnType="String" visibility="public"/>
+        <Method name="setNombre" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Method>
+        <Method name="getCantidadCaloriasEn100gs" returnType="float" visibility="public"/>
+        <Method name="setCantidadCaloriasEn100gs" returnType="void" visibility="public">
+          <Argument type="float" name="cantidadCaloriasEn100gs"/>
+        </Method>
+        <Method name="hashCode" returnType="int" visibility="public"/>
+        <Method name="equals" returnType="boolean" visibility="public">
+          <Argument type="Object" name="obj"/>
+        </Method>
+        <Method name="toString" returnType="String" visibility="public"/>
+        <Method name="SQLingrediente" returnType="void" visibility="public">
+          <Argument type="String" name="nombre"/>
+          <Argument type="float" name="cantidadCaloriasEn100gs"/>
+        </Method>
+        <Method name="getSQLNombre" returnType="String" visibility="public">
+          <Argument type="String" name="nombre"/>
+        </Method>
+        <Method name="getSQLcantidadCaloriasEn100gs" returnType="float" visibility="public">
+          <Argument type="float" name="cantidadCaloriasEn100gs"/>
+        </Method>
+        <Method name="setSQLcantidadCaloriasEn100gs" returnType="void" visibility="public">
+          <Argument type="float" name="cantidadCaloriasEn100gs"/>
+        </Method>
+      </Methods>
     </Class>
-    <Class name="Menu" package="Modelo" visibility="public" xPosition="1663.0" yPosition="-26.0">
+    <Class name="Menu" package="Modelo" visibility="public" xPosition="1841.0" yPosition="179.0">
       <Fields>
         <Field name="ID_Dieta" type="Integer" visibility="private"/>
         <Field name="ID_Menu" type="Integer" visibility="private"/>
@@ -172,7 +209,6 @@
           <Argument type="Object" name="obj"/>
         </Method>
         <Method name="toString" returnType="String" visibility="public"/>
-        <Method name="conectar" returnType="void" visibility="private"/>
         <Method name="SQLMenu" returnType="void" visibility="public">
           <Argument type="Integer" name="ID_Dieta"/>
           <Argument type="String" name="nombre"/>
@@ -235,7 +271,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Paciente" package="Modelo" visibility="public" xPosition="1038.0" yPosition="863.0">
+    <Class name="Paciente" package="Modelo" visibility="public" xPosition="1273.0" yPosition="1082.0">
       <Fields>
         <Field name="DNI" type="Integer" visibility="private"/>
         <Field name="nombre" type="String" visibility="private"/>
@@ -333,10 +369,12 @@
     </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
+    <HasRelation name="usa" source="Modelo.Ingredientes" target="Modelo.Menu" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..*" collectionType="List"/>
+    <HasRelation name="rDM" source="Modelo.Dieta" target="Modelo.Menu" type="Composition" sourceCardinality="0..1" targetCardinality="0..*" collectionType="List"/>
+    <HasRelation name="usa" source="Modelo.Ingredientes" target="Modelo.Dieta" type="Aggregation" sourceCardinality="0..1" targetCardinality="1..1"/>
     <UseRelation source="Modelo.Dieta" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="paciente" source="Modelo.Dieta" target="Modelo.Paciente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="Modelo.Paciente" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="dietaDiaria" source="Modelo.Dieta" target="Modelo.Menu" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Menu&gt;"/>
+    <HasRelation name="paciente" source="Modelo.Dieta" target="Modelo.Paciente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="Modelo.Dieta" target="Modelo.Menu" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
