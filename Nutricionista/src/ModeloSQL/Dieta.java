@@ -3,7 +3,7 @@
  * 
  * El metodo 'addRenglon()' fue descartado devido a la modificacion realizada a los metodos getter y setter.
  */
-package Modelo;
+package ModeloSQL;
 
 import Persistencia.Conexion;
 

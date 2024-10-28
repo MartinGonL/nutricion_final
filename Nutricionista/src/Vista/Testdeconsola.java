@@ -1,6 +1,6 @@
 package Vista;
 
-import Modelo.Paciente;
+import ModeloSQL.Paciente;
 
 public class Testdeconsola {
     public static void main(String[] args) {

@@ -1,5 +1,6 @@
-package Modelo;
+package ModeloSQL;
 
+import Persistencia.Conexion;
 import Persistencia.Conexion;
 
 import java.sql.Connection;

@@ -3,7 +3,7 @@
  * 
  * Los metodos 'cambiarPesoDeseado()' y 'actualizarPesoAct()' fueron descartados devido a la modificacion realizada a los metodos getter y setter.
  */
-package Modelo;
+package ModeloSQL;
 
 import Persistencia.Conexion;
 

@@ -1,4 +1,4 @@
-package Modelo;
+package ModeloSQL;
 
 import Persistencia.Conexion;
 
