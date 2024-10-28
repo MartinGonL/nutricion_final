@@ -65,4 +65,9 @@ public class Funciones {
             }
         }
     }
+    private void eliminarRegistro(String nombreTabla,String id, String valorID) {
+       if (valorID = int){     
+       }
+       String SQL = "DELETE FROM '" + nombreTabla + "' WHERE " + id + "=" + valorID ;
+       
 }
