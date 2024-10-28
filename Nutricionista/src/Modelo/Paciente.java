@@ -387,7 +387,7 @@ public class Paciente {
     public ArrayList<Paciente> llegaronAlPesoDeseado() {
         ArrayList<Paciente> pacientes = new ArrayList();
         
-        String SQL = "SELECT DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE pesoInicial=pesoFinal";
+        String SQL = "SELECT DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE a.pesoBuscado=b.pesoFinal";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

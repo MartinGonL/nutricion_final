@@ -16,7 +16,6 @@ public class Conexion {
             Class.forName("org.mariadb.jdbc.Driver");
             
             conect = DriverManager.getConnection("jdbc:mysql://localhost/nutricionista", "root", "");
-            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
         } 
         catch (ClassNotFoundException ex) 
         {

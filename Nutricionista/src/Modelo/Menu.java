@@ -1,13 +1,15 @@
 package Modelo;
 
-import java.sql.DriverManager;
+import Persistencia.Conexion;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Objects;
 
+import java.util.Objects;
 import java.util.TreeMap;
+
 import javax.swing.JOptionPane;
 
 public class Menu {
@@ -26,7 +28,7 @@ public class Menu {
     private ResultSet resultado;
     
     public Menu() {
-        conectar();
+        this.conexion = Conexion.getConexion();
     }
 
     public Menu(Integer ID_Dieta, Integer ID_Menu, String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
@@ -128,25 +130,6 @@ public class Menu {
     }
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
-    
-    /*Realizo la conexion*/
-    private void conectar() {
-        try 
-        {
-            Class.forName("org.mariadb.jdbc.Driver");
-            
-            conexion = DriverManager.getConnection("jdbc:mysql://localhost/Nutricionista", "root", "");
-            JOptionPane.showMessageDialog(null, "Conexion Exitosa.");
-        } 
-        catch (ClassNotFoundException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al cargar los Drivers.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error al establecer la Conexion.");
-        }
-    }
     
     /*Constructor SQL*/
     public void SQLMenu(Integer ID_Dieta, String nombre, String dia, String momentoDelDia, Integer porciones) {

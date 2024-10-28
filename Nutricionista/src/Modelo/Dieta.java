@@ -394,7 +394,7 @@ public class Dieta {
     }
 
     public ArrayList<Menu> getSQLDietaDiaria(String idDieta) {
-        String SQL = "SELECT * FROM Menu a JOIN Receta b (ON a.NombreM=b.NombreM) WHERE ID_Dieta=" + idDieta;
+        String SQL = "SELECT * FROM Menu a JOIN Receta b (ON a.ID_Menu=b.ID_Menu) WHERE ID_Dieta=" + idDieta;
         dietaDiaria.clear();
         try 
         {
@@ -425,17 +425,18 @@ public class Dieta {
         return dietaDiaria;
     }
 
-    public void setSQLDietaDiaria(Integer idDieta, String nombre, String dia, String momentoDelDia, Integer porciones, String dni) {
+    public void setSQLDietaDiaria(String dni, String nombre, String dia, String momentoDelDia, Integer porciones) {
+        getSQLID_Dieta(dni);
         dietaDiaria.clear();
-        getSQLDietaDiaria(idDieta.toString());
+        getSQLDietaDiaria(ID_Dieta.toString());
        
         if (dietaDiaria.size() < 35) 
         {    
             Menu menu = new Menu();
 
-            menu.SQLMenu(idDieta, nombre, dia, momentoDelDia, porciones);
+            menu.SQLMenu(ID_Dieta, nombre, dia, momentoDelDia, porciones);
 
-            setSQLTotalDeCalorias(dni, idDieta.toString());
+            setSQLTotalDeCalorias(dni, ID_Dieta.toString());
         }
         else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
     }
@@ -481,12 +482,15 @@ public class Dieta {
         return menu;
     }
     
-    public void armarDietaDiaria(Integer idDieta, String nombre, String dia, String momentoDelDia, Integer porciones, String dni) {
-        getSQLDietaDiaria(idDieta.toString());
+    /*Para armar una dieta diaria voy a usar el metodo 'setSQLIngredientes()' de la calse Menu. Luego voy a usar el metodo 'setSQLDietaDiaria()' de
+    la clase Dieta.*/
+    public void armarDietaDiaria(String dni, String nombre, String dia, String momentoDelDia, Integer porciones) {
+        getSQLID_Dieta(dni);
+        getSQLDietaDiaria(ID_Dieta.toString());
         
         if (dietaDiaria.size() < 35)
         {
-            setSQLDietaDiaria(idDieta, nombre, dia, momentoDelDia, porciones, dni);
+            setSQLDietaDiaria(dni, nombre, dia, momentoDelDia, porciones);
         }
         else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
     }
