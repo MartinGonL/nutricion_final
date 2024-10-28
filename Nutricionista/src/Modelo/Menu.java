@@ -132,38 +132,9 @@ public class Menu {
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
     /*Constructor SQL*/
-    public void SQLMenu(Integer ID_Dieta, String nombre, String dia, String momentoDelDia, Integer porciones) {
-        /*1° Se buscan los detalles de la receta, sus componentes y cantidades.*/
-        String SQL = "SELECT NombreI, cantidadIng, valorCada100 FROM Receta a JOIN Ingrediente b (ON a.NombreI=b.NombreI) WHERE NombreM='" + nombre + "'";
-        float valorCada100 = 0F;
-        ingredientes.clear();
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) {
-                String nombreIng = resultado.getString("NombreI");
-                float cantidadIng = resultado.getFloat("cantidadIng");
-                valorCada100 = resultado.getFloat("valorCada100");
-             
-                ingredientes.put(nombreIng, cantidadIng);
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis. (1)");
-        }
-        
-        /*2° Se calcula el valor de calorias total que posee el menu*/
-        for (Float value : ingredientes.values()) 
-        {
-            caloriasValorTotal += valorCada100 * value / 100;
-        }
-        
-        /*3° Finalmente se utilizan los datos recolectados para crear un nuevo menu para el paciente.*/
-        SQL = "INSERT INTO Menu(ID_Dieta, NombreM, detalle, dia, momentoDelDia, porciones, caloriasValorTotal)" + 
-              "VALUES (" + ID_Dieta + ", '" + nombre + "', '" + ingredientes + "', '" + dia + "', '" + momentoDelDia + "', " + porciones + ", " + caloriasValorTotal + ")";
+    public void SQLMenu(Integer ID_Dieta, String nombreM, String dia, String momentoDelDia) {
+        String SQL = "INSERT INTO Menu(ID_Dieta, NombreM, dia, momentoDelDia)" + 
+              "VALUES (" + ID_Dieta + ", '" + nombreM + "', '" + dia + "', '" + momentoDelDia + ")";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -173,7 +144,7 @@ public class Menu {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis. (2)");
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
 
@@ -430,19 +401,25 @@ public class Menu {
         return caloriasValorTotal;
     }
 
-    public void setSQLCaloriasValorTotal(Float caloriasValorTotal, String idMenu) {
-        String SQL = "UPDATE Menu SET caloriasValorTotal=" + caloriasValorTotal + " WHERE ID_Menu=" + idMenu;
+    /*Controlar este metodo*/
+    public void setSQLCaloriasValorTotal(String idMenu) {
+        String SQL = "SELECT cantidadIng, valorCD100 FROM Receta a JOIN Ingrediente b (ON a.NombreI=b.NombreI) WHERE ID_Menu=" + idMenu + "";
+        
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
+            resultado = sentencia.executeQuery();
             
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            while (resultado.next()) {
+                float cantidadIng = resultado.getFloat("cantidadIng");
+                float valorCda100 = resultado.getFloat("valorCD100");
+             
+                caloriasValorTotal += valorCda100 * cantidadIng / 100;
+            }
         } 
         catch (SQLException ex) 
         {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
-    
 }

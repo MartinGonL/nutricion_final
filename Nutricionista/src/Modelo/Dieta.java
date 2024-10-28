@@ -425,16 +425,16 @@ public class Dieta {
         return dietaDiaria;
     }
 
-    public void setSQLDietaDiaria(String dni, String nombre, String dia, String momentoDelDia, Integer porciones) {
-        getSQLID_Dieta(dni);
+    public void setSQLDietaDiaria(String dni, String nombreM, String dia, String momentoDelDia) {
         dietaDiaria.clear();
+        getSQLID_Dieta(dni);
         getSQLDietaDiaria(ID_Dieta.toString());
        
         if (dietaDiaria.size() < 35) 
         {    
             Menu menu = new Menu();
 
-            menu.SQLMenu(ID_Dieta, nombre, dia, momentoDelDia, porciones);
+            menu.SQLMenu(ID_Dieta, nombreM, dia, momentoDelDia);
 
             setSQLTotalDeCalorias(dni, ID_Dieta.toString());
         }
@@ -482,19 +482,59 @@ public class Dieta {
         return menu;
     }
     
-    /*Para armar una dieta diaria voy a usar el metodo 'setSQLIngredientes()' de la calse Menu. Luego voy a usar el metodo 'setSQLDietaDiaria()' de
-    la clase Dieta.*/
+    /*Definir un arreglo que contenga los distintos momentos del dia y controlar los dias desde el internal.*/
     public void armarDietaDiaria(String dni, String nombre, String dia, String momentoDelDia, Integer porciones) {
         getSQLID_Dieta(dni);
         getSQLDietaDiaria(ID_Dieta.toString());
         
         if (dietaDiaria.size() < 35)
         {
-            setSQLDietaDiaria(dni, nombre, dia, momentoDelDia, porciones);
+            setSQLDietaDiaria(dni, nombre, dia, momentoDelDia);
         }
         else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
     }
     
-    public void generarDietaDiara(String ingrediente1, String ingrediente2, String ingrediente3, String idDieta) {
+    /*Probar*/
+    public ArrayList<Menu> generarDietaDiara(String ingrediente1, String ingrediente2, String ingrediente3, int idDieta) {
+        String[] dia = {"Lunes", "Martes", "Miercoles"};
+        String[] momentos = {"Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"};
+        
+        for (int countD = 0; countD < 3; countD++) 
+        {
+            for (int countM = 0; countM < 5; countM++) 
+            {
+                String SQL = "SELECT `ID_Menu`, `NombreM`, `NombreI`, `cantidadIng`, `dia`, `momentoDia`, `porciones`, `valorTotal` FROM menu a JOIN receta b ON a.ID_Menu=b.ID_Menu WHERE NombreI='" + ingrediente1 + 
+                             "' OR NombreI='" + ingrediente2 + 
+                             "' OR NombreI='" + ingrediente3 + 
+                             "' AND dia='" + dia[countD] + "' " +
+                             "' AND momentoDia='" + momentos[countM] + "'";
+                
+                try 
+                {
+                    sentencia = conexion.prepareStatement(SQL);
+                    resultado = sentencia.executeQuery();
+                    
+                    while (resultado.next()) {
+                        int idMenu = resultado.getInt("ID_Menu");
+                        String nombrem = resultado.getString("NombreM");
+                        String nombrei = resultado.getString("NombreI");
+                        float canti = resultado.getFloat("cantidadIng");
+                        String dia1 = resultado.getString("dia");
+                        String momDia = resultado.getString("momentoDia");
+                        int porc = resultado.getInt("porciones");
+                        float valTot = resultado.getFloat("valorTotal");
+                        
+                        Menu menu = new Menu(idDieta, idMenu, nombrem, nombrei, canti, dia1, momDia, porc, valTot);
+                        dietaDiaria.add(menu);
+                    }
+                } 
+                catch (SQLException ex) 
+                {
+                    JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+                }
+            }
+        }
+        
+        return dietaDiaria;
     }
 }
