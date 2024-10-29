@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.util.Objects;
 import java.util.TreeMap;
@@ -31,6 +32,12 @@ public class Menu {
         this.conexion = Conexion.getConexion();
     }
 
+    public Menu(Integer ID_Menu, String nombre, Float caloriasValorTotal) {
+        this.ID_Menu = ID_Menu;
+        this.nombre = nombre;
+        this.caloriasValorTotal = caloriasValorTotal;
+    }
+    
     public Menu(Integer ID_Dieta, Integer ID_Menu, String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
         this.ID_Dieta = ID_Dieta;
         this.ID_Dieta = ID_Menu;
@@ -132,9 +139,9 @@ public class Menu {
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
     /*Constructor SQL*/
-    public void SQLMenu(Integer ID_Dieta, String nombreM, String dia, String momentoDelDia) {
-        String SQL = "INSERT INTO Menu(ID_Dieta, NombreM, dia, momentoDelDia)" + 
-              "VALUES (" + ID_Dieta + ", '" + nombreM + "', '" + dia + "', '" + momentoDelDia + ")";
+    public void SQLMenu(String nombreM) {
+        String SQL = "INSERT INTO Menu(NombreM)" + 
+              "VALUES ('" + nombreM + "')";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -148,6 +155,30 @@ public class Menu {
         }
     }
 
+    public ArrayList<Menu> getALL(String nom) {
+        ArrayList<Menu> menus = new ArrayList();
+        
+        String SQL = "SELECT * FROM menu WHERE mombreM LIKE '" + nom + "%'";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                int idMenu = resultado.getInt("ID_Menu");
+                String name = resultado.getString("nombreM");
+                float calorias = resultado.getFloat("valorTotal");
+                
+                Menu menu = new Menu(idMenu, name, calorias);
+                menus.add(menu);
+            }
+        } 
+        catch (SQLException ex){}
+        
+        return menus;
+    }
+    
     public Integer getSQLID_Dieta(String idMenu) {
         String SQL = "SELECT ID_Dieta FROM Menu WHERE ID_Menu=" + idMenu;
         try 

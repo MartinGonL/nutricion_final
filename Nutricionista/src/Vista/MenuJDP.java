@@ -3,7 +3,7 @@ package Vista;
 public class MenuJDP extends javax.swing.JFrame {
     
     private IngredienteIF ingredienteIF;
-    private Comida comida;
+    private MenuIF menuIF;
     
     public MenuJDP() {
         initComponents();
@@ -106,11 +106,11 @@ public class MenuJDP extends javax.swing.JFrame {
         panelPrincipal.removeAll();
         panelPrincipal.repaint();
 
-        comida = new Comida();
-        comida.setVisible(true);
+        menuIF = new MenuIF();
+        menuIF.setVisible(true);
 
-        panelPrincipal.add(comida);
-        panelPrincipal.moveToFront(comida);
+        panelPrincipal.add(menuIF);
+        panelPrincipal.moveToFront(menuIF);
     }//GEN-LAST:event_comidasJMIActionPerformed
 
     private void pacientesJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacientesJMIActionPerformed

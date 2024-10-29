@@ -3,13 +3,13 @@ package Persistencia;
 import java.awt.Component;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+//import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.TreeMap;
+//import java.util.TreeMap;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
+//import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
 public class Funciones {
@@ -89,6 +89,11 @@ public class Funciones {
         }
     }
     
+    /**
+     * @param nombreTabla
+     * @param nombreID
+     * @param valorID 
+     */
     public static void eliminarRegistro(String nombreTabla, String nombreID, String valorID) {
         conexion = Conexion.getConexion();
         String SQL = "DELETE FROM " + nombreTabla + " WHERE " + nombreID + "=";

@@ -135,7 +135,8 @@ public class Ingrediente {
     }
     
     public void setSQLNombre(String nombre, String nom) {
-        String SQL = "UPDATE Ingrediente SET NombreI='" + nombre + "' WHERE NombreI='" + nom + "'";
+        String SQL = "UPDATE ingrediente SET NombreI='" + nombre + "' WHERE NombreI='" + nom + "'";
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -145,7 +146,7 @@ public class Ingrediente {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.(A)");
         }    
     }
     
@@ -180,7 +181,7 @@ public class Ingrediente {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.(B)");
         }    
     }
 }

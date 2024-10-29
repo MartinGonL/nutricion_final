@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 public class IngredienteIF extends javax.swing.JInternalFrame {
 
     private final Ingrediente ingrediente;
-    private String nombreClave;
+    private String nombreClave = "NULL";
     private DefaultTableModel modeloT;
     
     public IngredienteIF() {
@@ -46,6 +46,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         guardarJB.setText("Guardar");
         guardarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        guardarJB.setBorderPainted(false);
         guardarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         guardarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -56,6 +57,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         modificarJB.setText("Modificar");
         modificarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        modificarJB.setBorderPainted(false);
         modificarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         modificarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -66,6 +68,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         eliminarJB.setText("Eliminar");
         eliminarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        eliminarJB.setBorderPainted(false);
         eliminarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         eliminarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,6 +172,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         limpiarJB.setText("Limpiar");
         limpiarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        limpiarJB.setBorderPainted(false);
         limpiarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         limpiarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,6 +223,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
             {
                 ingrediente.setSQLCaloriasCda100g(Float.parseFloat(caloriasJT.getText()), nombreJT.getText());
                 ingrediente.setSQLNombre(nombreJT.getText(), nombreClave);
+                System.out.println(nombreClave);
             }
             else 
             {
@@ -239,7 +244,6 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         if (flag) 
         { 
             int confirm = JOptionPane.showConfirmDialog(rootPane, "Seguro desea eliminar el ingrediente?");
-            System.out.println(confirm);
 
             if (confirm == 0) 
             {
@@ -265,7 +269,6 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
         int filaSelect = tabla.getSelectedRow();
-        nombreClave = nombreJT.getText();
         try
         {
             String nombreI = (String)tabla.getValueAt(filaSelect, 0);
@@ -275,16 +278,21 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
             caloriasJT.setText(String.valueOf(calorias));
         }
         catch (Exception ex) {}
+        nombreClave = nombreJT.getText();
+        System.out.println(nombreClave);
     }//GEN-LAST:event_tablaMouseClicked
 
     private void limpiarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarJBActionPerformed
         Funciones.cleanField(panelDatos);
         resetTable();
         setRow();
+        
+        nombreJT.setRequestFocusEnabled(true);
     }//GEN-LAST:event_limpiarJBActionPerformed
 
     private void setColumn() {
         modeloT = new DefaultTableModel() {
+            @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
                 return false;
             }
