@@ -1,19 +1,19 @@
 package ModeloSQL;
 
 import Persistencia.Conexion;
-import Persistencia.Conexion;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
 
-public class Ingredientes {
+public class Ingrediente {
 
     private String nombre;
     private float caloriasCda100g;
@@ -22,7 +22,13 @@ public class Ingredientes {
     private PreparedStatement sentencia;
     private ResultSet resultado;
 
-    public Ingredientes() {
+    public Ingrediente() {
+        this.conexion = Conexion.getConexion();
+    }
+
+    public Ingrediente(String nombre, float caloriasCda100g) {
+        this.nombre = nombre;
+        this.caloriasCda100g = caloriasCda100g;
         this.conexion = Conexion.getConexion();
     }
     
@@ -53,7 +59,7 @@ public class Ingredientes {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Ingredientes other = (Ingredientes) obj;
+        final Ingrediente other = (Ingrediente) obj;
         if (Float.floatToIntBits(this.caloriasCda100g) != Float.floatToIntBits(other.caloriasCda100g)) {
             return false;
         }
@@ -68,8 +74,8 @@ public class Ingredientes {
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
 
     /*Constructor SQL*/
-    public void SQLingrediente(String nombre, float caloriasCda100g){
-        String SQL = "INSERT INTO ingrediente(NombreIng, ValorCD100g) " + 
+    public void SQLIngrediente(String nombre, float caloriasCda100g){
+        String SQL = "INSERT INTO ingrediente(NombreI, ValorCD100g) " + 
                      "VALUES ('" + nombre + "', " + caloriasCda100g + ")";
         try 
         {
@@ -82,6 +88,65 @@ public class Ingredientes {
         {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }   
+    }
+
+    public ArrayList<Ingrediente> getAll(String nom) {
+        ArrayList<Ingrediente> ingredientes = new ArrayList();
+        
+        String SQL = "SELECT * FROM ingrediente WHERE NombreI LIKE '" + nom + "%'";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                String name = resultado.getString("NombreI");
+                float calorias = resultado.getFloat("valorCD100g");
+                
+                Ingrediente ingrediente = new Ingrediente(name, calorias);
+                ingredientes.add(ingrediente);
+            }
+        } 
+        catch (SQLException ex) 
+        {
+        }
+        return ingredientes;
+    }
+    
+    public String getSQLNombre(String nom) {
+        String SQL = "SELECT NombreI FROM Ingrediente WHERE NombreI='" + nom + "'";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                nombre = resultado.getString("NombreI");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return nombre;
+    }
+    
+    public void setSQLNombre(String nombre, String nom) {
+        String SQL = "UPDATE Ingrediente SET NombreI='" + nombre + "' WHERE NombreI='" + nom + "'";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }    
     }
     
     public float getSQLCaloriasCda100g(String nom) {
@@ -104,7 +169,7 @@ public class Ingredientes {
         return caloriasCda100g;
     }
     
-    public void setCaloriasCda100g(float caloriasCda100g, String nom) {
+    public void setSQLCaloriasCda100g(float caloriasCda100g, String nom) {
         String SQL = "UPDATE Ingrediente SET valorCD100G=" + caloriasCda100g + "WHERE NombreI='" + nom + "'";
         try 
         {
