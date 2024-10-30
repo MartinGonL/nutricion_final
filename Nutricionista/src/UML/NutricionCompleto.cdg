@@ -2,7 +2,7 @@
 
 <ClassDiagram name="Modelo">
   <ClassDiagramComponents>
-    <Class name="Dieta" package="Modelo" visibility="public" xPosition="20.0" yPosition="20.0">
+    <Class name="Dieta" package="Modelo" visibility="public" xPosition="74.0" yPosition="126.0">
       <Fields>
         <Field name="ID_Dieta" type="Integer" visibility="private"/>
         <Field name="DNI" type="Integer" visibility="private"/>
@@ -123,7 +123,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Ingredientes" package="Modelo" visibility="public" xPosition="320.0" yPosition="20.0">
+    <Class name="Ingredientes" package="Modelo" visibility="public" xPosition="927.0" yPosition="7.0">
       <Fields>
         <Field name="nombre" type="String" visibility="private"/>
         <Field name="cantidadCaloriasEn100gs" type="float" visibility="private"/>
@@ -167,7 +167,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Menu" package="Modelo" visibility="public" xPosition="620.0" yPosition="20.0">
+    <Class name="Menu" package="Modelo" visibility="public" xPosition="1667.0" yPosition="25.0">
       <Fields>
         <Field name="ID_Dieta" type="Integer" visibility="private"/>
         <Field name="ID_Menu" type="Integer" visibility="private"/>
@@ -271,7 +271,7 @@
         </Method>
       </Methods>
     </Class>
-    <Class name="Paciente" package="Modelo" visibility="public" xPosition="920.0" yPosition="20.0">
+    <Class name="Paciente" package="Modelo" visibility="public" xPosition="907.0" yPosition="669.0">
       <Fields>
         <Field name="DNI" type="Integer" visibility="private"/>
         <Field name="nombre" type="String" visibility="private"/>
@@ -369,10 +369,11 @@
     </Class>
   </ClassDiagramComponents>
   <ClassDiagramRelations>
-    <UseRelation source="Modelo.Dieta" target="Modelo.Menu" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <UseRelation source="Modelo.Paciente" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
-    <HasRelation name="paciente" source="Modelo.Dieta" target="Modelo.Paciente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <UseRelation source="Modelo.Dieta" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <UseRelation source="Modelo.Dieta" target="Modelo.Menu" sourceCardinality="1..1" targetCardinality="1..1"/>
+    <HasRelation name="i a m" source="Modelo.Ingredientes" target="Modelo.Menu" type="Default" sourceCardinality="0..1" targetCardinality="1..*" collectionType="List"/>
+    <HasRelation name="paciente" source="Modelo.Dieta" target="Modelo.Paciente" type="Aggregation" sourceCardinality="1..1" targetCardinality="1..1"/>
     <HasRelation name="dietaDiaria" source="Modelo.Dieta" target="Modelo.Menu" type="Aggregation" sourceCardinality="1..1" targetCardinality="0..*" collectionType="ArrayList&lt;Menu&gt;"/>
+    <UseRelation source="Modelo.Paciente" target="Modelo.Paciente" sourceCardinality="1..1" targetCardinality="1..1"/>
   </ClassDiagramRelations>
 </ClassDiagram>
