@@ -2,11 +2,13 @@ package Vista;
 
 import ModeloSQL.Ingrediente;
 import ModeloSQL.Menu;
+import Persistencia.Funciones;
 import java.awt.Component;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuIF extends javax.swing.JInternalFrame {
@@ -87,6 +89,11 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
         eliminarJB.setText("Eliminar");
         eliminarJB.setPreferredSize(new java.awt.Dimension(95, 30));
+        eliminarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                eliminarJBActionPerformed(evt);
+            }
+        });
         panelBotonesComida.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
 
         jPanel2.add(panelBotonesComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 410, 50));
@@ -215,7 +222,10 @@ public class MenuIF extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void nombreIngJTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreIngJTKeyReleased
-        FLAG = "ingrediente";
+        ArrayList<Ingrediente> ingredientes = new ArrayList(ingrediente.getAll(nombreIngJT.getText()));
+        
+        agregarJB.setEnabled(!ingredientes.isEmpty());
+        quitarJB.setEnabled(!ingredientes.isEmpty());
         
         setColumn("ingrediente");
         resetTable();
@@ -224,25 +234,19 @@ public class MenuIF extends javax.swing.JInternalFrame {
     
     private void nombreComidaJTKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_nombreComidaJTKeyReleased
         ArrayList<Menu> menus = new ArrayList(menu.getAll(nombreComidaJT.getText()));
-        FLAG = "comida";
         
-        if (menus.isEmpty()) 
-        {
-            guardarJB.setText("Crear");
-            modificarJB.setText("Finalizar");
-        }
-        else 
-        {
-            setColumn("comida");
-            resetTable();
-            setRow("comida");
-        }
+        guardarJB.setText((menus.isEmpty()) ? "Crear" : "Guardar");
+        modificarJB.setText((menus.isEmpty()) ? "Finalizar" : "Modificar");
+        
+        setColumn("comida");
+        resetTable();
+        setRow("comida");
     }//GEN-LAST:event_nombreComidaJTKeyReleased
 
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        int filaSelect = tabla.getSelectedRow();
         try
         {
+            int filaSelect = tabla.getSelectedRow();
             String nombre = (String)tabla.getValueAt(filaSelect, 0);
 
             if (FLAG.equals("ingrediente")) 
@@ -261,6 +265,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         catch (HeadlessException ex) {}
     }//GEN-LAST:event_tablaMouseClicked
 
+    /*Falta 2° parte*/
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
         if (guardarJB.getText().equals("Crear")) 
         {
@@ -271,19 +276,34 @@ public class MenuIF extends javax.swing.JInternalFrame {
                 componente.setEnabled(false);
             }
             
-            setRow("comida");
+            eliminarJB.setText("Cancelar");
+            
+            FLAG = "ingrediente";
+            
+            setColumn("ingrediente");
+            setRow("ingrediente");
         }
     }//GEN-LAST:event_guardarJBActionPerformed
 
     private void agregarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarJBActionPerformed
-        guardarJB.setText("Guardar");
+        boolean flag = Funciones.checkField(panelDatosIng);
         
-        menu.setSQLIngredientes(nombreComidaJT.getText(), nombreIngJT.getText(), Float.parseFloat(cantidadJT.getText()));
-        setColumn("receta");
-        resetTable();
-        setRow("receta");
+        if (flag) 
+        {
+            menu.setSQLIngredientes(nombreComidaJT.getText(), nombreIngJT.getText(), Float.parseFloat(cantidadJT.getText()));
+            setColumn("receta");
+            resetTable();
+            setRow("receta");
+            
+            Funciones.cleanField(panelDatosIng);
+        }
+        else 
+        {
+            JOptionPane.showMessageDialog(rootPane, "Complete los campos solicitados.");
+        }
     }//GEN-LAST:event_agregarJBActionPerformed
 
+    /*Falta 2° parte*/
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
         if (modificarJB.getText().equals("Finalizar"))
         {
@@ -293,26 +313,46 @@ public class MenuIF extends javax.swing.JInternalFrame {
             resetTable();
             setRow("comida");
             
-            for (Component componente : panelDatosComida.getComponents()) 
-            {
-                componente.setEnabled(true);
-            }            
-            guardarJB.setText("Guardar");
-            modificarJB.setText("Modificar");
+            eliminarJBActionPerformed(evt);
         }
     }//GEN-LAST:event_modificarJBActionPerformed
 
     private void nombreComidaJTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombreComidaJTFocusGained
+        FLAG = "comida";
+        
         setColumn("comida");
         resetTable();
         setRow("comida");
     }//GEN-LAST:event_nombreComidaJTFocusGained
 
     private void nombreIngJTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombreIngJTFocusGained
+        FLAG = "ingrediente";
+        
         setColumn("ingrediente");
         resetTable();
         setRow("ingrediente");
     }//GEN-LAST:event_nombreIngJTFocusGained
+
+    /*Falta 2° parte*/
+    private void eliminarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarJBActionPerformed
+        if (eliminarJB.getText().equals("Cancelar")) 
+        {
+            int respuesta = JOptionPane.showConfirmDialog(rootPane, "Seguro que desea cancelar la operacion?");
+            if (respuesta == 0) 
+            {
+                Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
+                
+                for (Component componente : panelDatosComida.getComponents()) 
+                {
+                    componente.setEnabled(true);
+                }           
+
+                guardarJB.setText("Guardar");
+                modificarJB.setText("Modificar");
+                eliminarJB.setText("Eliminar");
+            }
+        }
+    }//GEN-LAST:event_eliminarJBActionPerformed
 
     private void setColumn(String tipo) {
         modeloT = new DefaultTableModel() {
@@ -333,7 +373,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
             }
             case "receta" -> {
                 modeloT.addColumn("Ingredientes");
-                modeloT.addColumn("Cantidad (Gramos)");
+                modeloT.addColumn("Cantidades (Gramos)");
             }
         }
         
@@ -345,36 +385,31 @@ public class MenuIF extends javax.swing.JInternalFrame {
             switch (tipo) {
                 case "ingrediente" -> {
                     ArrayList<Ingrediente> ingredientes = new ArrayList(ingrediente.getAll(nombreIngJT.getText()));
-                    
-                    for (Ingrediente ing : ingredientes) 
+                    for (Ingrediente ing : ingredientes)
                     {
                         modeloT.addRow(new Object[]{
                             ing.getNombre(),
                             ing.getCaloriasCda100g(),
                         });
-                        
                     }
                 }
                 case "comida" -> {
                     ArrayList<Menu> menus = new ArrayList(menu.getAll(nombreComidaJT.getText()));
-                    
                     for (Menu men : menus) 
                     {
                         modeloT.addRow(new Object[]{
                             men.getNombre(),
                             men.getCaloriasValorTotal(),
                         });
-                        
                     }
                 }
                 case "receta" -> {
                     TreeMap<String, Float> ingredientes = new TreeMap(menu.getSQLIngredientes(nombreComidaJT.getText()));
-
                     for (Map.Entry<String, Float> datos : ingredientes.entrySet()) 
                     {
                         modeloT.addRow(new Object[]{
-                            datos.getValue(),
                             datos.getKey(),
+                            datos.getValue(),
                         });
                     }
                 }
@@ -384,19 +419,6 @@ public class MenuIF extends javax.swing.JInternalFrame {
         }
         catch (NullPointerException ex) {}
     }
-    
-//    private void setInfo() {
-//        TreeMap<String, Float> ingredientes = new TreeMap(menu.getSQLIngredientes(nombreComidaJT.getText()));
-//
-//        for (Map.Entry<String, Float> datos : ingredientes.entrySet()) 
-//        {
-//            modeloT.addRow(new Object[]{
-//                datos.getValue(),
-//                datos.getKey(),
-//            });
-//        }
-//        tabla.setModel(modeloT);
-//    }
     
     private void resetTable() {
         int x = modeloT.getRowCount()-1;

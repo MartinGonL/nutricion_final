@@ -337,16 +337,20 @@ public class Menu {
         }
     }
 
-    public Float getSQLCaloriasValorTotal(String nomComida) {
-        String SQL = "SELECT caloriasValorTotal FROM menu WHERE NombreM='" + nomComida + "'";
+    /*Hacer publico de ser necesario*/
+    private Float getSQLCaloriasValorTotal(String nomComida) {
+        String SQL = "SELECT cantidadIng, valorCD100g FROM receta a JOIN ingrediente b ON a.NombreI=b.NombreI WHERE NombreM='" + nomComida + "'";
+        caloriasValorTotal = 0F;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
             resultado = sentencia.executeQuery();
             
-            while (resultado.next()) 
-            {
-                caloriasValorTotal = resultado.getFloat("caloriasValorTotal");
+            while (resultado.next()) {
+                float cantidadIng = resultado.getFloat("cantidadIng");
+                float valorCda100 = resultado.getFloat("valorCD100g");
+             
+                caloriasValorTotal += valorCda100 * cantidadIng / 100;
             }
         } 
         catch (SQLException ex) 
@@ -359,18 +363,14 @@ public class Menu {
 
     /*Controlar este metodo*/
     public void setSQLCaloriasValorTotal(String nomComida) {
-        String SQL = "SELECT cantidadIng, valorCD100 FROM receta a JOIN ingrediente b (ON a.NombreI=b.NombreI) WHERE NombreM='" + nomComida + "'";
+        getSQLCaloriasValorTotal(nomComida);
+        String SQL = "UPDATE menu SET valorTotal=" + caloriasValorTotal + " WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
+            int filas = sentencia.executeUpdate();
             
-            while (resultado.next()) {
-                float cantidadIng = resultado.getFloat("cantidadIng");
-                float valorCda100 = resultado.getFloat("valorCD100");
-             
-                caloriasValorTotal += valorCda100 * cantidadIng / 100;
-            }
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
         } 
         catch (SQLException ex) 
         {
