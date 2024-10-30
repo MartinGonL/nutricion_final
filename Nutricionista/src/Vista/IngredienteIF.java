@@ -284,8 +284,6 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         Funciones.cleanField(panelDatos);
         resetTable();
         setRow();
-        
-        nombreJT.setRequestFocusEnabled(true);
     }//GEN-LAST:event_limpiarJBActionPerformed
 
     private void setColumn() {

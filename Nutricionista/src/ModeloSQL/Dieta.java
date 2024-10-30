@@ -403,8 +403,6 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                int idDieta1 = resultado.getInt("ID_Dieta");
-                int idMenu = resultado.getInt("ID_Menu");
                 String name = resultado.getString("nombre");
                 String nombreIng = resultado.getString("NombreI");
                 float cantidadIng = resultado.getFloat("cantidadI");
@@ -413,7 +411,7 @@ public class Dieta {
                 int porciones = resultado.getInt("porciones");
                 float caloriasValorTotal = resultado.getFloat("caloriasValorTotal");
                 
-                Menu menu = new Menu(idDieta1, idMenu, name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
+                Menu menu = new Menu(name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
                 dietaDiaria.add(menu);
             }
         } 
@@ -482,19 +480,7 @@ public class Dieta {
         
         return menu;
     }
-    
-    /*Definir un arreglo que contenga los distintos momentos del dia y controlar los dias desde el internal.*/
-    public void armarDietaDiaria(String dni, String nombre, String dia, String momentoDelDia, Integer porciones) {
-        getSQLID_Dieta(dni);
-        getSQLDietaDiaria(ID_Dieta.toString());
-        
-        if (dietaDiaria.size() < 35)
-        {
-            setSQLDietaDiaria(dni, nombre, dia, momentoDelDia);
-        }
-        else JOptionPane.showMessageDialog(null, "Ya no puede cargar mas comidas.");
-    }
-    
+
     /*Probar*/
     public ArrayList<Menu> generarDietaDiara(String ingrediente1, String ingrediente2, String ingrediente3, int idDieta) {
         String[] dia = {"Lunes", "Martes", "Miercoles"};
@@ -504,7 +490,7 @@ public class Dieta {
         {
             for (int countM = 0; countM < 5; countM++) 
             {
-                String SQL = "SELECT `ID_Menu`, `NombreM`, `NombreI`, `cantidadIng`, `dia`, `momentoDia`, `porciones`, `valorTotal` FROM menu a JOIN receta b ON a.ID_Menu=b.ID_Menu WHERE NombreI='" + ingrediente1 + 
+                String SQL = "SELECT `NombreM`, `NombreI`, `cantidadIng`, `dia`, `momentoDia`, `porciones`, `valorTotal` FROM menu a JOIN receta b ON a.ID_Menu=b.ID_Menu WHERE NombreI='" + ingrediente1 + 
                              "' OR NombreI='" + ingrediente2 + 
                              "' OR NombreI='" + ingrediente3 + 
                              "' AND dia='" + dia[countD] + "' " +
@@ -516,7 +502,6 @@ public class Dieta {
                     resultado = sentencia.executeQuery();
                     
                     while (resultado.next()) {
-                        int idMenu = resultado.getInt("ID_Menu");
                         String nombrem = resultado.getString("NombreM");
                         String nombrei = resultado.getString("NombreI");
                         float canti = resultado.getFloat("cantidadIng");
@@ -525,7 +510,7 @@ public class Dieta {
                         int porc = resultado.getInt("porciones");
                         float valTot = resultado.getFloat("valorTotal");
                         
-                        Menu menu = new Menu(idDieta, idMenu, nombrem, nombrei, canti, dia1, momDia, porc, valTot);
+                        Menu menu = new Menu(nombrem, nombrei, canti, dia1, momDia, porc, valTot);
                         dietaDiaria.add(menu);
                     }
                 } 

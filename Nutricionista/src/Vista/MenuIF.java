@@ -5,10 +5,15 @@ import ModeloSQL.Menu;
 import Persistencia.Funciones;
 import java.awt.Component;
 import java.awt.HeadlessException;
+import java.awt.MenuComponent;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.table.DefaultTableModel;
 
 public class MenuIF extends javax.swing.JInternalFrame {
@@ -18,6 +23,8 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloT;
     
     private String FLAG;
+    private int contadorGlob = 5;
+//    private String[] elementos = new String[5];
     
     public MenuIF() {
         initComponents();
@@ -29,7 +36,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel4 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
+        panelPrincipal = new javax.swing.JPanel();
         panelBotonesComida = new javax.swing.JPanel();
         limpiarJB = new javax.swing.JButton();
         modificarJB = new javax.swing.JButton();
@@ -40,11 +47,15 @@ public class MenuIF extends javax.swing.JInternalFrame {
         dniJT = new javax.swing.JTextField();
         nombreComidaJL = new javax.swing.JLabel();
         nombreComidaJT = new javax.swing.JTextField();
-        diasJL = new javax.swing.JLabel();
-        cantidadDiasJS = new javax.swing.JSpinner();
         tipoJL = new javax.swing.JLabel();
         tipoComidaJCB = new javax.swing.JComboBox<>();
         comidasJL = new javax.swing.JLabel();
+        diaJL = new javax.swing.JLabel();
+        diaJCB = new javax.swing.JComboBox<>();
+        CantDiasJL = new javax.swing.JLabel();
+        cantDiasJS = new javax.swing.JSpinner();
+        porcionesJL = new javax.swing.JLabel();
+        porcionesJS = new javax.swing.JSpinner();
         panelDatosIng = new javax.swing.JPanel();
         nombreIngJL = new javax.swing.JLabel();
         nombreIngJT = new javax.swing.JTextField();
@@ -60,13 +71,18 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
         jLabel4.setText("jLabel4");
 
-        jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         panelBotonesComida.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotonesComida.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         limpiarJB.setText("Limpiar");
         limpiarJB.setPreferredSize(new java.awt.Dimension(95, 30));
+        limpiarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                limpiarJBActionPerformed(evt);
+            }
+        });
         panelBotonesComida.add(limpiarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
 
         modificarJB.setText("Modificar");
@@ -96,18 +112,21 @@ public class MenuIF extends javax.swing.JInternalFrame {
         });
         panelBotonesComida.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
 
-        jPanel2.add(panelBotonesComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 410, 50));
+        panelPrincipal.add(panelBotonesComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 410, 50));
 
         panelDatosComida.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosComida.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        dniJL.setText("DNI Paciente:");
-        panelDatosComida.add(dniJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 30));
-        panelDatosComida.add(dniJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 90, -1));
+        dniJL.setText("DNI:");
+        panelDatosComida.add(dniJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, 20));
+
+        dniJT.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelDatosComida.add(dniJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 80, -1));
 
         nombreComidaJL.setText("Nombre Comida:");
-        panelDatosComida.add(nombreComidaJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, 30));
+        panelDatosComida.add(nombreComidaJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 50, -1, 20));
 
+        nombreComidaJT.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         nombreComidaJT.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 nombreComidaJTFocusGained(evt);
@@ -118,30 +137,54 @@ public class MenuIF extends javax.swing.JInternalFrame {
                 nombreComidaJTKeyReleased(evt);
             }
         });
-        panelDatosComida.add(nombreComidaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, 110, -1));
-
-        diasJL.setText("Dias de la Semana:");
-        panelDatosComida.add(diasJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 40, -1, 30));
-        panelDatosComida.add(cantidadDiasJS, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 40, 60, -1));
+        panelDatosComida.add(nombreComidaJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 50, 130, -1));
 
         tipoJL.setText("Tipo:");
-        panelDatosComida.add(tipoJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 70, -1, 30));
+        panelDatosComida.add(tipoJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 90, 40, 30));
 
         tipoComidaJCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Desayuno", "Almuerzo", "Snack", "Merienda", "Cena" }));
-        panelDatosComida.add(tipoComidaJCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 70, 110, -1));
+        tipoComidaJCB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        tipoComidaJCB.setName("tipoComida"); // NOI18N
+        panelDatosComida.add(tipoComidaJCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 110, -1));
 
         comidasJL.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         comidasJL.setText("Comidas");
         panelDatosComida.add(comidasJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jPanel2.add(panelDatosComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 410, 110));
+        diaJL.setText("Dia:");
+        panelDatosComida.add(diaJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 40, 30));
+
+        diaJCB.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo" }));
+        diaJCB.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        diaJCB.setName("dia"); // NOI18N
+        panelDatosComida.add(diaJCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 90, -1, -1));
+
+        CantDiasJL.setText("Dias de la Semana:");
+        panelDatosComida.add(CantDiasJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, -1, 30));
+
+        cantDiasJS.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        SpinnerModel modeloS = new SpinnerNumberModel(3, 3, 7, 1);
+        cantDiasJS.setModel(modeloS);
+        panelDatosComida.add(cantDiasJS, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 130, 50, -1));
+
+        porcionesJL.setText("Porciones:");
+        porcionesJL.setToolTipText("");
+        panelDatosComida.add(porcionesJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 130, -1, 30));
+
+        porcionesJS.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        SpinnerModel modeloS2 = new SpinnerNumberModel(1, 1, 3, 1);
+        porcionesJS.setModel(modeloS2);
+        panelDatosComida.add(porcionesJS, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 50, -1));
+
+        panelPrincipal.add(panelDatosComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 410, 170));
 
         panelDatosIng.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosIng.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         nombreIngJL.setText("Nombre:");
-        panelDatosIng.add(nombreIngJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, -1, 30));
+        panelDatosIng.add(nombreIngJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, -1, 20));
 
+        nombreIngJT.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         nombreIngJT.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 nombreIngJTFocusGained(evt);
@@ -152,20 +195,22 @@ public class MenuIF extends javax.swing.JInternalFrame {
                 nombreIngJTKeyReleased(evt);
             }
         });
-        panelDatosIng.add(nombreIngJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 90, -1));
+        panelDatosIng.add(nombreIngJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 50, 90, -1));
 
         cantidadJL.setText("Cantidad:");
-        panelDatosIng.add(cantidadJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, -1, 30));
-        panelDatosIng.add(cantidadJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 46, -1));
+        panelDatosIng.add(cantidadJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 20));
+
+        cantidadJT.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelDatosIng.add(cantidadJT, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 46, -1));
 
         gramosJL.setText("g");
-        panelDatosIng.add(gramosJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 70, -1, 30));
+        panelDatosIng.add(gramosJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, -1, 20));
 
         ingredientesJL.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
         ingredientesJL.setText("Ingredientes");
         panelDatosIng.add(ingredientesJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        jPanel2.add(panelDatosIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 210, 110));
+        panelPrincipal.add(panelDatosIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 210, 170));
 
         tabla.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
@@ -185,7 +230,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tabla);
 
-        jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 310, 170));
+        panelPrincipal.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 310, 230));
 
         panelBotonesIng.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotonesIng.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -201,21 +246,24 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
         quitarJB.setText("Quitar");
         quitarJB.setPreferredSize(new java.awt.Dimension(90, 30));
+        quitarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quitarJBActionPerformed(evt);
+            }
+        });
         panelBotonesIng.add(quitarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
 
-        jPanel2.add(panelBotonesIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 130, 210, 50));
+        panelPrincipal.add(panelBotonesIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 190, 210, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -267,21 +315,45 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
     /*Falta 2° parte*/
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
-        if (guardarJB.getText().equals("Crear")) 
+        if (guardarJB.getText().equals("Crear") | eliminarJB.getText().equals("Cancelar")) 
         {
-            menu.SQLMenu(nombreComidaJT.getText());
+            eliminarJB.setText((eliminarJB.getText().equals("Eliminar")) ? "Cancelar" : "Eliminar");
+            
+            if (eliminarJB.getText().equals("Cancelar")) 
+            {
+                menu.SQLMenu(nombreComidaJT.getText());
+                FLAG = "ingrediente";
+                setColumn("ingrediente");
+                setRow("ingrediente");
+            }
             
             for (Component componente : panelDatosComida.getComponents()) 
             {
-                componente.setEnabled(false);
+                componente.setEnabled(eliminarJB.getText().equals("Eliminar"));
             }
-            
-            eliminarJB.setText("Cancelar");
-            
-            FLAG = "ingrediente";
-            
-            setColumn("ingrediente");
-            setRow("ingrediente");
+        }
+        else 
+        {
+            boolean flag = Funciones.checkField(panelDatosComida);
+            if (flag) 
+            {
+                int count = (int)cantDiasJS.getValue();
+                if (contadorGlob > 0) 
+                {
+                    contadorGlob = menu.estructurarDieta(contadorGlob, dniJT.getText(), nombreComidaJT.getText(), diaJCB.getSelectedItem().toString(), tipoComidaJCB.getSelectedItem().toString(), (int)porcionesJS.getValue());
+//                    precaucionTipoDeComida();
+                }
+                else 
+                {
+                    count--;
+                    cantDiasJS.setValue(count);
+                    contadorGlob = 5;
+                }
+
+                dniJT.setEnabled(count == 0);
+                diaJCB.setEnabled(count == 0);
+                cantDiasJS.setEnabled(count == 0);
+            }
         }
     }//GEN-LAST:event_guardarJBActionPerformed
 
@@ -308,12 +380,23 @@ public class MenuIF extends javax.swing.JInternalFrame {
         if (modificarJB.getText().equals("Finalizar"))
         {
             menu.setSQLCaloriasValorTotal(nombreComidaJT.getText());
+            guardarJB.setText("Guardar");
+            modificarJB.setText("Modificar");
 
             setColumn("comida");
             resetTable();
             setRow("comida");
             
-            eliminarJBActionPerformed(evt);
+            guardarJBActionPerformed(evt);
+        }
+        else 
+        {
+            if (contadorGlob > 0) 
+            {
+                System.out.println(tipoComidaJCB.getName());
+                contadorGlob--;
+                precaucionTipoDeComida(tipoComidaJCB);
+            }
         }
     }//GEN-LAST:event_modificarJBActionPerformed
 
@@ -333,26 +416,35 @@ public class MenuIF extends javax.swing.JInternalFrame {
         setRow("ingrediente");
     }//GEN-LAST:event_nombreIngJTFocusGained
 
-    /*Falta 2° parte*/
     private void eliminarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarJBActionPerformed
-        if (eliminarJB.getText().equals("Cancelar")) 
+        int respuesta = JOptionPane.showConfirmDialog(rootPane, (eliminarJB.getText().equals("Cancelar")) ? "Seguro que desea cancelar la operacion?" : "Seguro que desea eliminar el menu?");
+        if (respuesta == 0) 
         {
-            int respuesta = JOptionPane.showConfirmDialog(rootPane, "Seguro que desea cancelar la operacion?");
-            if (respuesta == 0) 
-            {
-                Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
-                
-                for (Component componente : panelDatosComida.getComponents()) 
-                {
-                    componente.setEnabled(true);
-                }           
-
-                guardarJB.setText("Guardar");
-                modificarJB.setText("Modificar");
-                eliminarJB.setText("Eliminar");
-            }
+            Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
         }
+        Funciones.cleanField(panelDatosComida);
+        Funciones.cleanField(panelDatosIng);
+//        Funciones.cleanField(panelPrincipal);
     }//GEN-LAST:event_eliminarJBActionPerformed
+
+    //PROBAR.
+    private void quitarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarJBActionPerformed
+        Funciones.eliminarRegistro("receta", "NombreI", nombreIngJT.getText());
+        
+        setColumn("receta");
+        resetTable();
+        setRow("receta");
+        
+        Funciones.cleanField(panelDatosIng);
+    }//GEN-LAST:event_quitarJBActionPerformed
+
+    //PROBAR.
+    private void limpiarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarJBActionPerformed
+        Funciones.cleanField(panelDatosIng);
+        Funciones.cleanField(panelDatosComida);
+        
+        resetTable();
+    }//GEN-LAST:event_limpiarJBActionPerformed
 
     private void setColumn(String tipo) {
         modeloT = new DefaultTableModel() {
@@ -423,18 +515,30 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private void resetTable() {
         int x = modeloT.getRowCount()-1;
         
-        for (int c = x; c >= 0; c--) {
+        for (int c = x; c > 0; c--) {
             modeloT.removeRow(c);
         }
     }
     
+    private void precaucionTipoDeComida(JComboBox box) {
+        String[] TC = {"Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"};
+        String[] DIA = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
+        
+        DefaultComboBoxModel modelo = new DefaultComboBoxModel((box.getName().equals("dia")) ? DIA : TC);
+
+        if (contadorGlob == 0) box.setModel(modelo);
+        else box.removeItem(box.getSelectedItem());
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel CantDiasJL;
     private javax.swing.JButton agregarJB;
-    private javax.swing.JSpinner cantidadDiasJS;
+    private javax.swing.JSpinner cantDiasJS;
     private javax.swing.JLabel cantidadJL;
     private javax.swing.JTextField cantidadJT;
     private javax.swing.JLabel comidasJL;
-    private javax.swing.JLabel diasJL;
+    private javax.swing.JComboBox<String> diaJCB;
+    private javax.swing.JLabel diaJL;
     private javax.swing.JLabel dniJL;
     private javax.swing.JTextField dniJT;
     private javax.swing.JButton eliminarJB;
@@ -442,7 +546,6 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private javax.swing.JButton guardarJB;
     private javax.swing.JLabel ingredientesJL;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton limpiarJB;
     private javax.swing.JButton modificarJB;
@@ -454,6 +557,9 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private javax.swing.JPanel panelBotonesIng;
     private javax.swing.JPanel panelDatosComida;
     private javax.swing.JPanel panelDatosIng;
+    private javax.swing.JPanel panelPrincipal;
+    private javax.swing.JLabel porcionesJL;
+    private javax.swing.JSpinner porcionesJS;
     private javax.swing.JButton quitarJB;
     private javax.swing.JTable tabla;
     private javax.swing.JComboBox<String> tipoComidaJCB;

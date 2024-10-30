@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 
 public class Menu {
     
+    private Integer ID_Dieta;
     private String nombre;
     private final TreeMap<String, Float> ingredientes = new TreeMap();
     private String dia;
@@ -35,6 +36,7 @@ public class Menu {
         this.caloriasValorTotal = caloriasValorTotal;
     }
     
+    /*Buscar utilidad*/
     public Menu(String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
         this.nombre = nombre;
         this.ingredientes.put(nombreIng, cantidadIng);
@@ -192,7 +194,6 @@ public class Menu {
         }
     }
 
-    /*cambie el parametro del metodo, antes buscaba por ID ahora por el nombre*/
     public TreeMap<String, Float> getSQLIngredientes(String nomComida) {
         String SQL = "SELECT NombreI, cantidadIng FROM receta WHERE NombreM='" + nomComida + "'";
         ingredientes.clear();
@@ -337,7 +338,6 @@ public class Menu {
         }
     }
 
-    /*Hacer publico de ser necesario*/
     private Float getSQLCaloriasValorTotal(String nomComida) {
         String SQL = "SELECT cantidadIng, valorCD100g FROM receta a JOIN ingrediente b ON a.NombreI=b.NombreI WHERE NombreM='" + nomComida + "'";
         caloriasValorTotal = 0F;
@@ -361,7 +361,7 @@ public class Menu {
         return caloriasValorTotal;
     }
 
-    /*Controlar este metodo*/
+    /*Corroborar Calculo*/
     public void setSQLCaloriasValorTotal(String nomComida) {
         getSQLCaloriasValorTotal(nomComida);
         String SQL = "UPDATE menu SET valorTotal=" + caloriasValorTotal + " WHERE NombreM='" + nomComida + "'";
@@ -376,5 +376,44 @@ public class Menu {
         {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
+    }
+    
+    private Integer getSQLID_Dieta(String dni) {
+        String SQL = "SELECT ID_Dieta FROM dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                ID_Dieta = resultado.getInt("ID_Dieta");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        return ID_Dieta;
+    }
+    
+    public Integer estructurarDieta(int count, String DNI, String name, String day, String timeDay, int portions) {
+        getSQLID_Dieta(DNI);
+        String SQL = "INSERT INTO colacion(ID_Dieta, NombreM, dia, momentoDelDia, porciones) VALUES (" + ID_Dieta + ", '" + name + "', '" + day + "', '" + timeDay + "', " + portions + ")";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int fila = sentencia.executeUpdate();
+            if (fila > 0) 
+            {
+                JOptionPane.showMessageDialog(null, "Dato establecido.");
+                count--;
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        return count;
     }
 }
