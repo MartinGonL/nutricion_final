@@ -7,7 +7,7 @@ public class MenuJDP extends javax.swing.JFrame {
     
     public MenuJDP() {
         initComponents();
-        setResizable(false);
+//        setResizable(false);
         setLocationRelativeTo(null);
     }
 

@@ -15,8 +15,6 @@ import javax.swing.JOptionPane;
 
 public class Menu {
     
-    private Integer ID_Dieta;
-    private Integer ID_Menu;
     private String nombre;
     private final TreeMap<String, Float> ingredientes = new TreeMap();
     private String dia;
@@ -32,29 +30,18 @@ public class Menu {
         this.conexion = Conexion.getConexion();
     }
 
-    public Menu(Integer ID_Menu, String nombre, Float caloriasValorTotal) {
-        this.ID_Menu = ID_Menu;
+    public Menu(String nombre, Float caloriasValorTotal) {
         this.nombre = nombre;
         this.caloriasValorTotal = caloriasValorTotal;
     }
     
-    public Menu(Integer ID_Dieta, Integer ID_Menu, String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
-        this.ID_Dieta = ID_Dieta;
-        this.ID_Dieta = ID_Menu;
+    public Menu(String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
         this.nombre = nombre;
         this.ingredientes.put(nombreIng, cantidadIng);
         this.dia = dia;
         this.momentoDelDia = momentoDelDia;
         this.porciones = porciones;
         this.caloriasValorTotal = caloriasValorTotal;
-    }
-
-    public Integer getID_Dieta() {
-        return ID_Dieta;
-    }
-
-    public Integer getID_Menu() {
-        return ID_Menu;
     }
 
     public String getNombre() {
@@ -84,8 +71,6 @@ public class Menu {
     @Override
     public int hashCode() {
         int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.ID_Dieta);
-        hash = 29 * hash + Objects.hashCode(this.ID_Menu);
         hash = 29 * hash + Objects.hashCode(this.nombre);
         hash = 29 * hash + Objects.hashCode(this.ingredientes);
         hash = 29 * hash + Objects.hashCode(this.dia);
@@ -116,12 +101,6 @@ public class Menu {
         if (!Objects.equals(this.momentoDelDia, other.momentoDelDia)) {
             return false;
         }
-        if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
-            return false;
-        }
-        if (!Objects.equals(this.ID_Menu, other.ID_Menu)) {
-            return false;
-        }
         if (!Objects.equals(this.ingredientes, other.ingredientes)) {
             return false;
         }
@@ -133,14 +112,14 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu:\nID Dieta: " + ID_Dieta + ".\nID Menu: " + ID_Menu + ".\nNombre: " + nombre + ".\nIngredientes: " + ingredientes + ".\nDia: " + dia + ".\nomentoDelDia=" + momentoDelDia + ", porciones=" + porciones + ", caloriasValorTotal=" + caloriasValorTotal + '}';
+        return "Menu:\nNombre: " + nombre + ".\nIngredientes: " + ingredientes + ".\nDia: " + dia + ".\nomentoDelDia=" + momentoDelDia + ", porciones=" + porciones + ", caloriasValorTotal=" + caloriasValorTotal + '}';
     }
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
     /*Constructor SQL*/
     public void SQLMenu(String nombreM) {
-        String SQL = "INSERT INTO Menu(NombreM)" + 
+        String SQL = "INSERT INTO menu(NombreM)" + 
               "VALUES ('" + nombreM + "')";
         try 
         {
@@ -155,10 +134,10 @@ public class Menu {
         }
     }
 
-    public ArrayList<Menu> getALL(String nom) {
+    public ArrayList<Menu> getAll(String nomComida) {
         ArrayList<Menu> menus = new ArrayList();
         
-        String SQL = "SELECT * FROM menu WHERE mombreM LIKE '" + nom + "%'";
+        String SQL = "SELECT * FROM menu WHERE NombreM LIKE '" + nomComida + "%'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -166,11 +145,10 @@ public class Menu {
             
             while (resultado.next()) 
             {
-                int idMenu = resultado.getInt("ID_Menu");
-                String name = resultado.getString("nombreM");
+                String name = resultado.getString("NombreM");
                 float calorias = resultado.getFloat("valorTotal");
                 
-                Menu menu = new Menu(idMenu, name, calorias);
+                Menu menu = new Menu(name, calorias);
                 menus.add(menu);
             }
         } 
@@ -178,64 +156,9 @@ public class Menu {
         
         return menus;
     }
-    
-    public Integer getSQLID_Dieta(String idMenu) {
-        String SQL = "SELECT ID_Dieta FROM Menu WHERE ID_Menu=" + idMenu;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) 
-            {
-                ID_Dieta = resultado.getInt("ID_Dieta");
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-        
-        return ID_Dieta;
-    }
 
-    public void setSQLID_Dieta(Integer ID_Dieta, String idMenu) {
-        String SQL = "UPDATE Menu SET ID_Dieta=" + ID_Dieta + " WHERE ID_Menu=" + idMenu;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-    }
-    
-    public Integer getSQLID_Menu(String idMenu) {
-        String SQL = "SELECT ID_Menu FROM Menu WHERE ID_Menu=" + idMenu;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) 
-            {
-                ID_Menu = resultado.getInt("ID_Menu");
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-        
-        return ID_Menu;
-    }
-    
-    public String getSQLNombre(String idMenu) {
-        String SQL = "SELECT nombre FROM Menu WHERE ID_Menu=" + idMenu;
+    public String getSQLNombre(String nomComida) {
+        String SQL = "SELECT nombre FROM menu WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -254,8 +177,8 @@ public class Menu {
         return nombre;
     }
 
-    public void setSQLNombre(String nombre, String idMenu) {
-        String SQL = "UPDATE Menu SET nombre='" + nombre + "' WHERE ID_Menu=" + idMenu;
+    public void setSQLNombre(String nombre, String nomComida) {
+        String SQL = "UPDATE menu SET nombre='" + nombre + "' WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -269,8 +192,9 @@ public class Menu {
         }
     }
 
-    public TreeMap<String, Float> getSQLIngredientes(String idMenu) {
-        String SQL = "SELECT NombreI, cantidadIng FROM Receta WHERE ID_Menu=" + idMenu;
+    /*cambie el parametro del metodo, antes buscaba por ID ahora por el nombre*/
+    public TreeMap<String, Float> getSQLIngredientes(String nomComida) {
+        String SQL = "SELECT NombreI, cantidadIng FROM receta WHERE NombreM='" + nomComida + "'";
         ingredientes.clear();
         try 
         {
@@ -292,8 +216,9 @@ public class Menu {
         return ingredientes;
     }
 
-    public void setSQLIngredientes(String idMenu, String nameI, float cantidadI) {
-        String SQL = "INCERT INTO Receta (ID_Menu, NombreI, cantidadIng) VALUES (" + idMenu + ", '" + nameI + "', " + cantidadI + ")";
+    public void setSQLIngredientes(String nomComida, String nameI, float cantidadI) {
+        String SQL = "INSERT INTO receta(NombreM, NombreI, cantidadIng) VALUES ('" + nomComida + "', '" + nameI + "', " + cantidadI + ")";
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -307,8 +232,8 @@ public class Menu {
         }
     }
 
-    public String getSQLDia(String idMenu) {
-        String SQL = "SELECT dia FROM Menu WHERE ID_Menu=" + idMenu;
+    public String getSQLDia(String nomComida) {
+        String SQL = "SELECT dia FROM menu WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -327,8 +252,8 @@ public class Menu {
         return dia;
     }
 
-    public void setSQLDia(String dia, String idMenu) {
-        String SQL = "UPDATE Menu SET dia='" + dia + "' WHERE ID_Menu=" + idMenu;
+    public void setSQLDia(String dia, String nomComida) {
+        String SQL = "UPDATE menu SET dia='" + dia + "' WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -342,8 +267,8 @@ public class Menu {
         }
     }
 
-    public String getSQLMomentoDelDia(String idMenu) {
-        String SQL = "SELECT momentoDelDia FROM Menu WHERE ID_Menu=" + idMenu;
+    public String getSQLMomentoDelDia(String nomComida) {
+        String SQL = "SELECT momentoDelDia FROM menu WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -362,8 +287,8 @@ public class Menu {
         return momentoDelDia;
     }
 
-    public void setSQLMomentoDelDia(String momentoDelDia, String idMenu) {
-        String SQL = "UPDATE Menu SET momentoDelDia='" + momentoDelDia + "' WHERE ID_Menu=" + idMenu;
+    public void setSQLMomentoDelDia(String momentoDelDia, String nomComida) {
+        String SQL = "UPDATE menu SET momentoDelDia='" + momentoDelDia + "' WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -377,8 +302,8 @@ public class Menu {
         }
     }
 
-    public Integer getSQLPorciones(String idMenu) {
-        String SQL = "SELECT porciones FROM Menu WHERE ID_Menu=" + idMenu;
+    public Integer getSQLPorciones(String nomComida) {
+        String SQL = "SELECT porciones FROM menu WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -397,8 +322,8 @@ public class Menu {
         return porciones;
     }
 
-    public void setSQLPorciones(Integer porciones, String idMenu) {
-        String SQL = "UPDATE Menu SET porciones=" + porciones + " WHERE ID_Menu=" + idMenu;
+    public void setSQLPorciones(Integer porciones, String nomComida) {
+        String SQL = "UPDATE menu SET porciones=" + porciones + " WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -412,8 +337,8 @@ public class Menu {
         }
     }
 
-    public Float getSQLCaloriasValorTotal(String idMenu) {
-        String SQL = "SELECT caloriasValorTotal FROM Menu WHERE ID_Menu=" + idMenu;
+    public Float getSQLCaloriasValorTotal(String nomComida) {
+        String SQL = "SELECT caloriasValorTotal FROM menu WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -433,9 +358,8 @@ public class Menu {
     }
 
     /*Controlar este metodo*/
-    public void setSQLCaloriasValorTotal(String idMenu) {
-        String SQL = "SELECT cantidadIng, valorCD100 FROM Receta a JOIN Ingrediente b (ON a.NombreI=b.NombreI) WHERE ID_Menu=" + idMenu + "";
-        
+    public void setSQLCaloriasValorTotal(String nomComida) {
+        String SQL = "SELECT cantidadIng, valorCD100 FROM receta a JOIN ingrediente b (ON a.NombreI=b.NombreI) WHERE NombreM='" + nomComida + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

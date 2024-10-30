@@ -9,7 +9,7 @@ import javax.swing.table.DefaultTableModel;
 public class IngredienteIF extends javax.swing.JInternalFrame {
 
     private final Ingrediente ingrediente;
-    private String nombreClave = "NULL";
+    private String nombreClave;
     private DefaultTableModel modeloT;
     
     public IngredienteIF() {
@@ -132,7 +132,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
             },
             new String [] {
-
+                "Title 1", "Title 2"
             }
         ));
         tabla.getTableHeader().setResizingAllowed(false);
@@ -223,7 +223,6 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
             {
                 ingrediente.setSQLCaloriasCda100g(Float.parseFloat(caloriasJT.getText()), nombreJT.getText());
                 ingrediente.setSQLNombre(nombreJT.getText(), nombreClave);
-                System.out.println(nombreClave);
             }
             else 
             {
@@ -279,7 +278,6 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         }
         catch (Exception ex) {}
         nombreClave = nombreJT.getText();
-        System.out.println(nombreClave);
     }//GEN-LAST:event_tablaMouseClicked
 
     private void limpiarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarJBActionPerformed

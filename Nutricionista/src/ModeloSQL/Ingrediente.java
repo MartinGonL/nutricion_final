@@ -108,9 +108,8 @@ public class Ingrediente {
                 ingredientes.add(ingrediente);
             }
         } 
-        catch (SQLException ex) 
-        {
-        }
+        catch (SQLException ex){}
+        
         return ingredientes;
     }
     
@@ -136,7 +135,6 @@ public class Ingrediente {
     
     public void setSQLNombre(String nombre, String nom) {
         String SQL = "UPDATE ingrediente SET NombreI='" + nombre + "' WHERE NombreI='" + nom + "'";
-        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -144,10 +142,7 @@ public class Ingrediente {
             
             if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.(A)");
-        }    
+        catch (SQLException ex){}    
     }
     
     public float getSQLCaloriasCda100g(String nom) {
@@ -179,9 +174,6 @@ public class Ingrediente {
             
             if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.(B)");
-        }    
+        catch (SQLException ex){}    
     }
 }

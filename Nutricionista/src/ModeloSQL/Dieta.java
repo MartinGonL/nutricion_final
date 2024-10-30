@@ -434,7 +434,8 @@ public class Dieta {
         {    
             Menu menu = new Menu();
 
-            menu.SQLMenu(ID_Dieta, nombreM, dia, momentoDelDia);
+            menu.SQLMenu(nombreM);
+//            menu.SQLMenu(ID_Dieta, nombreM, dia, momentoDelDia);
 
             setSQLTotalDeCalorias(dni, ID_Dieta.toString());
         }
