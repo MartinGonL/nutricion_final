@@ -24,12 +24,13 @@ public class MenuIF extends javax.swing.JInternalFrame {
     
     private String FLAG;
     private int contadorGlob = 5;
-//    private String[] elementos = new String[5];
     
     public MenuIF() {
         initComponents();
         this.menu = new Menu();
         this.ingrediente = new Ingrediente();
+        
+        manejarPaneles();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -326,11 +327,11 @@ public class MenuIF extends javax.swing.JInternalFrame {
                 setColumn("ingrediente");
                 setRow("ingrediente");
             }
-            
-            for (Component componente : panelDatosComida.getComponents()) 
-            {
-                componente.setEnabled(eliminarJB.getText().equals("Eliminar"));
-            }
+            manejarPaneles();
+//            for (Component componente : panelDatosComida.getComponents()) 
+//            {
+//                componente.setEnabled(eliminarJB.getText().equals("Eliminar"));
+//            }
         }
         else 
         {
@@ -422,8 +423,10 @@ public class MenuIF extends javax.swing.JInternalFrame {
         {
             Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
         }
+        if (eliminarJB.getText().equals("Cancelar")) guardarJBActionPerformed(evt);
         Funciones.cleanField(panelDatosComida);
         Funciones.cleanField(panelDatosIng);
+        resetTable();
 //        Funciones.cleanField(panelPrincipal);
     }//GEN-LAST:event_eliminarJBActionPerformed
 
@@ -528,6 +531,21 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
         if (contadorGlob == 0) box.setModel(modelo);
         else box.removeItem(box.getSelectedItem());
+    }
+    
+    private void manejarPaneles() {
+        for (Component componente : panelDatosComida.getComponents()) 
+        {
+            componente.setEnabled(eliminarJB.getText().equals("Eliminar"));
+        }
+        for (Component componente : panelDatosIng.getComponents()) 
+        {
+            componente.setEnabled(!eliminarJB.getText().equals("Eliminar"));
+        }
+        for (Component componente : panelBotonesIng.getComponents()) 
+        {
+            componente.setEnabled(!eliminarJB.getText().equals("Eliminar"));
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
