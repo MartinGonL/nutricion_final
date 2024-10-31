@@ -2,25 +2,23 @@ package Vista;
 
 public class MenuJDP extends javax.swing.JFrame {
     
+    private RegistroIF registroIF;
     private IngredienteIF ingredienteIF;
     private MenuIF menuIF;
     
     public MenuJDP() {
         initComponents();
-//        setResizable(false);
+        setResizable(false);
         setLocationRelativeTo(null);
     }
 
-    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         panelPrincipal = new javax.swing.JDesktopPane();
         menuJMB = new javax.swing.JMenuBar();
-        pacientesJM = new javax.swing.JMenu();
-        pacientesJMI = new javax.swing.JMenuItem();
-        dietasJM = new javax.swing.JMenu();
-        dietasJMI = new javax.swing.JMenuItem();
+        registroJM = new javax.swing.JMenu();
+        registroJMI = new javax.swing.JMenuItem();
         comidasJM = new javax.swing.JMenu();
         comidasJMI = new javax.swing.JMenuItem();
         ingredientesJM = new javax.swing.JMenu();
@@ -29,38 +27,30 @@ public class MenuJDP extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelPrincipal.setMinimumSize(new java.awt.Dimension(500, 500));
-        panelPrincipal.setPreferredSize(new java.awt.Dimension(300, 500));
+        panelPrincipal.setPreferredSize(new java.awt.Dimension(1050, 600));
 
         javax.swing.GroupLayout panelPrincipalLayout = new javax.swing.GroupLayout(panelPrincipal);
         panelPrincipal.setLayout(panelPrincipalLayout);
         panelPrincipalLayout.setHorizontalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 1050, Short.MAX_VALUE)
         );
         panelPrincipalLayout.setVerticalGroup(
             panelPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+            .addGap(0, 600, Short.MAX_VALUE)
         );
 
-        pacientesJM.setText("Pacientes");
+        registroJM.setText("Registro");
 
-        pacientesJMI.setText("Lista Pacientes");
-        pacientesJMI.addActionListener(new java.awt.event.ActionListener() {
+        registroJMI.setText("Administrar Pacientes");
+        registroJMI.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                pacientesJMIActionPerformed(evt);
+                registroJMIActionPerformed(evt);
             }
         });
-        pacientesJM.add(pacientesJMI);
+        registroJM.add(registroJMI);
 
-        menuJMB.add(pacientesJM);
-
-        dietasJM.setText("Dietas");
-        dietasJM.setBorderPainted(false);
-
-        dietasJMI.setText("Lista Dietas");
-        dietasJM.add(dietasJMI);
-
-        menuJMB.add(dietasJM);
+        menuJMB.add(registroJM);
 
         comidasJM.setText("Comidas");
 
@@ -92,7 +82,7 @@ public class MenuJDP extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, 500, Short.MAX_VALUE)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -113,9 +103,16 @@ public class MenuJDP extends javax.swing.JFrame {
         panelPrincipal.moveToFront(menuIF);
     }//GEN-LAST:event_comidasJMIActionPerformed
 
-    private void pacientesJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pacientesJMIActionPerformed
-        
-    }//GEN-LAST:event_pacientesJMIActionPerformed
+    private void registroJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registroJMIActionPerformed
+        panelPrincipal.removeAll();
+        panelPrincipal.repaint();
+
+        registroIF = new RegistroIF();
+        registroIF.setVisible(true);
+
+        panelPrincipal.add(registroIF);
+        panelPrincipal.moveToFront(registroIF);
+    }//GEN-LAST:event_registroJMIActionPerformed
 
     private void ingredientesJMIActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ingredientesJMIActionPerformed
         panelPrincipal.removeAll();
@@ -147,13 +144,11 @@ public class MenuJDP extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu comidasJM;
     private javax.swing.JMenuItem comidasJMI;
-    private javax.swing.JMenu dietasJM;
-    private javax.swing.JMenuItem dietasJMI;
     private javax.swing.JMenu ingredientesJM;
     private javax.swing.JMenuItem ingredientesJMI;
     private javax.swing.JMenuBar menuJMB;
-    private javax.swing.JMenu pacientesJM;
-    private javax.swing.JMenuItem pacientesJMI;
     private javax.swing.JDesktopPane panelPrincipal;
+    private javax.swing.JMenu registroJM;
+    private javax.swing.JMenuItem registroJMI;
     // End of variables declaration//GEN-END:variables
 }

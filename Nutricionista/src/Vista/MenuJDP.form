@@ -4,31 +4,18 @@
   <NonVisualComponents>
     <Menu class="javax.swing.JMenuBar" name="menuJMB">
       <SubComponents>
-        <Menu class="javax.swing.JMenu" name="pacientesJM">
+        <Menu class="javax.swing.JMenu" name="registroJM">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Pacientes"/>
+            <Property name="text" type="java.lang.String" value="Registro"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="pacientesJMI">
+            <MenuItem class="javax.swing.JMenuItem" name="registroJMI">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Lista Pacientes"/>
+                <Property name="text" type="java.lang.String" value="Administrar Pacientes"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="pacientesJMIActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="registroJMIActionPerformed"/>
               </Events>
-            </MenuItem>
-          </SubComponents>
-        </Menu>
-        <Menu class="javax.swing.JMenu" name="dietasJM">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="Dietas"/>
-            <Property name="borderPainted" type="boolean" value="false"/>
-          </Properties>
-          <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="dietasJMI">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Lista Dietas"/>
-              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -88,7 +75,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="panelPrincipal" alignment="0" pref="500" max="32767" attributes="0"/>
+          <Component id="panelPrincipal" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
     <DimensionLayout dim="1">
@@ -104,19 +91,19 @@
           <Dimension value="[500, 500]"/>
         </Property>
         <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-          <Dimension value="[300, 500]"/>
+          <Dimension value="[1050, 600]"/>
         </Property>
       </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="500" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="1050" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
           <Group type="103" groupAlignment="0" attributes="0">
-              <EmptySpace min="0" pref="500" max="32767" attributes="0"/>
+              <EmptySpace min="0" pref="600" max="32767" attributes="0"/>
           </Group>
         </DimensionLayout>
       </Layout>

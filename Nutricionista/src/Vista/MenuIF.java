@@ -452,7 +452,6 @@ public class MenuIF extends javax.swing.JInternalFrame {
             Funciones.cleanField(panelDatosComida);
             Funciones.cleanField(panelDatosIng);
             resetTable();
-    //        Funciones.cleanField(panelPrincipal);
         }
     }//GEN-LAST:event_eliminarJBActionPerformed
 
@@ -542,12 +541,11 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private void resetTable() {
         int x = modeloT.getRowCount()-1;
         
-        for (int c = x; c > 0; c--) {
+        for (int c = x; c >= 0; c--) {
             modeloT.removeRow(c);
         }
     }
 
-    //CONTROLAR.
     private void precaucionCombos(JComboBox box) {
         DefaultComboBoxModel modeloD = new DefaultComboBoxModel(new String[]{"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"});
         DefaultComboBoxModel modeloC = new DefaultComboBoxModel(new String[]{"Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"});
@@ -572,7 +570,6 @@ public class MenuIF extends javax.swing.JInternalFrame {
         }
     }
     
-    //CONTROLAR QUE EL PACIENTE EXISTA DENTRO DE LA BASE DE DATOS.
     private Integer verificacion() {
         int count = 0;
         try 
