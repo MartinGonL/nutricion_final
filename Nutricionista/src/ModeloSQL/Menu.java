@@ -219,7 +219,6 @@ public class Menu {
 
     public void setSQLIngredientes(String nomComida, String nameI, float cantidadI) {
         String SQL = "INSERT INTO receta(NombreM, NombreI, cantidadIng) VALUES ('" + nomComida + "', '" + nameI + "', " + cantidadI + ")";
-        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -378,7 +377,7 @@ public class Menu {
         }
     }
     
-    private Integer getSQLID_Dieta(String dni) {
+    public Integer getSQLID_Dieta(String dni) {
         String SQL = "SELECT ID_Dieta FROM dieta WHERE dni=" + dni;
         try 
         {
@@ -390,10 +389,7 @@ public class Menu {
                 ID_Dieta = resultado.getInt("ID_Dieta");
             }
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) {}
         return ID_Dieta;
     }
     

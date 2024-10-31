@@ -76,15 +76,11 @@ public class Funciones {
      * @param jPanel 
      */
     public static void cleanField(JPanel jPanel) {
-        for (Component component : jPanel.getComponents()) {
-            if (component instanceof JTextField txt) {
-                txt = (JTextField) component;
-                txt.setText("");
-            }
-            
-            if (component instanceof JComboBox box) {
-                box = (JComboBox) component;
-                box.setSelectedIndex(-1);
+        for (Component component : jPanel.getComponents()) 
+        {
+            if (component instanceof JTextField txt) 
+            {
+                if (txt.isEnabled()) txt.setText("");
             }
         }
     }

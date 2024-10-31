@@ -5,7 +5,6 @@ import ModeloSQL.Menu;
 import Persistencia.Funciones;
 import java.awt.Component;
 import java.awt.HeadlessException;
-import java.awt.MenuComponent;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
@@ -23,7 +22,8 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private DefaultTableModel modeloT;
     
     private String FLAG;
-    private int contadorGlob = 5;
+    private int contadorComidas = 5;
+    private int contadorDias;
     
     public MenuIF() {
         initComponents();
@@ -298,28 +298,27 @@ public class MenuIF extends javax.swing.JInternalFrame {
             int filaSelect = tabla.getSelectedRow();
             String nombre = (String)tabla.getValueAt(filaSelect, 0);
 
-            if (FLAG.equals("ingrediente")) 
-            {
-                nombreIngJT.setText(nombre);
-            }
-            else 
-            {
-                nombreComidaJT.setText(nombre);
-                
-                setColumn("receta");
-                resetTable();
-                setRow("receta");
+            switch (FLAG) {
+                case "ingrediente" -> {
+                    nombreIngJT.setText(nombre);
+                }
+                case "comida" -> {
+                    nombreComidaJT.setText(nombre);
+                    FLAG = "receta";
+
+                    setColumn("receta");
+                    resetTable();
+                    setRow("receta");
+                }
             }
         }
         catch (HeadlessException ex) {}
     }//GEN-LAST:event_tablaMouseClicked
 
-    /*Falta 2° parte*/
     private void guardarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guardarJBActionPerformed
-        if (guardarJB.getText().equals("Crear") | eliminarJB.getText().equals("Cancelar")) 
+        if (guardarJB.getText().equals("Crear") | eliminarJB.getText().equals("Cancelar") & modificarJB.getText().equals("Finalizar")) 
         {
             eliminarJB.setText((eliminarJB.getText().equals("Eliminar")) ? "Cancelar" : "Eliminar");
-            
             if (eliminarJB.getText().equals("Cancelar")) 
             {
                 menu.SQLMenu(nombreComidaJT.getText());
@@ -328,39 +327,50 @@ public class MenuIF extends javax.swing.JInternalFrame {
                 setRow("ingrediente");
             }
             manejarPaneles();
-//            for (Component componente : panelDatosComida.getComponents()) 
-//            {
-//                componente.setEnabled(eliminarJB.getText().equals("Eliminar"));
-//            }
+            guardarJB.setVisible(eliminarJB.getText().equals("Eliminar"));
         }
         else 
         {
             boolean flag = Funciones.checkField(panelDatosComida);
-            if (flag) 
+            int ver = verificacion();
+            if (flag & ver == 3) 
             {
-                int count = (int)cantDiasJS.getValue();
-                if (contadorGlob > 0) 
+                contadorDias = (int)cantDiasJS.getValue();
+                if (contadorComidas > 0)
                 {
-                    contadorGlob = menu.estructurarDieta(contadorGlob, dniJT.getText(), nombreComidaJT.getText(), diaJCB.getSelectedItem().toString(), tipoComidaJCB.getSelectedItem().toString(), (int)porcionesJS.getValue());
-//                    precaucionTipoDeComida();
+                    contadorComidas = menu.estructurarDieta(contadorComidas, dniJT.getText(), nombreComidaJT.getText(), diaJCB.getSelectedItem().toString(), tipoComidaJCB.getSelectedItem().toString(), (int)porcionesJS.getValue());
+                    precaucionCombos(tipoComidaJCB);
                 }
-                else 
+                
+                diaJCB.setEnabled(contadorComidas == 0);
+                
+                if (contadorComidas == 0) 
                 {
-                    count--;
-                    cantDiasJS.setValue(count);
-                    contadorGlob = 5;
+                    precaucionCombos(diaJCB);
+                    
+                    contadorDias--;
+                    cantDiasJS.setValue(contadorDias);
+                    
+                    contadorComidas = 5;
                 }
-
-                dniJT.setEnabled(count == 0);
-                diaJCB.setEnabled(count == 0);
-                cantDiasJS.setEnabled(count == 0);
+                
+                eliminarJB.setText((contadorDias == 0) ? "Eliminar" : "Cancelar");
+                modificarJB.setEnabled(contadorDias == 0);
+                dniJT.setEnabled(contadorDias == 0);
+                cantDiasJS.setEnabled(contadorDias == 0);
+                porcionesJS.setValue(1);
+                
+                if (contadorDias == 0) 
+                {
+                    precaucionCombos(diaJCB);
+                    cantDiasJS.setValue(3);
+                }
             }
         }
     }//GEN-LAST:event_guardarJBActionPerformed
 
     private void agregarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarJBActionPerformed
         boolean flag = Funciones.checkField(panelDatosIng);
-        
         if (flag) 
         {
             menu.setSQLIngredientes(nombreComidaJT.getText(), nombreIngJT.getText(), Float.parseFloat(cantidadJT.getText()));
@@ -378,27 +388,27 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
     /*Falta 2° parte*/
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
-        if (modificarJB.getText().equals("Finalizar"))
+        TreeMap<String, Float> ingredientes = new TreeMap(menu.getSQLIngredientes(nombreComidaJT.getText()));
+        if (!ingredientes.isEmpty()) 
         {
-            menu.setSQLCaloriasValorTotal(nombreComidaJT.getText());
-            guardarJB.setText("Guardar");
-            modificarJB.setText("Modificar");
-
-            setColumn("comida");
-            resetTable();
-            setRow("comida");
-            
-            guardarJBActionPerformed(evt);
-        }
-        else 
-        {
-            if (contadorGlob > 0) 
+            if (modificarJB.getText().equals("Finalizar"))
             {
-                System.out.println(tipoComidaJCB.getName());
-                contadorGlob--;
-                precaucionTipoDeComida(tipoComidaJCB);
+                menu.setSQLCaloriasValorTotal(nombreComidaJT.getText());
+                guardarJBActionPerformed(evt);
+
+                guardarJB.setText("Guardar");
+                modificarJB.setText("Modificar");
+
+                FLAG = "comida";
+                setColumn("comida");
+                resetTable();
+                setRow("comida");
+            }
+            else 
+            {
             }
         }
+        else JOptionPane.showMessageDialog(rootPane, "La receta no tiene Ingredientes");
     }//GEN-LAST:event_modificarJBActionPerformed
 
     private void nombreComidaJTFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_nombreComidaJTFocusGained
@@ -421,16 +431,31 @@ public class MenuIF extends javax.swing.JInternalFrame {
         int respuesta = JOptionPane.showConfirmDialog(rootPane, (eliminarJB.getText().equals("Cancelar")) ? "Seguro que desea cancelar la operacion?" : "Seguro que desea eliminar el menu?");
         if (respuesta == 0) 
         {
-            Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
+            if (!modificarJB.getText().equals("Finalizar")) 
+            {
+                String idDieta = menu.getSQLID_Dieta(dniJT.getText()).toString();
+                Funciones.eliminarRegistro("colacion", "ID_Dieta", idDieta);
+                cantDiasJS.setValue(1);
+                nombreComidaJT.setText("--none--");
+                contadorDias = 0;
+                contadorComidas = 0;
+            }
+            else 
+            {
+                Funciones.eliminarRegistro("menu", "NombreM", nombreComidaJT.getText());
+                guardarJB.setText("Guardar");
+            }
+
+            if (eliminarJB.getText().equals("Cancelar")) guardarJBActionPerformed(evt);
+
+            FLAG = "comida";
+            Funciones.cleanField(panelDatosComida);
+            Funciones.cleanField(panelDatosIng);
+            resetTable();
+    //        Funciones.cleanField(panelPrincipal);
         }
-        if (eliminarJB.getText().equals("Cancelar")) guardarJBActionPerformed(evt);
-        Funciones.cleanField(panelDatosComida);
-        Funciones.cleanField(panelDatosIng);
-        resetTable();
-//        Funciones.cleanField(panelPrincipal);
     }//GEN-LAST:event_eliminarJBActionPerformed
 
-    //PROBAR.
     private void quitarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quitarJBActionPerformed
         Funciones.eliminarRegistro("receta", "NombreI", nombreIngJT.getText());
         
@@ -441,7 +466,6 @@ public class MenuIF extends javax.swing.JInternalFrame {
         Funciones.cleanField(panelDatosIng);
     }//GEN-LAST:event_quitarJBActionPerformed
 
-    //PROBAR.
     private void limpiarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_limpiarJBActionPerformed
         Funciones.cleanField(panelDatosIng);
         Funciones.cleanField(panelDatosComida);
@@ -522,14 +546,14 @@ public class MenuIF extends javax.swing.JInternalFrame {
             modeloT.removeRow(c);
         }
     }
-    
-    private void precaucionTipoDeComida(JComboBox box) {
-        String[] TC = {"Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"};
-        String[] DIA = {"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"};
-        
-        DefaultComboBoxModel modelo = new DefaultComboBoxModel((box.getName().equals("dia")) ? DIA : TC);
 
-        if (contadorGlob == 0) box.setModel(modelo);
+    //CONTROLAR.
+    private void precaucionCombos(JComboBox box) {
+        DefaultComboBoxModel modeloD = new DefaultComboBoxModel(new String[]{"Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado", "Domingo"});
+        DefaultComboBoxModel modeloC = new DefaultComboBoxModel(new String[]{"Desayuno", "Almuerzo", "Snack", "Merienda", "Cena"});
+
+        if (contadorDias == 0 & box.getName().equals("dia")) box.setModel(modeloD);
+        else if (contadorComidas == 0 & box.getName().equals("tipoComida")) box.setModel(modeloC);
         else box.removeItem(box.getSelectedItem());
     }
     
@@ -546,6 +570,30 @@ public class MenuIF extends javax.swing.JInternalFrame {
         {
             componente.setEnabled(!eliminarJB.getText().equals("Eliminar"));
         }
+    }
+    
+    //CONTROLAR QUE EL PACIENTE EXISTA DENTRO DE LA BASE DE DATOS.
+    private Integer verificacion() {
+        int count = 0;
+        try 
+        {
+            Integer ID_Dieta = menu.getSQLID_Dieta(dniJT.getText());
+            
+            if (dniJT.getText().length() >= 7) count++;
+            else JOptionPane.showMessageDialog(rootPane, "Ingrese un numero valido. El que ingreso le faltan caracteres.");
+            
+            if (ID_Dieta != null) count++;
+            else JOptionPane.showMessageDialog(rootPane, "DNI erroneo.\nQuizas el paciente no esta registrado, o aun no se le a asignado una Dieta.");
+            
+            if (Integer.parseInt(dniJT.getText())*0 == 0) count++;
+        } 
+        catch (NumberFormatException ex) 
+        {
+            count = 0;
+            JOptionPane.showMessageDialog(rootPane, "El campo DNI solo acepta numeros.");
+        }
+        catch (HeadlessException ex) {}
+        return count;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
