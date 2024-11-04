@@ -23,7 +23,7 @@ public class Dieta {
     
     private Integer ID_Dieta;
     private Integer DNI;
-    private String nombre;
+    private String detalle;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Float pesoFinal;
@@ -39,6 +39,17 @@ public class Dieta {
         this.conexion = Conexion.getConexion();
     }
 
+    public Dieta(Integer ID_Dieta, Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal, Float totalDeCalorias) {
+        this.ID_Dieta = ID_Dieta;
+        this.DNI = DNI;
+        this.detalle = detalle;
+        this.fechaInicio = fechaInicio;
+        this.fechaFin = fechaFin;
+        this.pesoFinal = pesoFinal;
+        this.totalDeCalorias = totalDeCalorias;
+        this.conexion = Conexion.getConexion();
+    }
+
     public Integer getID_Dieta() {
         return ID_Dieta;
     }
@@ -48,7 +59,7 @@ public class Dieta {
     }
 
     public String getNombre() {
-        return nombre;
+        return detalle;
     }
 
     public LocalDate getFechaInicio() {
@@ -79,7 +90,7 @@ public class Dieta {
     public int hashCode() {
         int hash = 7;
         hash = 97 * hash + Objects.hashCode(this.ID_Dieta);
-        hash = 97 * hash + Objects.hashCode(this.nombre);
+        hash = 97 * hash + Objects.hashCode(this.detalle);
         hash = 97 * hash + Objects.hashCode(this.fechaInicio);
         hash = 97 * hash + Objects.hashCode(this.fechaFin);
         hash = 97 * hash + Objects.hashCode(this.pesoFinal);
@@ -101,7 +112,7 @@ public class Dieta {
             return false;
         }
         final Dieta other = (Dieta) obj;
-        if (!Objects.equals(this.nombre, other.nombre)) {
+        if (!Objects.equals(this.detalle, other.detalle)) {
             return false;
         }
         if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
@@ -128,9 +139,10 @@ public class Dieta {
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
     /*Contructor SQL*/
-    public void SQLDieta(Integer DNI, String nombre, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal) {
-        String SQL = "INSERT INTO Dieta(dni, nombre, fechaInicio, fechaFin, pesoInicial, pesoFinal, DNI) " + 
-                     "VALUES (" + DNI + ", '" + nombre + "', '" + fechaInicio + "', '" + fechaFin + "', " + pesoFinal + ")";
+    public void SQLDieta(Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin) {
+        String SQL = "INSERT INTO dieta(dni, detalle, fechaIni, fechaFin) " + 
+                     "VALUES (" + DNI + ", '" + detalle + "', '" + fechaInicio + "', '" + fechaFin + "')";
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -145,6 +157,35 @@ public class Dieta {
         }
     }
 
+    public ArrayList<Dieta> getAll(String dni) {
+        ArrayList<Dieta> dietas = new ArrayList();
+        
+        String SQL = "SELECT * FROM dieta WHERE dni LIKE '" + dni + "%'";
+        System.out.println(SQL);
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                int idDiet = resultado.getInt("ID_Dieta");
+                int dni1 = resultado.getInt("dni");
+                String det = resultado.getString("detalle");
+                LocalDate fI = LocalDate.parse(resultado.getString("fechaIni"));
+                LocalDate fF = LocalDate.parse(resultado.getString("fechaFin"));
+                float pF = resultado.getFloat("pesoFinal");
+                float totCal = resultado.getFloat("totalCalorias");
+                
+                Dieta dieta = new Dieta(idDiet, dni1, det, fI, fF, pF, totCal);
+                dietas.add(dieta);
+            }
+        } 
+        catch (SQLException ex){}
+        
+        return dietas;
+    }
+    
     public Integer getSQLID_Dieta(String dni) {
         String SQL = "SELECT ID_Dieta FROM Dieta WHERE dni=" + dni;
         try 
@@ -174,7 +215,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                nombre = resultado.getString("nombre");
+                detalle = resultado.getString("nombre");
             }
         } 
         catch (SQLException ex) 
@@ -182,7 +223,7 @@ public class Dieta {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
         
-        return nombre;
+        return detalle;
     }
 
     public void setSQLNombre(String nombre, String dni) {
@@ -442,11 +483,12 @@ public class Dieta {
 
     //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
+    /*Controlar este metodo...*/
     public void cargarPesoYfinalizar(float pesoFin, String dni) {
-        LocalDate fechaActual = LocalDate.now();
+        String fechaActual = LocalDate.now().toString();
         getSQLFechaFin(dni);
         
-        if (fechaActual.compareTo(fechaFin) >= 0) 
+        if (fechaActual.compareTo(fechaFin.toString()) >= 0) 
         {
             setSQLPesoFinal(pesoFinal, dni);
         }

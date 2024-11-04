@@ -43,9 +43,9 @@ public class Funciones {
 
         for (Component component : jPanel.getComponents()) 
         {
-            if (component instanceof JTextField jTextField) 
+            if (component instanceof JTextField txt) 
             {
-                flag = !jTextField.getText().equals("");
+                if (txt.isEnabled() & txt.isVisible()) flag = !txt.getText().equals("");
             }
         }
 

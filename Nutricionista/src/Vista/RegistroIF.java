@@ -1,9 +1,22 @@
 package Vista;
 
+import ModeloSQL.Dieta;
+import ModeloSQL.Paciente;
+import Persistencia.Funciones;
+import com.toedter.calendar.JDateChooser;
+import java.time.LocalDate;
+//import java.util.ArrayList;
+import javax.swing.JOptionPane;
+
 public class RegistroIF extends javax.swing.JInternalFrame {
 
+    private final Paciente paciente;
+    private final Dieta dieta;
+    
     public RegistroIF() {
         initComponents();
+        this.paciente = new Paciente();
+        this.dieta = new Dieta();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -31,14 +44,14 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         labelPesoFinal = new javax.swing.JLabel();
         pesoFinalJTF = new javax.swing.JTextField();
         panelDatosDieta = new javax.swing.JPanel();
-        nombreDietaJTF = new javax.swing.JTextField();
         labelCaloriasTotal = new javax.swing.JLabel();
         labelNombreDieta1 = new javax.swing.JLabel();
         fechaIniJD = new com.toedter.calendar.JDateChooser();
         labelFechaInicio = new javax.swing.JLabel();
-        jDateChooser2 = new com.toedter.calendar.JDateChooser();
+        fechaFinJD = new com.toedter.calendar.JDateChooser();
         labelFechaFin = new javax.swing.JLabel();
-        labelNombreDieta = new javax.swing.JLabel();
+        labelDetalle = new javax.swing.JLabel();
+        detalleJTF = new javax.swing.JTextField();
         panelBotones = new javax.swing.JPanel();
         agregarJB = new javax.swing.JButton();
         modificarJB = new javax.swing.JButton();
@@ -70,27 +83,27 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         labelNombrePac.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelNombrePac.setText("Nombre:");
-        panelDatosPaciente.add(labelNombrePac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 70, 30));
+        panelDatosPaciente.add(labelNombrePac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, 30));
 
         nombrePacJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         nombrePacJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelDatosPaciente.add(nombrePacJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 152, 30));
+        panelDatosPaciente.add(nombrePacJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 152, 30));
 
         labelApellido.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelApellido.setText("Apellido:");
-        panelDatosPaciente.add(labelApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, 30));
+        panelDatosPaciente.add(labelApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 70, 30));
 
         apellidoJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         apellidoJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelDatosPaciente.add(apellidoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 152, 30));
+        panelDatosPaciente.add(apellidoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 152, 30));
 
         labelDNI.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelDNI.setText("DNI:");
-        panelDatosPaciente.add(labelDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 90, 40, 30));
+        panelDatosPaciente.add(labelDNI, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 40, 30));
 
         dniJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dniJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelDatosPaciente.add(dniJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 152, 30));
+        panelDatosPaciente.add(dniJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 152, 30));
 
         labelEdad.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelEdad.setText("Edad:");
@@ -139,18 +152,14 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosDieta.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosDieta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        nombreDietaJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        nombreDietaJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelDatosDieta.add(nombreDietaJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 152, 30));
-
         labelCaloriasTotal.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelCaloriasTotal.setText("Calorias Totales:");
-        panelDatosDieta.add(labelCaloriasTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 120, 30));
+        panelDatosDieta.add(labelCaloriasTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 110, 30));
 
         labelNombreDieta1.setBackground(new java.awt.Color(0, 102, 102));
         labelNombreDieta1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         labelNombreDieta1.setText("0");
-        panelDatosDieta.add(labelNombreDieta1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 130, 150, 30));
+        panelDatosDieta.add(labelNombreDieta1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 130, 140, 30));
 
         fechaIniJD.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosDieta.add(fechaIniJD, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, 152, -1));
@@ -159,16 +168,20 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         labelFechaInicio.setText("Fecha de Inicio:");
         panelDatosDieta.add(labelFechaInicio, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 110, 30));
 
-        jDateChooser2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        panelDatosDieta.add(jDateChooser2, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 152, -1));
+        fechaFinJD.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelDatosDieta.add(fechaFinJD, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 90, 152, -1));
 
         labelFechaFin.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         labelFechaFin.setText("Fecha de Finalizacion:");
         panelDatosDieta.add(labelFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 150, 30));
 
-        labelNombreDieta.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelNombreDieta.setText("Nombre:");
-        panelDatosDieta.add(labelNombreDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 70, 30));
+        labelDetalle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        labelDetalle.setText("Detalle:");
+        panelDatosDieta.add(labelDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 60, 30));
+
+        detalleJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        detalleJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        panelDatosDieta.add(detalleJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 152, 30));
 
         jPanel2.add(panelDatosDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, 320, 170));
 
@@ -177,10 +190,20 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         agregarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         agregarJB.setText("Agregar");
+        agregarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                agregarJBActionPerformed(evt);
+            }
+        });
         panelBotones.add(agregarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 10, 110, -1));
 
         modificarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         modificarJB.setText("Modificar");
+        modificarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modificarJBActionPerformed(evt);
+            }
+        });
         panelBotones.add(modificarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 110, -1));
 
         eliminarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -230,15 +253,72 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void agregarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarJBActionPerformed
+        boolean flagPaciente = Funciones.checkField(panelDatosPaciente);
+        String fechaIni = traducirDate(fechaIniJD);
+        String fechaFin = traducirDate(fechaFinJD);
+        if (flagPaciente & !fechaIni.equals("") & !fechaFin.equals("") & !detalleJTF.getText().equals("")) 
+        {
+            String nombre = nombrePacJTF.getText();
+            String apellido = apellidoJTF.getText();
+            int DNI = Integer.parseInt(dniJTF.getText());
+            int edad = Integer.parseInt(edadJTF.getText());
+            float altura = Float.parseFloat(alturaJTF.getText());
+            float pesoA = Float.parseFloat(pesoActualJTF.getText());
+            float pesoB = Float.parseFloat(pesoBuscadoJTF.getText());
+            
+            paciente.SQLPaciente(DNI, nombre, apellido, edad, altura, pesoA, pesoB);
+            
+            DNI = Integer.parseInt(dniJTF.getText());
+            LocalDate fIni = LocalDate.parse(fechaIni);
+            LocalDate fFin = LocalDate.parse(fechaFin);
+            
+            dieta.SQLDieta(DNI, detalleJTF.getText(), fIni, fFin);
+        }
+        else JOptionPane.showMessageDialog(rootPane, "Asegurece de completar los datos de Paciente y Dieta.");
+//            ArrayList<Paciente> pacientes = new ArrayList(paciente.getAll(dniJTF.getText()));
+//            if (!pacientes.isEmpty()) 
+//            {
+//                ArrayList<Dieta> dietas = new ArrayList(dieta.getAll(dniJTF.getText()));
+//                
+//            }
+    }//GEN-LAST:event_agregarJBActionPerformed
+
+    private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
+        // TODO add your handling code here:
+        System.out.println(fechaIniJD.getCalendar());
+        
+        String dia = String.valueOf(fechaIniJD.getDate().getDate());
+        String mes = String.valueOf(fechaIniJD.getDate().getMonth()+1);
+        String anio = String.valueOf(fechaIniJD.getDate().getYear()+1900);
+        String fecha = anio + "-" + mes + "-" + dia;
+        System.out.println(fecha);
+    }//GEN-LAST:event_modificarJBActionPerformed
+
+    private String traducirDate(JDateChooser fecha) {
+        String localDate = "";
+        
+        if (fecha.getCalendar() != null) 
+        {
+            String dia = String.valueOf(fechaIniJD.getDate().getDate());
+            String mes = String.valueOf(fechaIniJD.getDate().getMonth()+1);
+            String anio = String.valueOf(fechaIniJD.getDate().getYear()+1900);
+            
+            localDate = anio + "-" + mes + "-" + dia;
+        }
+        return localDate;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton agregarJB;
     private javax.swing.JTextField alturaJTF;
     private javax.swing.JTextField apellidoJTF;
+    private javax.swing.JTextField detalleJTF;
     private javax.swing.JTextField dniJTF;
     private javax.swing.JTextField edadJTF;
     private javax.swing.JButton eliminarJB;
+    private com.toedter.calendar.JDateChooser fechaFinJD;
     private com.toedter.calendar.JDateChooser fechaIniJD;
-    private com.toedter.calendar.JDateChooser jDateChooser2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane2;
@@ -246,11 +326,11 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelApellido;
     private javax.swing.JLabel labelCaloriasTotal;
     private javax.swing.JLabel labelDNI;
+    private javax.swing.JLabel labelDetalle;
     private javax.swing.JLabel labelDieta;
     private javax.swing.JLabel labelEdad;
     private javax.swing.JLabel labelFechaFin;
     private javax.swing.JLabel labelFechaInicio;
-    private javax.swing.JLabel labelNombreDieta;
     private javax.swing.JLabel labelNombreDieta1;
     private javax.swing.JLabel labelNombrePac;
     private javax.swing.JLabel labelPaciente;
@@ -259,7 +339,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private javax.swing.JLabel labelPesoFinal;
     private javax.swing.JButton limpiarJB;
     private javax.swing.JButton modificarJB;
-    private javax.swing.JTextField nombreDietaJTF;
     private javax.swing.JTextField nombrePacJTF;
     private javax.swing.JPanel panelBotones;
     private javax.swing.JPanel panelDatosDieta;
@@ -270,3 +349,4 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }
+/*Ver funcion de eliminacion de MenuIF*/

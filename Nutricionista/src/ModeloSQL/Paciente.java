@@ -145,6 +145,35 @@ public class Paciente {
         }
     }
 
+    public ArrayList<Paciente> getAll(String dni) {
+        ArrayList<Paciente> pacientes = new ArrayList();
+        
+        String SQL = "SELECT * FROM paciente WHERE dni LIKE '" + dni + "%'";
+        System.out.println(SQL);
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                String nom = resultado.getString("nombre");
+                String ape = resultado.getString("apellido");
+                int dni1 = resultado.getInt("dni");
+                int ed = resultado.getInt("edad");
+                float alt = resultado.getFloat("altura");
+                float pA = resultado.getFloat("pesoActual");
+                float pB = resultado.getFloat("pesoBuscado");
+                
+                Paciente paciente = new Paciente(dni1, nom, ape, ed, alt, pA, pB);
+                pacientes.add(paciente);
+            }
+        } 
+        catch (SQLException ex){}
+        
+        return pacientes;
+    }
+    
     public String getSQLNombre(String dni) {
         String SQL = "SELECT nombre FROM Paciente WHERE dni=" + dni;
         try 
