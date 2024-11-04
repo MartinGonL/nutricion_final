@@ -2,15 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Menu.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/MenuIF.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Persistencia/Funciones.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Dieta.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Paciente.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/IngredienteIF.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Ingrediente.java</file>
-            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/MenuJDP.java</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>
