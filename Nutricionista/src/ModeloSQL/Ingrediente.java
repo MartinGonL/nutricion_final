@@ -12,7 +12,6 @@ import java.util.Objects;
 
 import javax.swing.JOptionPane;
 
-
 public class Ingrediente {
 
     private String nombre;

@@ -94,17 +94,8 @@ public class Funciones {
         conexion = Conexion.getConexion();
         String SQL = "DELETE FROM " + nombreTabla + " WHERE " + nombreID + "=";
         
-        try 
-        {
-            if (Integer.parseInt(valorID)*0 == 0) 
-            {
-                SQL += valorID;
-            }
-        } 
-        catch (NumberFormatException ex) 
-        {
-            SQL += "'" + valorID + "'";
-        }
+        try { if (Integer.parseInt(valorID)*0 == 0) SQL += valorID; } 
+        catch (NumberFormatException ex) { SQL += "'" + valorID + "'"; }
         System.out.println(SQL);
         try
         {

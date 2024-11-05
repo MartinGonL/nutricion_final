@@ -431,7 +431,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         int respuesta = JOptionPane.showConfirmDialog(rootPane, (eliminarJB.getText().equals("Cancelar")) ? "Seguro que desea cancelar la operacion?" : "Seguro que desea eliminar el menu?");
         if (respuesta == 0) 
         {
-            if (!modificarJB.getText().equals("Finalizar")) 
+            if (eliminarJB.getText().equals("Cancelar") & !FLAG.equals("ingrediente")) 
             {
                 String idDieta = menu.getSQLID_Dieta(dniJT.getText()).toString();
                 Funciones.eliminarRegistro("colacion", "ID_Dieta", idDieta);

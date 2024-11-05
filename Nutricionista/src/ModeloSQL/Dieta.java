@@ -58,7 +58,7 @@ public class Dieta {
         return DNI;
     }
 
-    public String getNombre() {
+    public String getDetalle() {
         return detalle;
     }
 
@@ -142,7 +142,7 @@ public class Dieta {
     public void SQLDieta(Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin) {
         String SQL = "INSERT INTO dieta(dni, detalle, fechaIni, fechaFin) " + 
                      "VALUES (" + DNI + ", '" + detalle + "', '" + fechaInicio + "', '" + fechaFin + "')";
-        System.out.println(SQL);
+        
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -161,7 +161,7 @@ public class Dieta {
         ArrayList<Dieta> dietas = new ArrayList();
         
         String SQL = "SELECT * FROM dieta WHERE dni LIKE '" + dni + "%'";
-        System.out.println(SQL);
+        
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -206,8 +206,8 @@ public class Dieta {
         return ID_Dieta;
     }
 
-    public String getSQLNombre(String dni) {
-        String SQL = "SELECT nombre FROM Dieta WHERE dni=" + dni;
+    public String getSQLDetalle(String dni) {
+        String SQL = "SELECT detalle FROM Dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -215,7 +215,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                detalle = resultado.getString("nombre");
+                detalle = resultado.getString("detalle");
             }
         } 
         catch (SQLException ex) 
@@ -226,8 +226,8 @@ public class Dieta {
         return detalle;
     }
 
-    public void setSQLNombre(String nombre, String dni) {
-        String SQL = "UPDATE Dieta SET nombre='" + nombre + "' WHERE dni=" + dni;
+    public void setSQLDetalle(String detalle, String dni) {
+        String SQL = "UPDATE Dieta SET detalle='" + detalle + "' WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

@@ -130,7 +130,7 @@ public class Paciente {
     public void SQLPaciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado) {
         String SQL = "INSERT INTO paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado) " + 
                      "VALUES (" + DNI + ", '" + nombre + "', '" + apellido + "', " + edad + ", " + altura + ", " + pesoActual + ", " + pesoBuscado + ")";
-        System.out.println(SQL);
+        
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -149,7 +149,7 @@ public class Paciente {
         ArrayList<Paciente> pacientes = new ArrayList();
         
         String SQL = "SELECT * FROM paciente WHERE dni LIKE '" + dni + "%'";
-        System.out.println(SQL);
+        
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
