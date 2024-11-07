@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 06-11-2024 a las 23:39:49
+-- Tiempo de generación: 08-11-2024 a las 00:40:19
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -20,8 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Base de datos: `nutricionista`
 --
-CREATE DATABASE IF NOT EXISTS `nutricionista` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-USE `nutricionista`;
 
 -- --------------------------------------------------------
 
@@ -46,12 +44,24 @@ CREATE TABLE `colacion` (
 CREATE TABLE `dieta` (
   `ID_Dieta` int(11) NOT NULL,
   `dni` int(11) NOT NULL,
-  `nombre` varchar(50) NOT NULL,
+  `detalle` varchar(200) NOT NULL,
   `pesoFinal` float DEFAULT NULL,
   `fechaFin` date NOT NULL,
   `fechaIni` date NOT NULL,
-  `totalCalorias` float NOT NULL
+  `totalCalorias` float DEFAULT NULL,
+  `estadoDieta` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `dieta`
+--
+
+INSERT INTO `dieta` (`ID_Dieta`, `dni`, `detalle`, `pesoFinal`, `fechaFin`, `fechaIni`, `totalCalorias`, `estadoDieta`) VALUES
+(1, 46041451, 'ganar peso', NULL, '2024-11-11', '2024-11-07', 0, 0),
+(2, 77999888, 'ganar peso', NULL, '2024-11-15', '2024-11-07', 0, 0),
+(4, 33333333, 'subise', NULL, '2024-11-21', '2024-11-14', 0, 0),
+(5, 38777616, 'bajar', NULL, '2024-11-08', '2024-11-07', 0, 0),
+(6, 35877616, 'bajarpeso', NULL, '2024-11-22', '2024-11-15', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -175,16 +185,26 @@ CREATE TABLE `paciente` (
   `pesoBuscado` float NOT NULL,
   `pesoActual` float NOT NULL,
   `altura` float NOT NULL,
-  `edad` int(11) NOT NULL
+  `edad` int(11) NOT NULL,
+  `estadoPaciente` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `paciente`
 --
 
-INSERT INTO `paciente` (`dni`, `nombre`, `apellido`, `pesoBuscado`, `pesoActual`, `altura`, `edad`) VALUES
-(46041451, 'simon', 'perez', 80, 85, 1.83, 20),
-(77999888, 'martin', 'perez', 80, 89, 1.8, 20);
+INSERT INTO `paciente` (`dni`, `nombre`, `apellido`, `pesoBuscado`, `pesoActual`, `altura`, `edad`, `estadoPaciente`) VALUES
+(20333222, 'junco', 'asdas', 78, 70, 1.68, 30, 0),
+(33333333, 'martin', 'asdas', 75, 70, 1.6, 30, 0),
+(35877616, 'martin', 'lucero', 75, 78, 1.84, 78, 0),
+(38419062, 'maria', 'lola', 71, 84, 1.84, 30, 0),
+(38419063, 'maria', 'lola', 71, 84, 1.8, 30, 0),
+(38777616, 'mayra', 'gatica', 70, 84, 1.72, 34, 0),
+(40400400, 'juan', 'jon', 60, 90, 1.42, 55, 0),
+(44444444, 'mama', 'asdas', 70, 80, 1.7, 50, 0),
+(46041451, 'simon', 'perez', 80, 85, 1.83, 20, 0),
+(54877619, 'jujuy', 'jojjo', 90, 65, 1.89, 33, 0),
+(77999888, 'martin', 'perez', 80, 89, 1.8, 20, 0);
 
 -- --------------------------------------------------------
 
@@ -327,7 +347,7 @@ ALTER TABLE `receta`
 -- AUTO_INCREMENT de la tabla `dieta`
 --
 ALTER TABLE `dieta`
-  MODIFY `ID_Dieta` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID_Dieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT de la tabla `paciente`
