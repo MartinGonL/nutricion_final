@@ -198,8 +198,8 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosDieta.add(labelFechaFin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 150, 30));
 
         labelDetalle.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        labelDetalle.setText("Detalle:");
-        panelDatosDieta.add(labelDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 10, 60, 30));
+        labelDetalle.setText("Objetivo:");
+        panelDatosDieta.add(labelDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 60, 30));
 
         detalleJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         detalleJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -455,12 +455,17 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 pacientes.get(c).getAltura(),
                 pacientes.get(c).getPesoActual(),
                 pacientes.get(c).getPesoBuscado(),
-                dietas.get(c).getDetalle(),
-                dietas.get(c).getFechaInicio(),
-                dietas.get(c).getFechaFin(),
+                
             });
+             for (int d = 0; d < dietas.size(); d++)
+            {
+                modeloT.addRow(new Object [] {
+                    dietas.get(d).getDetalle(),
+                    dietas.get(d).getFechaInicio(),
+                    dietas.get(d).getFechaFin(),
+                });
+            }
         }
-        
         tabla.setModel(modeloT);
     }
     
