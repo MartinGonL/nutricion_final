@@ -1,8 +1,3 @@
-/**
- * Esta calse fue adaptada para interactuar con una BDD. Por lo que su principal objetivo es la recuperacion y modificacion de datos.
- * 
- * El metodo 'addRenglon()' fue descartado devido a la modificacion realizada a los metodos getter y setter.
- */
 package ModeloSQL;
 
 import Persistencia.Conexion;
@@ -29,9 +24,12 @@ public class Dieta {
     private Float pesoFinal;
     private Float totalDeCalorias;
     private Paciente paciente;
+    private Boolean estadoDieta; 
     private final ArrayList<Menu> dietaDiaria = new ArrayList();
 
     private final Connection conexion;
+
+
     private PreparedStatement sentencia;
     private ResultSet resultado;
     
@@ -39,7 +37,7 @@ public class Dieta {
         this.conexion = Conexion.getConexion();
     }
 
-    public Dieta(Integer ID_Dieta, Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal, Float totalDeCalorias) {
+    public Dieta(Integer ID_Dieta, Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal, Float totalDeCalorias, Boolean estadoDieta) {
         this.ID_Dieta = ID_Dieta;
         this.DNI = DNI;
         this.detalle = detalle;
@@ -47,7 +45,16 @@ public class Dieta {
         this.fechaFin = fechaFin;
         this.pesoFinal = pesoFinal;
         this.totalDeCalorias = totalDeCalorias;
-        this.conexion = Conexion.getConexion();
+        this.estadoDieta = estadoDieta;
+        this.conexion = Conexion.getConexion();        
+    }
+
+    public Boolean getEstadoDieta() {
+        return estadoDieta;
+    }
+
+    public void setEstadoDieta(Boolean estadoDieta) {
+        this.estadoDieta = estadoDieta;
     }
 
     public Integer getID_Dieta() {
@@ -138,6 +145,7 @@ public class Dieta {
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
     
+    
     /*Contructor SQL*/
     public void SQLDieta(Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin) {
         String SQL = "INSERT INTO dieta(dni, detalle, fechaIni, fechaFin) " + 
@@ -176,8 +184,8 @@ public class Dieta {
                 LocalDate fF = LocalDate.parse(resultado.getString("fechaFin"));
                 float pF = resultado.getFloat("pesoFinal");
                 float totCal = resultado.getFloat("totalCalorias");
-                
-                Dieta dieta = new Dieta(idDiet, dni1, det, fI, fF, pF, totCal);
+                boolean estado = resultado.getBoolean("estadoDieta");
+                Dieta dieta = new Dieta(idDiet, dni1, det, fI, fF, pF, totCal,estado);
                 dietas.add(dieta);
             }
         } 
@@ -385,7 +393,41 @@ public class Dieta {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
+    // metodo cargado por martin!
+        public Boolean  getSQLEstadoDieta(String dni) {
+        String SQL = "SELECT estadoDieta FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                estadoDieta = resultado.getBoolean("estadoDieta");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+      return estadoDieta;         
+    }
 
+        public void setSQLEstadoDieta(Boolean estadoDieta, String dni) {
+         String SQL = "UPDATE Dieta SET estadoDieta='" + estadoDieta + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+    }
+        // aca termina lo escrito por martin
     public Paciente getSQLPaciente(String dni) {
         String SQL = "SELECT dni, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Dieta a JOIN Paciente b (ON a.dni=b.dni) WHERE dni=" + dni;
         try 
@@ -402,8 +444,8 @@ public class Dieta {
                 float altura = resultado.getFloat("altura");
                 float pesoActual = resultado.getFloat("pesoActual");
                 float pesoBuscado = resultado.getFloat("pesoBuscado");
-                
-                paciente = new Paciente(dni1, name, apellido, edad, altura, pesoActual, pesoBuscado);
+                boolean estadoPaciente = resultado.getBoolean("estadoPaciente"); //martin lo agrego!
+                paciente = new Paciente(dni1, name, apellido, edad, altura, pesoActual, pesoBuscado, estadoPaciente);
             }
         } 
         catch (SQLException ex) 
