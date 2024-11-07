@@ -444,7 +444,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private void setRow() {
         ArrayList<Paciente> pacientes = new ArrayList(paciente.getAll(dniJTF.getText()));
         ArrayList<Dieta> dietas = new ArrayList(dieta.getAll(dniJTF.getText()));
-
+       int numero = 0;
         for (int c = 0; c < pacientes.size(); c++)
         {
             modeloT.addRow(new Object[]{
@@ -456,15 +456,11 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 pacientes.get(c).getPesoActual(),
                 pacientes.get(c).getPesoBuscado(),
                 
+                dietas.get(c).getDetalle(),
+                dietas.get(c).getFechaInicio(),
+                dietas.get(c).getFechaFin(),
+                
             });
-             for (int d = 0; d < dietas.size(); d++)
-            {
-                modeloT.addRow(new Object [] {
-                    dietas.get(d).getDetalle(),
-                    dietas.get(d).getFechaInicio(),
-                    dietas.get(d).getFechaFin(),
-                });
-            }
         }
         tabla.setModel(modeloT);
     }
