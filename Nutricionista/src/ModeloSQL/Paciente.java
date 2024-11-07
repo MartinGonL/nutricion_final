@@ -26,6 +26,7 @@ public class Paciente {
     private Float altura;
     private Float pesoActual;
     private Float pesoBuscado;
+    private Boolean estadoPaciente;
     
     private Connection conexion;
     private PreparedStatement sentencia;
@@ -35,7 +36,7 @@ public class Paciente {
         this.conexion = Conexion.getConexion();
     }
 
-    public Paciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado) {
+    public Paciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado, Boolean estadoPaciente) {
         this.DNI = DNI;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -43,6 +44,15 @@ public class Paciente {
         this.altura = altura;
         this.pesoActual = pesoActual;
         this.pesoBuscado = pesoBuscado;
+        this.estadoPaciente = estadoPaciente;
+    }
+
+    public Boolean getEstadoPaciente() {
+        return estadoPaciente;
+    }
+
+    public void setEstadoPaciente(Boolean estadoPaciente) {
+        this.estadoPaciente = estadoPaciente;
     }
 
     public Integer getDNI() {
@@ -164,8 +174,8 @@ public class Paciente {
                 float alt = resultado.getFloat("altura");
                 float pA = resultado.getFloat("pesoActual");
                 float pB = resultado.getFloat("pesoBuscado");
-                
-                Paciente paciente = new Paciente(dni1, nom, ape, ed, alt, pA, pB);
+                boolean estado = resultado.getBoolean("estadoPaciente");
+                Paciente paciente = new Paciente(dni1, nom, ape, ed, alt, pA, pB,estado);
                 pacientes.add(paciente);
             }
         } 
@@ -383,7 +393,45 @@ public class Paciente {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
+        // metodo cargado por martin!
+        public Boolean  getSQLEstadoPaciente(String dni) {
+        String SQL = "SELECT estadoPaciente FROM Dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                estadoPaciente = resultado.getBoolean("estadoPaciente");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+      return estadoPaciente;         
+    }
 
+        public void setSQLEstadoPaciente(Boolean estadoDieta, String dni) {
+         String SQL = "UPDATE Dieta SET estadoPaciente='" + estadoPaciente + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+    }
+        // aca termina lo escrito por martin
+    
+    
+    
+    
     //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
     public Float seAcercaAlPeso(String dni, Float pesoAct) {
@@ -431,8 +479,9 @@ public class Paciente {
                 altura = resultado.getFloat("altura");
                 pesoActual = resultado.getFloat("pesoActual");
                 pesoBuscado = resultado.getFloat("pesoBuscado");
+                estadoPaciente = resultado.getBoolean("estadoPaciente"); //agregado por martin!!
                 
-                Paciente paciente = new Paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado);
+                Paciente paciente = new Paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado, estadoPaciente);
                 
                 pacientes.add(paciente);
             }
