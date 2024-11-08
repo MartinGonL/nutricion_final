@@ -97,6 +97,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelNombrePac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, 30));
 
         nombrePacJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        nombrePacJTF.setText("john");
         nombrePacJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(nombrePacJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 152, 30));
 
@@ -105,6 +106,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 70, 30));
 
         apellidoJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        apellidoJTF.setText("doe");
         apellidoJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(apellidoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 152, 30));
 
@@ -131,6 +133,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 50, 30));
 
         edadJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        edadJTF.setText("37");
         edadJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(edadJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 152, 30));
 
@@ -139,6 +142,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelPesoAct, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 90, 30));
 
         pesoActualJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pesoActualJTF.setText("90");
         pesoActualJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(pesoActualJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 152, 30));
 
@@ -147,6 +151,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelPesoBusc, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, 100, 30));
 
         pesoBuscadoJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        pesoBuscadoJTF.setText("85");
         pesoBuscadoJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(pesoBuscadoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 152, 30));
 
@@ -155,6 +160,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelAltura, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, 50, 30));
 
         alturaJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        alturaJTF.setText("1.83");
         alturaJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(alturaJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 152, 30));
 
@@ -202,6 +208,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosDieta.add(labelDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 60, 30));
 
         detalleJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        detalleJTF.setText("low");
         detalleJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosDieta.add(detalleJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 152, 30));
 
@@ -415,8 +422,8 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_tablaMouseClicked
 
     private void dniJTFFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dniJTFFocusGained
-        resetTable();
-        setRow();
+        /*resetTable();
+        setRow();*/
     }//GEN-LAST:event_dniJTFFocusGained
 
     private void setColumn() {
@@ -444,7 +451,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private void setRow() {
         ArrayList<Paciente> pacientes = new ArrayList(paciente.getAll(dniJTF.getText()));
         ArrayList<Dieta> dietas = new ArrayList(dieta.getAll(dniJTF.getText()));
-       int numero = 0;
+
         for (int c = 0; c < pacientes.size(); c++)
         {
             modeloT.addRow(new Object[]{
@@ -455,7 +462,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 pacientes.get(c).getAltura(),
                 pacientes.get(c).getPesoActual(),
                 pacientes.get(c).getPesoBuscado(),
-                
                 dietas.get(c).getDetalle(),
                 dietas.get(c).getFechaInicio(),
                 dietas.get(c).getFechaFin(),

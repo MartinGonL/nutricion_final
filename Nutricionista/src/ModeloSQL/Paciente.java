@@ -20,15 +20,15 @@ import javax.swing.JOptionPane;
 public class Paciente {
     
     private Integer DNI;
+    private Boolean estadoPaciente;
     private String nombre;
     private String apellido;
     private Integer edad;
     private Float altura;
     private Float pesoActual;
     private Float pesoBuscado;
-    private Boolean estadoPaciente;
     
-    private Connection conexion;
+    private final Connection conexion;
     private PreparedStatement sentencia;
     private ResultSet resultado;
 
@@ -36,29 +36,26 @@ public class Paciente {
         this.conexion = Conexion.getConexion();
     }
 
-    public Paciente(Integer DNI, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado, Boolean estadoPaciente) {
+    public Paciente(Integer DNI, Boolean estadoPaciente, String nombre, String apellido, Integer edad, Float altura, Float pesoActual, Float pesoBuscado) {
         this.DNI = DNI;
+        this.estadoPaciente = estadoPaciente;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.altura = altura;
         this.pesoActual = pesoActual;
         this.pesoBuscado = pesoBuscado;
-        this.estadoPaciente = estadoPaciente;
-    }
-
-    public Boolean getEstadoPaciente() {
-        return estadoPaciente;
-    }
-
-    public void setEstadoPaciente(Boolean estadoPaciente) {
-        this.estadoPaciente = estadoPaciente;
+        this.conexion = Conexion.getConexion();
     }
 
     public Integer getDNI() {
         return DNI;
     }
 
+    public Boolean getEstadoPaciente() {
+        return estadoPaciente;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -86,13 +83,14 @@ public class Paciente {
     @Override
     public int hashCode() {
         int hash = 3;
-        hash = 41 * hash + Objects.hashCode(this.DNI);
-        hash = 41 * hash + Objects.hashCode(this.nombre);
-        hash = 41 * hash + Objects.hashCode(this.apellido);
-        hash = 41 * hash + Objects.hashCode(this.edad);
-        hash = 41 * hash + Objects.hashCode(this.altura);
-        hash = 41 * hash + Objects.hashCode(this.pesoActual);
-        hash = 41 * hash + Objects.hashCode(this.pesoBuscado);
+        hash = 71 * hash + Objects.hashCode(this.DNI);
+        hash = 71 * hash + Objects.hashCode(this.estadoPaciente);
+        hash = 71 * hash + Objects.hashCode(this.nombre);
+        hash = 71 * hash + Objects.hashCode(this.apellido);
+        hash = 71 * hash + Objects.hashCode(this.edad);
+        hash = 71 * hash + Objects.hashCode(this.altura);
+        hash = 71 * hash + Objects.hashCode(this.pesoActual);
+        hash = 71 * hash + Objects.hashCode(this.pesoBuscado);
         return hash;
     }
 
@@ -117,6 +115,9 @@ public class Paciente {
         if (!Objects.equals(this.DNI, other.DNI)) {
             return false;
         }
+        if (!Objects.equals(this.estadoPaciente, other.estadoPaciente)) {
+            return false;
+        }
         if (!Objects.equals(this.edad, other.edad)) {
             return false;
         }
@@ -128,10 +129,10 @@ public class Paciente {
         }
         return Objects.equals(this.pesoBuscado, other.pesoBuscado);
     }
-
+    
     @Override
     public String toString() {
-        return "Paciente:\nDNI: " + DNI + ".\nNombre: " + nombre + ".\nApellido: " + apellido + ".Edad: " + edad + ".\nAltura: " + altura + ".\nPeso Actual: " + pesoActual + ".\nPeso Buscado: " + pesoBuscado + ".\n";
+        return "Paciente:\nDNI: " + DNI + "\nEstado: " + estadoPaciente + ".\nNombre: " + nombre + ".\nApellido: " + apellido + ".Edad: " + edad + ".\nAltura: " + altura + ".\nPeso Actual: " + pesoActual + ".\nPeso Buscado: " + pesoBuscado + ".\n";
     }
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
@@ -157,9 +158,8 @@ public class Paciente {
 
     public ArrayList<Paciente> getAll(String dni) {
         ArrayList<Paciente> pacientes = new ArrayList();
-        
         String SQL = "SELECT * FROM paciente WHERE dni LIKE '" + dni + "%'";
-        
+
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -167,6 +167,7 @@ public class Paciente {
             
             while (resultado.next()) 
             {
+                boolean estado = resultado.getBoolean("estado");
                 String nom = resultado.getString("nombre");
                 String ape = resultado.getString("apellido");
                 int dni1 = resultado.getInt("dni");
@@ -174,14 +175,50 @@ public class Paciente {
                 float alt = resultado.getFloat("altura");
                 float pA = resultado.getFloat("pesoActual");
                 float pB = resultado.getFloat("pesoBuscado");
-                boolean estado = resultado.getBoolean("estadoPaciente");
-                Paciente paciente = new Paciente(dni1, nom, ape, ed, alt, pA, pB,estado);
+
+                Paciente paciente = new Paciente(dni1, estado, nom, ape, ed, alt, pA, pB);
                 pacientes.add(paciente);
             }
         } 
         catch (SQLException ex){}
         
         return pacientes;
+    }
+    
+    //metodo cargado por martin!
+    public Boolean getSQLEstadoPaciente(String dni) {
+        String SQL = "SELECT estado FROM paciente WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+
+            while (resultado.next()) 
+            {
+                estadoPaciente = resultado.getBoolean("estado");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        return estadoPaciente;
+    }
+
+    //metodo cargado por martin!
+    public void setSQLEstadoPaciente(Boolean estadoDieta, String dni) {
+        String SQL = "UPDATE paciente SET estado='" + estadoPaciente + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
     }
     
     public String getSQLNombre(String dni) {
@@ -393,44 +430,6 @@ public class Paciente {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
-        // metodo cargado por martin!
-        public Boolean  getSQLEstadoPaciente(String dni) {
-        String SQL = "SELECT estadoPaciente FROM Dieta WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) 
-            {
-                estadoPaciente = resultado.getBoolean("estadoPaciente");
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-      return estadoPaciente;         
-    }
-
-        public void setSQLEstadoPaciente(Boolean estadoDieta, String dni) {
-         String SQL = "UPDATE Dieta SET estadoPaciente='" + estadoPaciente + "' WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-    }
-        // aca termina lo escrito por martin
-    
-    
-    
     
     //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
@@ -463,8 +462,7 @@ public class Paciente {
     
     public ArrayList<Paciente> llegaronAlPesoDeseado() {
         ArrayList<Paciente> pacientes = new ArrayList();
-        
-        String SQL = "SELECT DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE a.pesoBuscado=b.pesoFinal";
+        String SQL = "SELECT DNI, estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE a.pesoBuscado=b.pesoFinal";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -473,16 +471,15 @@ public class Paciente {
             while (resultado.next()) 
             {
                 DNI = resultado.getInt("DNI");
+                estadoPaciente = resultado.getBoolean("estadoPaciente");
                 nombre = resultado.getString("nombre");
                 apellido = resultado.getString("apellido");
                 edad = resultado.getInt("edad");
                 altura = resultado.getFloat("altura");
                 pesoActual = resultado.getFloat("pesoActual");
                 pesoBuscado = resultado.getFloat("pesoBuscado");
-                estadoPaciente = resultado.getBoolean("estadoPaciente"); //agregado por martin!!
                 
-                Paciente paciente = new Paciente(DNI, nombre, apellido, edad, altura, pesoActual, pesoBuscado, estadoPaciente);
-                
+                Paciente paciente = new Paciente(DNI, estadoPaciente, nombre, apellido, edad, altura, pesoActual, pesoBuscado);
                 pacientes.add(paciente);
             }
         } 
@@ -494,4 +491,6 @@ public class Paciente {
         return pacientes;
     }
 }
-/**/
+/*Agregar a la interfaz una funcion para dar de baja/alta la dieta y el paciente
+al metodo setSQLEstado agregarle una funcion para que se fije si el estado actual es 1 o 0 
+y setee el inverso...*/

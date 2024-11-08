@@ -3,10 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="1"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Simon%20P/Documents/GitHub/nutricion_final/Nutricionista/src/Vista/MenuJDP.java</file>
-            <file>file:/C:/Users/Simon%20P/Documents/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Paciente.java</file>
-            <file>file:/C:/Users/Simon%20P/Documents/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Dieta.java</file>
-            <file>file:/C:/Users/Simon%20P/Documents/GitHub/nutricion_final/Nutricionista/src/Vista/RegistroIF.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/MenuIF.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/RegistroIF.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Dieta.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/IngredienteIF.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/ModeloSQL/Paciente.java</file>
+            <file>file:/home/ignacio/Documentos/GitHub/nutricion_final/Nutricionista/src/Vista/MenuJDP.java</file>
         </group>
     </open-files>
 </project-private>

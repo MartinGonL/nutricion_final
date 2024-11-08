@@ -18,18 +18,16 @@ public class Dieta {
     
     private Integer ID_Dieta;
     private Integer DNI;
+    private Boolean estadoDieta; 
     private String detalle;
     private LocalDate fechaInicio;
     private LocalDate fechaFin;
     private Float pesoFinal;
     private Float totalDeCalorias;
     private Paciente paciente;
-    private Boolean estadoDieta; 
     private final ArrayList<Menu> dietaDiaria = new ArrayList();
 
     private final Connection conexion;
-
-
     private PreparedStatement sentencia;
     private ResultSet resultado;
     
@@ -37,24 +35,16 @@ public class Dieta {
         this.conexion = Conexion.getConexion();
     }
 
-    public Dieta(Integer ID_Dieta, Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal, Float totalDeCalorias, Boolean estadoDieta) {
+    public Dieta(Integer ID_Dieta, Integer DNI, boolean estadoDieta, String detalle, LocalDate fechaInicio, LocalDate fechaFin, Float pesoFinal, Float totalDeCalorias) {
         this.ID_Dieta = ID_Dieta;
         this.DNI = DNI;
+        this.estadoDieta = estadoDieta;
         this.detalle = detalle;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
         this.pesoFinal = pesoFinal;
         this.totalDeCalorias = totalDeCalorias;
-        this.estadoDieta = estadoDieta;
         this.conexion = Conexion.getConexion();        
-    }
-
-    public Boolean getEstadoDieta() {
-        return estadoDieta;
-    }
-
-    public void setEstadoDieta(Boolean estadoDieta) {
-        this.estadoDieta = estadoDieta;
     }
 
     public Integer getID_Dieta() {
@@ -65,6 +55,10 @@ public class Dieta {
         return DNI;
     }
 
+    public Boolean getEstadoDieta() {
+        return estadoDieta;
+    }
+    
     public String getDetalle() {
         return detalle;
     }
@@ -95,15 +89,17 @@ public class Dieta {
 
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.ID_Dieta);
-        hash = 97 * hash + Objects.hashCode(this.detalle);
-        hash = 97 * hash + Objects.hashCode(this.fechaInicio);
-        hash = 97 * hash + Objects.hashCode(this.fechaFin);
-        hash = 97 * hash + Objects.hashCode(this.pesoFinal);
-        hash = 97 * hash + Objects.hashCode(this.totalDeCalorias);
-        hash = 97 * hash + Objects.hashCode(this.paciente);
-        hash = 97 * hash + Objects.hashCode(this.dietaDiaria);
+        int hash = 5;
+        hash = 59 * hash + Objects.hashCode(this.ID_Dieta);
+        hash = 59 * hash + Objects.hashCode(this.DNI);
+        hash = 59 * hash + Objects.hashCode(this.estadoDieta);
+        hash = 59 * hash + Objects.hashCode(this.detalle);
+        hash = 59 * hash + Objects.hashCode(this.fechaInicio);
+        hash = 59 * hash + Objects.hashCode(this.fechaFin);
+        hash = 59 * hash + Objects.hashCode(this.pesoFinal);
+        hash = 59 * hash + Objects.hashCode(this.totalDeCalorias);
+        hash = 59 * hash + Objects.hashCode(this.paciente);
+        hash = 59 * hash + Objects.hashCode(this.dietaDiaria);
         return hash;
     }
 
@@ -125,6 +121,12 @@ public class Dieta {
         if (!Objects.equals(this.ID_Dieta, other.ID_Dieta)) {
             return false;
         }
+        if (!Objects.equals(this.DNI, other.DNI)) {
+            return false;
+        }
+        if (!Objects.equals(this.estadoDieta, other.estadoDieta)) {
+            return false;
+        }
         if (!Objects.equals(this.fechaInicio, other.fechaInicio)) {
             return false;
         }
@@ -142,15 +144,19 @@ public class Dieta {
         }
         return Objects.equals(this.dietaDiaria, other.dietaDiaria);
     }
+
+    @Override
+    public String toString() {
+        return "Dieta:\nID_Dieta: " + ID_Dieta + ".\nDNI: " + DNI + ".\nEstadoDiet: =" + estadoDieta + ".\nDetalle: " + detalle + ".\nFecha de Inicio: " + fechaInicio + ".\nFecha de Fin: " + fechaFin + ".\nPeso Final: " + pesoFinal + ".\nTotal De Calorias: " + totalDeCalorias + ".\nPaciente: " + paciente + ".\n";
+    }
     
     //-----Funciones SQL-----------------------------------------------------------------------------------------------------------------------------------
-    
     
     /*Contructor SQL*/
     public void SQLDieta(Integer DNI, String detalle, LocalDate fechaInicio, LocalDate fechaFin) {
         String SQL = "INSERT INTO dieta(dni, detalle, fechaIni, fechaFin) " + 
                      "VALUES (" + DNI + ", '" + detalle + "', '" + fechaInicio + "', '" + fechaFin + "')";
-        
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -161,13 +167,12 @@ public class Dieta {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+            JOptionPane.showMessageDialog(null, "Error en el cargado de dieta.");
         }
     }
 
     public ArrayList<Dieta> getAll(String dni) {
         ArrayList<Dieta> dietas = new ArrayList();
-        
         String SQL = "SELECT * FROM dieta WHERE dni LIKE '" + dni + "%'";
         
         try 
@@ -179,13 +184,14 @@ public class Dieta {
             {
                 int idDiet = resultado.getInt("ID_Dieta");
                 int dni1 = resultado.getInt("dni");
+                boolean estado = resultado.getBoolean("estado");
                 String det = resultado.getString("detalle");
                 LocalDate fI = LocalDate.parse(resultado.getString("fechaIni"));
                 LocalDate fF = LocalDate.parse(resultado.getString("fechaFin"));
                 float pF = resultado.getFloat("pesoFinal");
                 float totCal = resultado.getFloat("totalCalorias");
-                boolean estado = resultado.getBoolean("estadoDieta");
-                Dieta dieta = new Dieta(idDiet, dni1, det, fI, fF, pF, totCal,estado);
+                
+                Dieta dieta = new Dieta(idDiet, dni1, estado, det, fI, fF, pF, totCal);
                 dietas.add(dieta);
             }
         } 
@@ -195,7 +201,7 @@ public class Dieta {
     }
     
     public Integer getSQLID_Dieta(String dni) {
-        String SQL = "SELECT ID_Dieta FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT ID_Dieta FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -214,8 +220,45 @@ public class Dieta {
         return ID_Dieta;
     }
 
+    // metodo cargado por martin!
+    public Boolean getSQLEstadoDieta(String dni) {
+        String SQL = "SELECT estado FROM dieta WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            resultado = sentencia.executeQuery();
+            
+            while (resultado.next()) 
+            {
+                estadoDieta = resultado.getBoolean("estado");
+            }
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+        
+        return estadoDieta;         
+    }
+
+    //metodo cargado por martin
+    public void setSQLEstadoDieta(Boolean estadoDieta, String dni) {
+        String SQL = "UPDATE dieta SET estado='" + estadoDieta + "' WHERE dni=" + dni;
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            int filas = sentencia.executeUpdate();
+            
+            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+        } 
+        catch (SQLException ex) 
+        {
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+        }
+    }
+    
     public String getSQLDetalle(String dni) {
-        String SQL = "SELECT detalle FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT detalle FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -235,7 +278,7 @@ public class Dieta {
     }
 
     public void setSQLDetalle(String detalle, String dni) {
-        String SQL = "UPDATE Dieta SET detalle='" + detalle + "' WHERE dni=" + dni;
+        String SQL = "UPDATE dieta SET detalle='" + detalle + "' WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -250,7 +293,7 @@ public class Dieta {
     }
 
     public LocalDate getSQLFechaInicio(String dni) {
-        String SQL = "SELECT fechaInicio FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT fechaIni FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -258,7 +301,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                fechaInicio = LocalDate.parse(resultado.getString("fechaInicio"));
+                fechaInicio = LocalDate.parse(resultado.getString("fechaIni"));
             }
         } 
         catch (SQLException ex) 
@@ -270,7 +313,7 @@ public class Dieta {
     }
 
     public void setSQLFechaInicio(LocalDate fechaInicio, String dni) {
-        String SQL = "UPDATE Dieta SET fechaInicio='" + fechaInicio + "' WHERE dni=" + dni;
+        String SQL = "UPDATE dieta SET fechaIni='" + fechaInicio + "' WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -285,7 +328,7 @@ public class Dieta {
     }
 
     public LocalDate getSQLFechaFin(String dni) {
-        String SQL = "SELECT fechaFin FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT fechaFin FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -305,7 +348,7 @@ public class Dieta {
     }
 
     public void setSQLFechaFin(LocalDate fechaFin, String dni) {
-        String SQL = "UPDATE Dieta SET fechaFin='" + fechaFin + "' WHERE dni=" + dni;
+        String SQL = "UPDATE dieta SET fechaFin='" + fechaFin + "' WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -320,7 +363,7 @@ public class Dieta {
     }
 
     public Float getSQLPesoFinal(String dni) {
-        String SQL = "SELECT pesoFinal FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT pesoFinal FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -340,7 +383,7 @@ public class Dieta {
     }
 
     public void setSQLPesoFinal(Float pesoFinal, String dni) {
-        String SQL = "UPDATE Dieta SET pesoFinal=" + pesoFinal + " WHERE dni=" + dni;
+        String SQL = "UPDATE dieta SET pesoFinal=" + pesoFinal + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -355,7 +398,7 @@ public class Dieta {
     }
 
     public Float getSQLTotalDeCalorias(String dni) {
-        String SQL = "SELECT totalDeCalorias FROM Dieta WHERE dni=" + dni;
+        String SQL = "SELECT totalCalorias FROM dieta WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -363,7 +406,7 @@ public class Dieta {
             
             while (resultado.next()) 
             {
-                totalDeCalorias = resultado.getFloat("totalDeCalorias");
+                totalDeCalorias = resultado.getFloat("totalCalorias");
             }
         } 
         catch (SQLException ex) 
@@ -376,9 +419,9 @@ public class Dieta {
 
     /*Hacerlo de uso privado*/
     private void setSQLTotalDeCalorias(String dni, String idDieta) {
-        String SQL = "UPDATE Dieta " + 
-                     "SET totalDeCalorias=(SELECT caloriasValorTotal " + 
-                                          "FROM Menu " + 
+        String SQL = "UPDATE dieta " + 
+                     "SET totalCalorias=(SELECT valorTotal " + 
+                                          "FROM menu " + 
                                           "WHERE ID_Dieta=" + idDieta + ") " + 
                      "WHERE dni=" + dni;
         try 
@@ -393,43 +436,10 @@ public class Dieta {
             JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
         }
     }
-    // metodo cargado por martin!
-        public Boolean  getSQLEstadoDieta(String dni) {
-        String SQL = "SELECT estadoDieta FROM Dieta WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            resultado = sentencia.executeQuery();
-            
-            while (resultado.next()) 
-            {
-                estadoDieta = resultado.getBoolean("estadoDieta");
-            }
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-      return estadoDieta;         
-    }
-
-        public void setSQLEstadoDieta(Boolean estadoDieta, String dni) {
-         String SQL = "UPDATE Dieta SET estadoDieta='" + estadoDieta + "' WHERE dni=" + dni;
-        try 
-        {
-            sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
-        } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
-    }
-        // aca termina lo escrito por martin
+    
+    //REVISAR ESTO
     public Paciente getSQLPaciente(String dni) {
-        String SQL = "SELECT dni, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Dieta a JOIN Paciente b (ON a.dni=b.dni) WHERE dni=" + dni;
+        String SQL = "SELECT b.dni, b.estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM dieta a JOIN paciente b (ON a.dni=b.dni) WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -438,14 +448,15 @@ public class Dieta {
             while (resultado.next()) 
             {
                 int dni1 = resultado.getInt("dni");
+                boolean estadoPaciente = resultado.getBoolean("estado");
                 String name = resultado.getString("nombre");
                 String apellido = resultado.getString("apellido");
                 int edad = resultado.getInt("edad");
                 float altura = resultado.getFloat("altura");
                 float pesoActual = resultado.getFloat("pesoActual");
                 float pesoBuscado = resultado.getFloat("pesoBuscado");
-                boolean estadoPaciente = resultado.getBoolean("estadoPaciente"); //martin lo agrego!
-                paciente = new Paciente(dni1, name, apellido, edad, altura, pesoActual, pesoBuscado, estadoPaciente);
+                
+                paciente = new Paciente(dni1, estadoPaciente, name, apellido, edad, altura, pesoActual, pesoBuscado);
             }
         } 
         catch (SQLException ex) 
@@ -458,9 +469,9 @@ public class Dieta {
 
     /*Controlar este metodo*/
     public void setSQLPaciente(String dni, String idDieta) {
-        String SQL = "UPDATE Dieta " + 
+        String SQL = "UPDATE dieta " + 
                      "SET dni=(SELECT dni " + 
-                              "FROM Paciente " + 
+                              "FROM paciente " + 
                               "WHERE dni=" + dni + ") " +  
                      "WHERE ID_Dieta=" + idDieta;
         try 
@@ -476,8 +487,9 @@ public class Dieta {
         }
     }
 
+    /*VER SI ESTE METODO ES NECESARIO*/
     public ArrayList<Menu> getSQLDietaDiaria(String idDieta) {
-        String SQL = "SELECT * FROM Menu a JOIN Receta b (ON a.ID_Menu=b.ID_Menu) WHERE ID_Dieta=" + idDieta;
+        String SQL = "SELECT * FROM menu a JOIN receta b (ON a.ID_Menu=b.ID_Menu) WHERE ID_Dieta=" + idDieta;
         dietaDiaria.clear();
         try 
         {
@@ -492,7 +504,7 @@ public class Dieta {
                 String dia = resultado.getString("dia");
                 String momentoDelDia = resultado.getString("momentoDelDia");
                 int porciones = resultado.getInt("porciones");
-                float caloriasValorTotal = resultado.getFloat("caloriasValorTotal");
+                float caloriasValorTotal = resultado.getFloat("valorTotal");
                 
                 Menu menu = new Menu(name, nombreIng, cantidadIng, dia, momentoDelDia, porciones, caloriasValorTotal);
                 dietaDiaria.add(menu);
@@ -544,25 +556,6 @@ public class Dieta {
         {
             System.out.println(dieta.toString());
         }
-    }
-    
-    /*Utilizar la funcion de JTable para modificar.*/
-    public Menu modificarDietaDiaria(String idDieta, String dia, String comida) {
-        getSQLDietaDiaria(idDieta);
-        
-        Menu menu = new Menu();
-//        String diaDieta = "";
-//        String comidaDieta = "";
-        
-        for (Menu dieta : dietaDiaria) 
-        {
-            String diaDieta = dieta.getSQLDia(dieta.getNombre());
-            String comidaDieta = dieta.getSQLMomentoDelDia(dieta.getNombre());
-            
-            if (diaDieta.equals(dia) & comidaDieta.equals(comida)) menu = dieta;
-        }
-        
-        return menu;
     }
 
     /*Probar*/
