@@ -72,30 +72,41 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
         jLabel4.setText("jLabel4");
 
+        panelPrincipal.setBackground(new java.awt.Color(156, 191, 154));
         panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelBotonesComida.setBackground(new java.awt.Color(205, 234, 203));
         panelBotonesComida.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotonesComida.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        limpiarJB.setBackground(new java.awt.Color(230, 255, 227));
+        limpiarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/escoba.png"))); // NOI18N
         limpiarJB.setText("Limpiar");
+        limpiarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         limpiarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         limpiarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 limpiarJBActionPerformed(evt);
             }
         });
-        panelBotonesComida.add(limpiarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 10, -1, -1));
+        panelBotonesComida.add(limpiarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 10, -1, -1));
 
+        modificarJB.setBackground(new java.awt.Color(230, 255, 227));
+        modificarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
         modificarJB.setText("Modificar");
+        modificarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         modificarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         modificarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 modificarJBActionPerformed(evt);
             }
         });
-        panelBotonesComida.add(modificarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+        panelBotonesComida.add(modificarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, 110, -1));
 
+        guardarJB.setBackground(new java.awt.Color(230, 255, 227));
+        guardarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
         guardarJB.setText("Guardar");
+        guardarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         guardarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         guardarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,17 +115,21 @@ public class MenuIF extends javax.swing.JInternalFrame {
         });
         panelBotonesComida.add(guardarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
 
+        eliminarJB.setBackground(new java.awt.Color(230, 255, 227));
+        eliminarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carpeta.png"))); // NOI18N
         eliminarJB.setText("Eliminar");
+        eliminarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         eliminarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         eliminarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 eliminarJBActionPerformed(evt);
             }
         });
-        panelBotonesComida.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 10, -1, -1));
+        panelBotonesComida.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 10, -1, -1));
 
-        panelPrincipal.add(panelBotonesComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 410, 50));
+        panelPrincipal.add(panelBotonesComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 430, 50));
 
+        panelDatosComida.setBackground(new java.awt.Color(205, 234, 203));
         panelDatosComida.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosComida.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -149,6 +164,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         panelDatosComida.add(tipoComidaJCB, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 90, 110, -1));
 
         comidasJL.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        comidasJL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/menu.png"))); // NOI18N
         comidasJL.setText("Comidas");
         panelDatosComida.add(comidasJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
@@ -177,8 +193,9 @@ public class MenuIF extends javax.swing.JInternalFrame {
         porcionesJS.setModel(modeloS2);
         panelDatosComida.add(porcionesJS, new org.netbeans.lib.awtextra.AbsoluteConstraints(340, 130, 50, -1));
 
-        panelPrincipal.add(panelDatosComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 410, 170));
+        panelPrincipal.add(panelDatosComida, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 430, 170));
 
+        panelDatosIng.setBackground(new java.awt.Color(205, 234, 203));
         panelDatosIng.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosIng.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -208,11 +225,13 @@ public class MenuIF extends javax.swing.JInternalFrame {
         panelDatosIng.add(gramosJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 90, -1, 20));
 
         ingredientesJL.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        ingredientesJL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/vegetariano.png"))); // NOI18N
         ingredientesJL.setText("Ingredientes");
         panelDatosIng.add(ingredientesJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, -1));
 
-        panelPrincipal.add(panelDatosIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 10, 210, 170));
+        panelPrincipal.add(panelDatosIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, 220, 170));
 
+        tabla.setBackground(new java.awt.Color(205, 234, 203));
         tabla.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -231,36 +250,43 @@ public class MenuIF extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tabla);
 
-        panelPrincipal.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(650, 10, 310, 230));
+        panelPrincipal.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(680, 10, 310, 230));
 
+        panelBotonesIng.setBackground(new java.awt.Color(205, 234, 203));
         panelBotonesIng.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotonesIng.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        agregarJB.setBackground(new java.awt.Color(230, 255, 227));
+        agregarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-producto.png"))); // NOI18N
         agregarJB.setText("Agregar");
+        agregarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         agregarJB.setPreferredSize(new java.awt.Dimension(90, 30));
         agregarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 agregarJBActionPerformed(evt);
             }
         });
-        panelBotonesIng.add(agregarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, -1, -1));
+        panelBotonesIng.add(agregarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
 
+        quitarJB.setBackground(new java.awt.Color(230, 255, 227));
+        quitarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         quitarJB.setText("Quitar");
+        quitarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
         quitarJB.setPreferredSize(new java.awt.Dimension(90, 30));
         quitarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 quitarJBActionPerformed(evt);
             }
         });
-        panelBotonesIng.add(quitarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 10, -1, -1));
+        panelBotonesIng.add(quitarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 10, 90, -1));
 
-        panelPrincipal.add(panelBotonesIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 190, 210, 50));
+        panelPrincipal.add(panelBotonesIng, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 190, 220, 50));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 970, Short.MAX_VALUE)
+            .addComponent(panelPrincipal, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 998, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

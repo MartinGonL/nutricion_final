@@ -42,10 +42,13 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        panelPrincipal.setBackground(new java.awt.Color(145, 180, 129));
         panelPrincipal.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        guardarJB.setBackground(new java.awt.Color(220, 236, 203));
+        guardarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
         guardarJB.setText("Guardar");
-        guardarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        guardarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(195, 218, 178)));
         guardarJB.setBorderPainted(false);
         guardarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         guardarJB.addActionListener(new java.awt.event.ActionListener() {
@@ -55,8 +58,10 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         });
         panelPrincipal.add(guardarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, -1, -1));
 
+        modificarJB.setBackground(new java.awt.Color(220, 236, 203));
+        modificarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
         modificarJB.setText("Modificar");
-        modificarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        modificarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(195, 218, 178)));
         modificarJB.setBorderPainted(false);
         modificarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         modificarJB.addActionListener(new java.awt.event.ActionListener() {
@@ -66,8 +71,10 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         });
         panelPrincipal.add(modificarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 130, -1, -1));
 
+        eliminarJB.setBackground(new java.awt.Color(220, 236, 203));
+        eliminarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carpeta.png"))); // NOI18N
         eliminarJB.setText("Eliminar");
-        eliminarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        eliminarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(195, 218, 178)));
         eliminarJB.setBorderPainted(false);
         eliminarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         eliminarJB.addActionListener(new java.awt.event.ActionListener() {
@@ -77,6 +84,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         });
         panelPrincipal.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 210, -1, -1));
 
+        panelDatos.setBackground(new java.awt.Color(195, 218, 178));
         panelDatos.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         nombreJL.setText("Nombre:");
@@ -127,6 +135,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         panelPrincipal.add(panelDatos, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, -1, 150));
 
+        tabla.setBackground(new java.awt.Color(195, 218, 178));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -146,9 +155,11 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         panelPrincipal.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 340, 210));
 
+        panelTitulo.setBackground(new java.awt.Color(195, 218, 178));
         panelTitulo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         ingredientesJL.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        ingredientesJL.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/libro-de-cocina.png"))); // NOI18N
         ingredientesJL.setText("Ingredientes");
 
         javax.swing.GroupLayout panelTituloLayout = new javax.swing.GroupLayout(panelTitulo);
@@ -158,7 +169,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
             .addGroup(panelTituloLayout.createSequentialGroup()
                 .addGap(88, 88, 88)
                 .addComponent(ingredientesJL)
-                .addContainerGap(95, Short.MAX_VALUE))
+                .addContainerGap(69, Short.MAX_VALUE))
         );
         panelTituloLayout.setVerticalGroup(
             panelTituloLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -170,8 +181,10 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
 
         panelPrincipal.add(panelTitulo, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 340, 70));
 
+        limpiarJB.setBackground(new java.awt.Color(220, 236, 203));
+        limpiarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/escoba.png"))); // NOI18N
         limpiarJB.setText("Limpiar");
-        limpiarJB.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        limpiarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(195, 218, 178)));
         limpiarJB.setBorderPainted(false);
         limpiarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         limpiarJB.addActionListener(new java.awt.event.ActionListener() {

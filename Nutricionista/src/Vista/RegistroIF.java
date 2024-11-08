@@ -64,8 +64,10 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         labelDieta = new javax.swing.JLabel();
         labelPaciente = new javax.swing.JLabel();
 
+        jPanel2.setBackground(new java.awt.Color(97, 152, 148));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        tabla.setBackground(new java.awt.Color(146, 202, 198));
         tabla.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         tabla.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -89,6 +91,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         jPanel2.add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 230, 1000, 140));
 
+        panelDatosPaciente.setBackground(new java.awt.Color(146, 202, 198));
         panelDatosPaciente.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -176,6 +179,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         jPanel2.add(panelDatosPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 50, 530, 170));
 
+        panelDatosDieta.setBackground(new java.awt.Color(146, 202, 198));
         panelDatosDieta.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosDieta.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -214,10 +218,13 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         jPanel2.add(panelDatosDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 50, 320, 170));
 
+        panelBotones.setBackground(new java.awt.Color(146, 202, 198));
         panelBotones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelBotones.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
+        agregarJB.setBackground(new java.awt.Color(170, 227, 222));
         agregarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        agregarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-producto.png"))); // NOI18N
         agregarJB.setText("Agregar");
         agregarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -226,7 +233,9 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         });
         panelBotones.add(agregarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 10, 110, -1));
 
+        modificarJB.setBackground(new java.awt.Color(170, 227, 222));
         modificarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        modificarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
         modificarJB.setText("Modificar");
         modificarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -235,7 +244,9 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         });
         panelBotones.add(modificarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 110, -1));
 
+        eliminarJB.setBackground(new java.awt.Color(170, 227, 222));
         eliminarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        eliminarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         eliminarJB.setText("Eliminar");
         eliminarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -244,7 +255,9 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         });
         panelBotones.add(eliminarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 110, -1));
 
+        limpiarJB.setBackground(new java.awt.Color(170, 227, 222));
         limpiarJB.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        limpiarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/escoba.png"))); // NOI18N
         limpiarJB.setText("Limpiar");
         limpiarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -256,10 +269,12 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         jPanel2.add(panelBotones, new org.netbeans.lib.awtextra.AbsoluteConstraints(890, 50, 130, 170));
 
         labelDieta.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        labelDieta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/dieta.png"))); // NOI18N
         labelDieta.setText("Dieta");
         jPanel2.add(labelDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(560, 10, -1, -1));
 
         labelPaciente.setFont(new java.awt.Font("sansserif", 1, 24)); // NOI18N
+        labelPaciente.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/nutricionista.png"))); // NOI18N
         labelPaciente.setText("Paciente");
         jPanel2.add(labelPaciente, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
 
@@ -273,9 +288,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(9, Short.MAX_VALUE))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, 389, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
