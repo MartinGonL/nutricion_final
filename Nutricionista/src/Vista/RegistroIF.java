@@ -6,6 +6,8 @@ import Persistencia.Funciones;
 import com.toedter.calendar.JDateChooser;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -306,36 +308,27 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void agregarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_agregarJBActionPerformed
-        boolean flagPaciente = Funciones.checkField(panelDatosPaciente);
-        String fechaIni = traducirDate(fechaIniJD);
-        String fechaFin = traducirDate(fechaFinJD);
-        int verificacion = verificacion();
-        if (flagPaciente & !fechaIni.equals("") & !fechaFin.equals("") & !detalleJTF.getText().equals("") & verificacion == 5) 
+        ArrayList<Dieta> dietas = new ArrayList(dieta.getAll(dniJTF.getText()));
+        if (agregarJB.getText().equals("Agregar"))
         {
-            try 
-            {
-                String nombre = nombrePacJTF.getText();
-                String apellido = apellidoJTF.getText();
-                int DNI = Integer.parseInt(dniJTF.getText());
-                int edad = Integer.parseInt(edadJTF.getText());
-                float altura = Float.parseFloat(alturaJTF.getText());
-                float pesoA = Float.parseFloat(pesoActualJTF.getText());
-                float pesoB = Float.parseFloat(pesoBuscadoJTF.getText());
-
-                paciente.SQLPaciente(DNI, nombre, apellido, edad, altura, pesoA, pesoB);
-
-                DNI = Integer.parseInt(dniJTF.getText());
-                LocalDate fIni = LocalDate.parse(fechaIni);
-                LocalDate fFin = LocalDate.parse(fechaFin);
-
-                dieta.SQLDieta(DNI, detalleJTF.getText(), fIni, fFin);
-            }
-            catch (NumberFormatException ex) 
-            {
-                JOptionPane.showMessageDialog(rootPane, "Asegurece de respetar los tipos de datos que se le solicitan y corrobore NO estar usando coma (',') en lugar de un punto ('.') para declarar los pesos y la altura.");
-            }
+            crearObjeto();
         }
-        else JOptionPane.showMessageDialog(rootPane, "Asegurece de completar los datos de Paciente y Dieta.");
+        else 
+        {
+            int respuesta = JOptionPane.showConfirmDialog(rootPane, "Dar de " + ((paciente.getSQLEstadoPaciente(dniJTF.getText())==true) ? "baja" : "alta") + " al paciente " + paciente.getSQLNombre(dniJTF.getText()) + " " + paciente.getSQLApellido(dniJTF.getText()) + "?");
+            if (respuesta == 0) 
+            {
+                boolean estado = paciente.getSQLEstadoPaciente(dniJTF.getText());
+                paciente.setSQLEstadoPaciente(!estado, dniJTF.getText());
+                if (!dietas.isEmpty()) 
+                {
+                    estado = dieta.getSQLEstadoDieta(dniJTF.getText());
+                    dieta.setSQLEstadoDieta(!estado, dniJTF.getText());
+                }
+                JOptionPane.showMessageDialog(rootPane, "El paciente a sido dado de " + ((paciente.getSQLEstadoPaciente(dniJTF.getText())==true) ? "alta" : "baja") + " exitosamente.");
+            }
+            else { JOptionPane.showMessageDialog(rootPane, "Operacion cancelada."); }
+        }
         limpiarJBActionPerformed(evt);
         resetTable();
         setRow();
@@ -343,23 +336,16 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
     /*Controlar este*/
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
-        int verificacion = verificacion();
-        if (!dniJTF.getText().equals("") & verificacion == 2) 
+        int verificacion = verificacion("paciente");
+        if (verificacion == 5) 
         {
             if (!nombrePacJTF.getText().equals("")) 
             {
-                verificacion = verificacion();
-                if (verificacion == 3) paciente.setSQLNombre(nombrePacJTF.getText(), dniJTF.getText());
-            }
-            if (!detalleJTF.getText().equals("")) 
-            {
-                verificacion = verificacion();
-                if (verificacion == 3) dieta.setSQLDetalle(detalleJTF.getText(), dniJTF.getText());
+                paciente.setSQLNombre(nombrePacJTF.getText(), dniJTF.getText());
             }
             if (!apellidoJTF.getText().equals("")) 
             {
-                verificacion = verificacion();
-                if (verificacion == 3) paciente.setSQLApellido(apellidoJTF.getText(), dniJTF.getText());
+                paciente.setSQLApellido(apellidoJTF.getText(), dniJTF.getText());
             }
             if (!edadJTF.getText().equals("")) 
             {
@@ -386,6 +372,14 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 try { paciente.setSQLAltura(Float.valueOf(pesoFinalJTF.getText()), dniJTF.getText()); }
                 catch (NumberFormatException ex) { JOptionPane.showMessageDialog(rootPane, "El campo Peso Final solo admite numeros."); }
             }
+        }
+        verificacion += verificacion("dieta");
+        if (verificacion == 7) 
+        {
+            if (!detalleJTF.getText().equals("")) 
+            {
+                dieta.setSQLDetalle(detalleJTF.getText(), dniJTF.getText());
+            }
             if (fechaIniJD.getDate() != null) 
             {
                 String fIni = traducirDate(fechaIniJD);
@@ -410,9 +404,10 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         fechaFinJD.setDate(null);
     }//GEN-LAST:event_limpiarJBActionPerformed
 
+    /*HACER QUE CONSULTE QUE ELEMENTO SE DEBE ELIMINAR.*/
     private void eliminarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarJBActionPerformed
-        int verificacion = verificacion();
-        if (!dniJTF.getText().equals("") & verificacion == 2)
+        int verificacion = verificacion("paciente");
+        if (!dniJTF.getText().equals("") & verificacion == 5)
         {
             int respuesta = JOptionPane.showConfirmDialog(rootPane, "Seguro que desea eliminar al paciente?");
             if (respuesta == 0) Funciones.eliminarRegistro("paciente", "dni", dniJTF.getText());
@@ -426,19 +421,85 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
     private void dniJTFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_dniJTFKeyReleased
         resetTable();
-        setRow();
+        if (setRow()) agregarJB.setText("Agregar");
+        else agregarJB.setText("Baja-Alta");
     }//GEN-LAST:event_dniJTFKeyReleased
 
-    /*Falta cubrir esta*/
     private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
-        // TODO add your handling code here:
+        int filaSelect = tabla.getSelectedRow();
+        try
+        {
+            int dni = (int)tabla.getValueAt(filaSelect, 0);
+            String nombre = (String)tabla.getValueAt(filaSelect, 1);
+            String apellido = (String)tabla.getValueAt(filaSelect, 2);
+            int edad = (int)tabla.getValueAt(filaSelect, 3);
+            float altura = (float)tabla.getValueAt(filaSelect, 4);
+            float pesoI = (float)tabla.getValueAt(filaSelect, 5);
+            float pesoB = (float)tabla.getValueAt(filaSelect, 6);
+            
+            dniJTF.setText(String.valueOf(dni));
+            nombrePacJTF.setText(nombre);
+            apellidoJTF.setText(apellido);
+            edadJTF.setText(String.valueOf(edad));
+            alturaJTF.setText(String.valueOf(altura));
+            pesoActualJTF.setText(String.valueOf(pesoI));
+            pesoBuscadoJTF.setText(String.valueOf(pesoB));
+            
+            if (!tabla.getValueAt(filaSelect, 7).equals("")) 
+            {
+                String det = (String)tabla.getValueAt(filaSelect, 7);
+                LocalDate fechaI = (LocalDate)tabla.getValueAt(filaSelect, 8);
+                LocalDate fechaF = (LocalDate)tabla.getValueAt(filaSelect, 9);
+
+                detalleJTF.setText(det);
+                fechaIniJD.setCalendar(traducirCalendar(fechaI.toString()));
+                fechaFinJD.setCalendar(traducirCalendar(fechaF.toString()));
+            }
+            else
+            {
+                detalleJTF.setText("");
+                fechaIniJD.setCalendar(null);
+                fechaFinJD.setCalendar(null);
+            }
+        }
+        catch (Exception ex) {}
     }//GEN-LAST:event_tablaMouseClicked
 
     private void dniJTFFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_dniJTFFocusGained
-        /*resetTable();
-        setRow();*/
+        resetTable();
+        setRow();
     }//GEN-LAST:event_dniJTFFocusGained
 
+    private void crearObjeto() {
+        boolean flagPaciente = Funciones.checkField(panelDatosPaciente);
+        int verificacion = 0;
+        
+        if (flagPaciente) verificacion = verificacion("paciente");
+        else JOptionPane.showMessageDialog(rootPane, "Asegurece de haber completado todos los campos solicitados.");
+        
+        if (verificacion == 5) 
+        {
+            String nombre = nombrePacJTF.getText();
+            String apellido = apellidoJTF.getText();
+            int DNI = Integer.parseInt(dniJTF.getText());
+            int edad = Integer.parseInt(edadJTF.getText());
+            float altura = Float.parseFloat(alturaJTF.getText());
+            float pesoA = Float.parseFloat(pesoActualJTF.getText());
+            float pesoB = Float.parseFloat(pesoBuscadoJTF.getText());
+
+            paciente.SQLPaciente(DNI, nombre, apellido, edad, altura, pesoA, pesoB);
+        }
+        verificacion = verificacion("dieta");
+        if (verificacion == 7) 
+        {
+            int DNI = Integer.parseInt(dniJTF.getText());
+            LocalDate fIni = LocalDate.parse(traducirDate(fechaIniJD));
+            LocalDate fFin = LocalDate.parse(traducirDate(fechaFinJD));
+
+            dieta.SQLDieta(DNI, detalleJTF.getText(), fIni, fFin);
+        }
+    }
+    
     private void setColumn() {
         modeloT = new DefaultTableModel() {
             @Override
@@ -461,7 +522,8 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         tabla.setModel(modeloT);
     }
     
-    private void setRow() {
+    /*CONTROLAR QUE NO MEZCLE LAS DIETAS**********/
+    private boolean setRow() {
         ArrayList<Paciente> pacientes = new ArrayList(paciente.getAll(dniJTF.getText()));
         ArrayList<Dieta> dietas = new ArrayList(dieta.getAll(dniJTF.getText()));
 
@@ -475,13 +537,16 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 pacientes.get(c).getAltura(),
                 pacientes.get(c).getPesoActual(),
                 pacientes.get(c).getPesoBuscado(),
-                dietas.get(c).getDetalle(),
-                dietas.get(c).getFechaInicio(),
-                dietas.get(c).getFechaFin(),
-                
+                (c < dietas.size()) ? dietas.get(c).getDetalle() : "",
+                (c < dietas.size()) ? dietas.get(c).getFechaInicio() : "",
+                (c < dietas.size()) ? dietas.get(c).getFechaFin() : "",
             });
         }
         tabla.setModel(modeloT);
+        
+        boolean resp = false;
+        if (pacientes.isEmpty() | dietas.isEmpty()) resp = true;
+        return resp;
     }
     
     private void resetTable() {
@@ -495,35 +560,70 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     
     private String traducirDate(JDateChooser fecha) {
         String localDate = "";
-        if (fecha.getCalendar() != null) 
+        try 
         {
             String dia = String.valueOf(fecha.getDate().getDate());
             String mes = String.valueOf(fecha.getDate().getMonth()+1);
             String anio = String.valueOf(fecha.getDate().getYear()+1900);
-            
+
             localDate = anio + "-" + ((Integer.parseInt(mes)<10) ? "0" + mes : mes) + "-" + ((Integer.parseInt(dia)<10) ? "0" + dia : dia);
         }
+        catch (NullPointerException ex) {}
         return localDate;
     }
     
-    private Integer verificacion() {
+    private Calendar traducirCalendar(String fecha) {
+        int anio = Integer.parseInt(fecha.substring(0, 4));
+        int mes = Integer.parseInt(fecha.substring(5, 7))-1;
+        int dia = Integer.parseInt(fecha.substring(8, 10));
+        
+        Calendar calendario = new GregorianCalendar(anio, mes, dia);
+        return calendario;
+    }
+    
+    private Integer verificacion(String campo) {
         int count = 0;
         
         if (dniJTF.getText().length() >= 7) count++;
-        else JOptionPane.showMessageDialog(rootPane, "Ingrese un numero valido. El que ingreso le faltan caracteres.");
+        else JOptionPane.showMessageDialog(rootPane, "Ingrese un DNI valido. El que ingreso le faltan caracteres.");
 
+        if (dniJTF.getText().length() <= 8) count++;
+        else JOptionPane.showMessageDialog(rootPane, "Ingrese un DNI valido. El que ingreso le sobran caracteres.");
+
+//        if (dniJTF.getText().length() > 0) count++;
+//        else JOptionPane.showMessageDialog(rootPane, "Complete el campo DNI.");
+        
         try { if (Integer.parseInt(dniJTF.getText())*0 == 0) count++; }
         catch (NumberFormatException ex) { JOptionPane.showMessageDialog(rootPane, "El campo DNI solo acepta numeros."); }
         
-        try { if (Integer.parseInt(nombrePacJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Nombre solo acepta letras."); }
-        catch (NumberFormatException ex) { count++; }
-        
-        try { if (Integer.parseInt(apellidoJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Apellido solo acepta letras."); }
-        catch (NumberFormatException ex) { count++; }
-        
-        try { if (Integer.parseInt(detalleJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Detalle solo acepta letras."); }
-        catch (NumberFormatException ex) { count++; }
-        
+        switch (campo) {
+            case "paciente" -> 
+            {
+                //Verificacion de datos 'Paciente'. OK=5
+                try { if (Integer.parseInt(nombrePacJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Nombre solo acepta letras."); }
+                catch (NumberFormatException ex) { count++; }
+
+                try { if (Integer.parseInt(apellidoJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Apellido solo acepta letras."); }
+                catch (NumberFormatException ex) { count++; }
+            }
+            case "dieta" -> 
+            {
+                //Verificaicon de datos 'Dieta'. OK=7
+                try { if (Integer.parseInt(detalleJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Detalle solo acepta letras."); }
+                catch (NumberFormatException ex) { count++; }
+
+                if (detalleJTF.getText().length() > 0) count++;
+                else JOptionPane.showMessageDialog(rootPane, "Complete el campo Detalle.");
+
+                String fechaInicial = traducirDate(fechaIniJD);
+                String fechaFinal = traducirDate(fechaFinJD);
+                if (!fechaInicial.equals(fechaFinal)) count++;
+                else JOptionPane.showMessageDialog(rootPane, "Las fechas de inicio y de final no pueden coincidir.");
+
+                if (fechaIniJD != null & fechaFinJD != null) count++;
+                else JOptionPane.showMessageDialog(rootPane, "Las fechas de inicio y de final no pueden quedar vacias.");
+            }
+        }
         return count;
     }
     

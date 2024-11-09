@@ -165,10 +165,7 @@ public class Dieta {
             if (filas > 0) JOptionPane.showMessageDialog(null, "Dieta Creada.");
 
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en el cargado de dieta.");
-        }
+        catch (SQLException ex) {}
     }
 
     public ArrayList<Dieta> getAll(String dni) {
@@ -439,7 +436,8 @@ public class Dieta {
     
     //REVISAR ESTO
     public Paciente getSQLPaciente(String dni) {
-        String SQL = "SELECT b.dni, b.estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM dieta a JOIN paciente b (ON a.dni=b.dni) WHERE dni=" + dni;
+        String SQL = "SELECT b.dni, b.estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM dieta a JOIN paciente b ON a.dni=b.dni WHERE a.dni=" + dni;
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

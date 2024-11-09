@@ -150,10 +150,7 @@ public class Paciente {
             if (filas > 0) JOptionPane.showMessageDialog(null, "Paciente Agregado.");
 
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) {}
     }
 
     public ArrayList<Paciente> getAll(String dni) {
