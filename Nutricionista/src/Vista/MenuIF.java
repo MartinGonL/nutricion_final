@@ -1,5 +1,6 @@
 package Vista;
 
+import ModeloSQL.Dieta;
 import ModeloSQL.Ingrediente;
 import ModeloSQL.Menu;
 import Persistencia.Funciones;
@@ -19,6 +20,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
 
     private final Menu menu;
     private final Ingrediente ingrediente;
+    private final Dieta dieta;
     private DefaultTableModel modeloT;
     
     private String FLAG;
@@ -29,6 +31,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         initComponents();
         this.menu = new Menu();
         this.ingrediente = new Ingrediente();
+        this.dieta = new Dieta();
         
         manejarPaneles();
     }
@@ -82,7 +85,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         limpiarJB.setBackground(new java.awt.Color(230, 255, 227));
         limpiarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/escoba.png"))); // NOI18N
         limpiarJB.setText("Limpiar");
-        limpiarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        limpiarJB.setBorder(null);
         limpiarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         limpiarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,7 +97,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         modificarJB.setBackground(new java.awt.Color(230, 255, 227));
         modificarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
         modificarJB.setText("Modificar");
-        modificarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        modificarJB.setBorder(null);
         modificarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         modificarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -106,7 +109,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         guardarJB.setBackground(new java.awt.Color(230, 255, 227));
         guardarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/guardar-el-archivo.png"))); // NOI18N
         guardarJB.setText("Guardar");
-        guardarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        guardarJB.setBorder(null);
         guardarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         guardarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,7 +121,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         eliminarJB.setBackground(new java.awt.Color(230, 255, 227));
         eliminarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/carpeta.png"))); // NOI18N
         eliminarJB.setText("Eliminar");
-        eliminarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        eliminarJB.setBorder(null);
         eliminarJB.setPreferredSize(new java.awt.Dimension(95, 30));
         eliminarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,7 +262,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         agregarJB.setBackground(new java.awt.Color(230, 255, 227));
         agregarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregar-producto.png"))); // NOI18N
         agregarJB.setText("Agregar");
-        agregarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        agregarJB.setBorder(null);
         agregarJB.setPreferredSize(new java.awt.Dimension(90, 30));
         agregarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -271,7 +274,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         quitarJB.setBackground(new java.awt.Color(230, 255, 227));
         quitarJB.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
         quitarJB.setText("Quitar");
-        quitarJB.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(131, 170, 129)));
+        quitarJB.setBorder(null);
         quitarJB.setPreferredSize(new java.awt.Dimension(90, 30));
         quitarJB.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -392,6 +395,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
                     cantDiasJS.setValue(3);
                 }
             }
+            limpiarJBActionPerformed(evt);
         }
     }//GEN-LAST:event_guardarJBActionPerformed
 
@@ -415,6 +419,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
     /*Falta 2° parte*/
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
         TreeMap<String, Float> ingredientes = new TreeMap(menu.getSQLIngredientes(nombreComidaJT.getText()));
+        ArrayList<Menu> menus = new ArrayList(dieta.getSQLDietaDiaria(dniJT.getText()));
         if (!ingredientes.isEmpty()) 
         {
             if (modificarJB.getText().equals("Finalizar"))
@@ -432,7 +437,17 @@ public class MenuIF extends javax.swing.JInternalFrame {
             }
             else 
             {
+                eliminarJB.setText((eliminarJB.getText().equals("Eliminar")) ? "Cancelar" : "Eliminar");
+                manejarPaneles();
+                guardarJB.setVisible(eliminarJB.getText().equals("Eliminar"));
+                FLAG = (eliminarJB.getText().equals("Eliminar")) ? "comida" : "ingrediente";
+                resetTable();
+                setColumn((eliminarJB.getText().equals("Eliminar")) ? "comida" : "receta");
+                setRow((eliminarJB.getText().equals("Eliminar")) ? "comida" : "receta");
             }
+        }
+        else if (!menus.isEmpty()) 
+        {
         }
         else JOptionPane.showMessageDialog(rootPane, "La receta no tiene Ingredientes");
     }//GEN-LAST:event_modificarJBActionPerformed

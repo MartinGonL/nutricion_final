@@ -196,30 +196,23 @@ public class Paciente {
             }
         } 
         catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        { JOptionPane.showMessageDialog(null, "Error en la Sintaxis de get Estado Paciente."); }
         return estadoPaciente;
     }
 
     //metodo cargado por martin!
-    public void setSQLEstadoPaciente(Boolean estadoDieta, String dni) {
-        String SQL = "UPDATE paciente SET estado='" + estadoPaciente + "' WHERE dni=" + dni;
+    public void setSQLEstadoPaciente(Boolean estadoPaciente, String dni) {
+        String SQL = "UPDATE paciente SET estado=" + estadoPaciente + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis de set Estado Paciente."); }
     }
     
     public String getSQLNombre(String dni) {
-        String SQL = "SELECT nombre FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT nombre FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -239,22 +232,17 @@ public class Paciente {
     }
 
     public void setSQLNombre(String nombre, String dni) {
-        String SQL = "UPDATE Paciente SET nombre='" + nombre + "' WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET nombre='" + nombre + "' WHERE dni=" + dni;
         try 
-        {
+        { 
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
     }
 
     public String getSQLApellido(String dni) {
-        String SQL = "SELECT apellido FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT apellido FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -274,22 +262,17 @@ public class Paciente {
     }
 
     public void setSQLApellido(String apellido, String dni) {
-        String SQL = "UPDATE Paciente SET apellido='" + apellido + "' WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET apellido='" + apellido + "' WHERE dni=" + dni;
         try 
-        {
+        { 
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }    
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
     }
 
     public Integer getSQLEdad(String dni) {
-        String SQL = "SELECT edad FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT edad FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -309,22 +292,17 @@ public class Paciente {
     }
 
     public void setSQLEdad(Integer edad, String dni) {
-        String SQL = "UPDATE Paciente SET edad=" + edad + " WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET edad=" + edad + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
     }
 
     public Float getSQLAltura(String dni) {
-        String SQL = "SELECT altura FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT altura FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -344,22 +322,17 @@ public class Paciente {
     }
 
     public void setSQLAltura(Float altura, String dni) {
-        String SQL = "UPDATE Paciente SET altura=" + altura + " WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET altura=" + altura + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
     }
 
     public Float getSQLPesoActual(String dni) {
-        String SQL = "SELECT pesoActual FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT pesoActual FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -379,13 +352,11 @@ public class Paciente {
     }
 
     public void setSQLPesoActual(Float pesoActual, String dni) {
-        String SQL = "UPDATE Paciente SET pesoActual=" + pesoActual + " WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET pesoActual=" + pesoActual + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
         catch (SQLException ex) 
         {
@@ -394,7 +365,7 @@ public class Paciente {
     }
 
     public Float getSQLPesoBuscado(String dni) {
-        String SQL = "SELECT pesoBuscado FROM Paciente WHERE dni=" + dni;
+        String SQL = "SELECT pesoBuscado FROM paciente WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -414,18 +385,13 @@ public class Paciente {
     }
 
     public void setSQLPesoBuscado(Float pesoBuscado, String dni) {
-        String SQL = "UPDATE Paciente SET pesoBuscado=" + pesoBuscado + " WHERE dni=" + dni;
+        String SQL = "UPDATE paciente SET pesoBuscado=" + pesoBuscado + " WHERE dni=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
-            int filas = sentencia.executeUpdate();
-            
-            if (filas > 0) JOptionPane.showMessageDialog(null, "Modificacion Realizada.");
+            sentencia.executeUpdate();
         } 
-        catch (SQLException ex) 
-        {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
-        }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
     }
     
     //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
@@ -433,7 +399,7 @@ public class Paciente {
     public Float seAcercaAlPeso(String dni, Float pesoAct) {
         Float result = 0F;
         
-        String SQL = "SELECT pesoActual, pesoBuscado FROM Paciente WHERE DNI=" + dni;
+        String SQL = "SELECT pesoActual, pesoBuscado FROM paciente WHERE DNI=" + dni;
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -459,7 +425,7 @@ public class Paciente {
     
     public ArrayList<Paciente> llegaronAlPesoDeseado() {
         ArrayList<Paciente> pacientes = new ArrayList();
-        String SQL = "SELECT DNI, estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM Paciente a JOIN Dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE a.pesoBuscado=b.pesoFinal";
+        String SQL = "SELECT dni, estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM paciente a JOIN dieta b (ON a.ID_Dieta=b.ID_Dieta) WHERE a.pesoBuscado=b.pesoFinal";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -488,6 +454,4 @@ public class Paciente {
         return pacientes;
     }
 }
-/*Agregar a la interfaz una funcion para dar de baja/alta la dieta y el paciente
-al metodo setSQLEstado agregarle una funcion para que se fije si el estado actual es 1 o 0 
-y setee el inverso...*/
+/**/

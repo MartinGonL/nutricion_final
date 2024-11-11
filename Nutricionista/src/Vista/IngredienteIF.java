@@ -153,7 +153,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         });
         jScrollPane1.setViewportView(tabla);
 
-        panelPrincipal.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 340, 210));
+        panelPrincipal.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 250, 340, 180));
 
         panelTitulo.setBackground(new java.awt.Color(195, 218, 178));
         panelTitulo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
@@ -194,7 +194,7 @@ public class IngredienteIF extends javax.swing.JInternalFrame {
         });
         panelPrincipal.add(limpiarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 170, -1, -1));
 
-        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 3, 360, 470));
+        getContentPane().add(panelPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 3, 360, 440));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents

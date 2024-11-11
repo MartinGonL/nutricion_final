@@ -36,7 +36,6 @@ public class Menu {
         this.caloriasValorTotal = caloriasValorTotal;
     }
     
-    /*Buscar utilidad*/
     public Menu(String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
         this.nombre = nombre;
         this.ingredientes.put(nombreIng, cantidadIng);
