@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 08-11-2024 a las 00:40:19
+-- Tiempo de generación: 12-11-2024 a las 01:16:44
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -35,6 +35,27 @@ CREATE TABLE `colacion` (
   `porciones` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Volcado de datos para la tabla `colacion`
+--
+
+INSERT INTO `colacion` (`ID_Dieta`, `NombreM`, `dia`, `momentoDelDia`, `porciones`) VALUES
+(8, 'Bowl proteico', 'Lunes', 'Desayuno', 1),
+(8, 'guiso de pollo', 'Lunes', 'Almuerzo', 1),
+(8, 'Desayuno saludable', 'Lunes', 'Merienda', 1),
+(8, 'Mix de frutos secos', 'Lunes', 'Cena', 1),
+(8, 'Yogurt con cereal', 'Lunes', 'Snack', 1),
+(8, 'Desayuno saludable', 'Martes', 'Desayuno', 1),
+(8, 'Ensalada de lentejas', 'Martes', 'Almuerzo', 1),
+(8, 'Yogurt con cereal', 'Martes', 'Snack', 1),
+(8, 'Desayuno energético', 'Martes', 'Merienda', 1),
+(8, 'Tostadas con aguacate', 'Martes', 'Cena', 1),
+(8, 'cafe con leche', 'Miercoles', 'Desayuno', 1),
+(8, 'Pasta integral vegetariana', 'Miercoles', 'Almuerzo', 1),
+(8, 'Yogurt con cereal', 'Miercoles', 'Snack', 1),
+(8, 'Pasta integral vegetariana', 'Miercoles', 'Merienda', 1),
+(8, 'Wrap de atún', 'Miercoles', 'Cena', 1);
+
 -- --------------------------------------------------------
 
 --
@@ -49,19 +70,21 @@ CREATE TABLE `dieta` (
   `fechaFin` date NOT NULL,
   `fechaIni` date NOT NULL,
   `totalCalorias` float DEFAULT NULL,
-  `estadoDieta` tinyint(1) NOT NULL DEFAULT 0
+  `estado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `dieta`
 --
 
-INSERT INTO `dieta` (`ID_Dieta`, `dni`, `detalle`, `pesoFinal`, `fechaFin`, `fechaIni`, `totalCalorias`, `estadoDieta`) VALUES
+INSERT INTO `dieta` (`ID_Dieta`, `dni`, `detalle`, `pesoFinal`, `fechaFin`, `fechaIni`, `totalCalorias`, `estado`) VALUES
 (1, 46041451, 'ganar peso', NULL, '2024-11-11', '2024-11-07', 0, 0),
 (2, 77999888, 'ganar peso', NULL, '2024-11-15', '2024-11-07', 0, 0),
 (4, 33333333, 'subise', NULL, '2024-11-21', '2024-11-14', 0, 0),
 (5, 38777616, 'bajar', NULL, '2024-11-08', '2024-11-07', 0, 0),
-(6, 35877616, 'bajarpeso', NULL, '2024-11-22', '2024-11-15', NULL, 0);
+(6, 35877616, 'bajarpeso', NULL, '2024-11-22', '2024-11-15', NULL, 0),
+(7, 34555666, 'low', NULL, '2024-11-11', '2024-11-06', NULL, 0),
+(8, 35444555, 'low', NULL, '2024-11-11', '2024-11-04', NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -163,6 +186,8 @@ INSERT INTO `menu` (`NombreM`, `valorTotal`) VALUES
 ('Ensalada de lentejas', 352.1),
 ('ensalada de palta', 58.5),
 ('Ensalada mediterranea', 306.6),
+('guiso de pollo', 473.09),
+('guisoo', NULL),
 ('Mix de frutos secos', 483.2),
 ('Pasta integral vegetariana', 560.05),
 ('Pechuga y ensalada', 155.2),
@@ -186,16 +211,18 @@ CREATE TABLE `paciente` (
   `pesoActual` float NOT NULL,
   `altura` float NOT NULL,
   `edad` int(11) NOT NULL,
-  `estadoPaciente` tinyint(1) NOT NULL DEFAULT 0
+  `estado` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `paciente`
 --
 
-INSERT INTO `paciente` (`dni`, `nombre`, `apellido`, `pesoBuscado`, `pesoActual`, `altura`, `edad`, `estadoPaciente`) VALUES
+INSERT INTO `paciente` (`dni`, `nombre`, `apellido`, `pesoBuscado`, `pesoActual`, `altura`, `edad`, `estado`) VALUES
 (20333222, 'junco', 'asdas', 78, 70, 1.68, 30, 0),
 (33333333, 'martin', 'asdas', 75, 70, 1.6, 30, 0),
+(34555666, 'john', 'doe', 85, 90, 1.83, 37, 0),
+(35444555, 'john', 'doe', 85, 90, 1.83, 37, 1),
 (35877616, 'martin', 'lucero', 75, 78, 1.84, 78, 0),
 (38419062, 'maria', 'lola', 71, 84, 1.84, 30, 0),
 (38419063, 'maria', 'lola', 71, 84, 1.8, 30, 0),
@@ -225,10 +252,8 @@ CREATE TABLE `receta` (
 INSERT INTO `receta` (`NombreM`, `NombreI`, `cantidadIng`) VALUES
 ('ensalada de palta', 'Lechuga', 10),
 ('ensalada de palta', 'Aguacate', 8),
-('ensalada de palta', 'Aceite de oliva', 5),
 ('Pechuga y ensalada', 'Pechuga de pollo', 65),
 ('Pechuga y ensalada', 'Lechuga', 25),
-('Pechuga y ensalada', 'Aceite de oliva', 5),
 ('Yogurt con cereal', 'yogurt', 40),
 ('Yogurt con cereal', 'Cereales', 15),
 ('Yogurt con cereal', 'Masitas secas', 50),
@@ -241,17 +266,14 @@ INSERT INTO `receta` (`NombreM`, `NombreI`, `cantidadIng`) VALUES
 ('Desayuno saludable', 'Almendras', 15),
 ('Ensalada mediterranea', 'Lechuga', 100),
 ('Ensalada mediterranea', 'Tomate', 150),
-('Ensalada mediterranea', 'Aceite de oliva', 15),
 ('Ensalada mediterranea', 'Atún en agua', 100),
 ('Bowl de quinoa', 'Quinoa', 100),
 ('Bowl de quinoa', 'Aguacate', 50),
 ('Bowl de quinoa', 'Pechuga de pollo', 100),
 ('Bowl de quinoa', 'Brócoli', 100),
-('Bowl de quinoa', 'Aceite de oliva', 10),
 ('Cena de salmon', 'Salmon', 150),
 ('Cena de salmon', 'Espinaca', 100),
 ('Cena de salmon', 'Papa', 150),
-('Cena de salmon', 'Aceite de oliva', 15),
 ('Snack proteico', 'yogurt', 150),
 ('Snack proteico', 'Arándanos', 50),
 ('Snack proteico', 'Almendras', 20),
@@ -260,7 +282,6 @@ INSERT INTO `receta` (`NombreM`, `NombreI`, `cantidadIng`) VALUES
 ('Tostadas con aguacate', 'Aguacate', 100),
 ('Tostadas con aguacate', 'Tomate', 50),
 ('Tostadas con aguacate', 'Huevo', 50),
-('Tostadas con aguacate', 'Aceite de oliva', 5),
 ('Bowl proteico', 'Arroz blanco', 100),
 ('Bowl proteico', 'Pechuga de pollo', 150),
 ('Bowl proteico', 'Aguacate', 50),
@@ -269,12 +290,10 @@ INSERT INTO `receta` (`NombreM`, `NombreI`, `cantidadIng`) VALUES
 ('Ensalada de lentejas', 'Lentejas', 150),
 ('Ensalada de lentejas', 'Cebolla', 30),
 ('Ensalada de lentejas', 'Tomate', 100),
-('Ensalada de lentejas', 'Aceite de oliva', 15),
 ('Ensalada de lentejas', 'Pimiento rojo', 50),
 ('Pasta integral vegetariana', 'Pasta', 100),
 ('Pasta integral vegetariana', 'Tomate', 150),
 ('Pasta integral vegetariana', 'Champiñones', 100),
-('Pasta integral vegetariana', 'Aceite de oliva', 15),
 ('Pasta integral vegetariana', 'Ajo', 5),
 ('Desayuno energético', 'Pan integral', 60),
 ('Desayuno energético', 'Huevo', 100),
@@ -289,12 +308,17 @@ INSERT INTO `receta` (`NombreM`, `NombreI`, `cantidadIng`) VALUES
 ('Pollo con vegetales', 'Brócoli', 100),
 ('Pollo con vegetales', 'Zanahoria', 100),
 ('Pollo con vegetales', 'Calabacin', 100),
-('Pollo con vegetales', 'Aceite de oliva', 15),
 ('Wrap de atún', 'Atún en agua', 120),
 ('Wrap de atún', 'Lechuga', 50),
 ('Wrap de atún', 'Tomate', 50),
 ('Wrap de atún', 'Aguacate', 50),
-('Wrap de atún', 'Pan integral', 60);
+('Wrap de atún', 'Pan integral', 60),
+('Bowl de quinoa', 'Aceite de oliva', 10),
+('guiso de pollo', 'Pechuga de pollo', 200),
+('guiso de pollo', 'Arroz blanco', 50),
+('guiso de pollo', 'Aceite de oliva', 5),
+('guiso de pollo', 'Tomate', 180),
+('guiso de pollo', 'ajo', 1);
 
 --
 -- Índices para tablas volcadas
@@ -347,7 +371,7 @@ ALTER TABLE `receta`
 -- AUTO_INCREMENT de la tabla `dieta`
 --
 ALTER TABLE `dieta`
-  MODIFY `ID_Dieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `ID_Dieta` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `paciente`
