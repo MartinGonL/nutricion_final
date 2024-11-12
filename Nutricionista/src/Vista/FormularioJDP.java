@@ -421,7 +421,7 @@ public class FormularioJDP extends javax.swing.JFrame {
         setRow(comidas, "dietaDiaria");
     }
 
-    public static void main(String args[]) {
+    public static void main(String[] args) {
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

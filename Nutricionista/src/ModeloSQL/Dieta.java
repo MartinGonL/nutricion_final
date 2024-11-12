@@ -308,7 +308,7 @@ public class Dieta {
                 fechaFin = LocalDate.parse(resultado.getString("fechaFin"));
             }
         } 
-        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
+        catch (SQLException ex) {}
         
         return fechaFin;
     }
@@ -430,27 +430,15 @@ public class Dieta {
 
     //-----Metodos Solicitados-----------------------------------------------------------------------------------------------------------------------------
     
-    /*Controlar este metodo...*/
-    public void cargarPesoYfinalizar(float pesoFin, String dni) {
+    public boolean chequearFecha(String dni) {
         String fechaActual = LocalDate.now().toString();
+        boolean confirm = false;
         getSQLFechaFin(dni);
         
-        if (fechaActual.compareTo(fechaFin.toString()) >= 0) 
-        {
-            setSQLPesoFinal(pesoFinal, dni);
-        }
-        else JOptionPane.showMessageDialog(null, "Solo podra cargar su peso final el dia " + fechaFin);
+        if (fechaActual.compareTo(fechaFin.toString()) >= 0) confirm = true;
+        return confirm;
     }
     
-    public void imprimirDietaDiaria(String idDieta) {
-        getSQLDietaDiaria(idDieta);
-        
-        for (Menu dieta : dietaDiaria) 
-        {
-            System.out.println(dieta.toString());
-        }
-    }
-
     public int generarDietaDiara(String ingrediente, String dni, int count) {
         dietaDiaria.clear();
         String SQL = "SELECT a.NombreM, valorTotal FROM menu a JOIN receta b on a.NombreM=b.NombreM WHERE b.NombreI LIKE '" + ingrediente + "%'";
