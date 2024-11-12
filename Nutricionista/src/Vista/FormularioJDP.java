@@ -1,7 +1,9 @@
 package Vista;
 
+import ModeloSQL.Dieta;
 import ModeloSQL.Menu;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class FormularioJDP extends javax.swing.JFrame {
@@ -11,10 +13,13 @@ public class FormularioJDP extends javax.swing.JFrame {
     private MenuIF menuIF;
 
     private static DefaultTableModel modeloT;
-//    private static final ArrayList<Menu> menus = new ArrayList();
-
+    private final Dieta dieta;
+    private int count = 0;
+    
     public FormularioJDP() {
         initComponents();
+        this.dieta = new Dieta();
+        
         setResizable(false);
         setLocationRelativeTo(null);
 
@@ -77,14 +82,14 @@ public class FormularioJDP extends javax.swing.JFrame {
         panelAutomatico.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         ingresarDatoJL.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
-        ingresarDatoJL.setText("Ingrese:");
-        panelAutomatico.add(ingresarDatoJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 0, -1, 50));
+        ingresarDatoJL.setText("Que ingrediente quiere que contenga su Desayuno/Merienda?");
+        panelAutomatico.add(ingresarDatoJL, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 50));
         ingresarDatoJL.setVisible(false);
 
         labelGenerarDieta.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         labelGenerarDieta.setText("Generar dieta automatica ");
         panelAutomatico.add(labelGenerarDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, -1, 50));
-        panelAutomatico.add(datoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, 110, -1));
+        panelAutomatico.add(datoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, 110, -1));
         datoJTF.setVisible(false);
 
         okJB.setText("OK");
@@ -96,7 +101,12 @@ public class FormularioJDP extends javax.swing.JFrame {
         panelAutomatico.add(okJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 10, 70, -1));
 
         enviarJB.setText("Enviar");
-        panelAutomatico.add(enviarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, -1, -1));
+        enviarJB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enviarJBActionPerformed(evt);
+            }
+        });
+        panelAutomatico.add(enviarJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 10, -1, -1));
         enviarJB.setVisible(false);
 
         registroJM.setText("Registro");
@@ -197,8 +207,37 @@ public class FormularioJDP extends javax.swing.JFrame {
     }//GEN-LAST:event_ingredientesJMIActionPerformed
 
     private void okJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJBActionPerformed
-        // TODO add your handling code here:
+        okJB.setText((okJB.getText().equals("OK")) ? "Cancelar" : "OK");
+        
+        ingresarDatoJL.setVisible(okJB.getText().equals("Cancelar"));
+        datoJTF.setVisible(okJB.getText().equals("Cancelar"));
+        enviarJB.setVisible(okJB.getText().equals("Cancelar"));
+        
+        count = 0;
     }//GEN-LAST:event_okJBActionPerformed
+
+    private void enviarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarJBActionPerformed
+        String pregunta = "Que ingrediente quiere que contenga su ";
+        String DNI = "";
+        
+        try { DNI = registroIF.sendDNI(); }
+        catch (NullPointerException ex) {}
+        
+        if (count < 3)
+        {
+            if (!DNI.equals("")) 
+            {
+                dieta.generarDietaDiara(datoJTF.getText(), DNI, count);
+                count++;
+                
+                pregunta += (count == 1) ? "Almuerzo/Cena?" : "Snack?";
+                ingresarDatoJL.setText(pregunta);
+                datoJTF.setText("");
+            }
+            else JOptionPane.showMessageDialog(rootPane, "Seleccione un pasiente en la pestaña registro.");
+        }
+        if (count == 3) okJBActionPerformed(evt);
+    }//GEN-LAST:event_enviarJBActionPerformed
 
     private void setColumn() {
         modeloT = new DefaultTableModel() {

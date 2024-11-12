@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+
 import java.text.DecimalFormat;
 
 import java.time.LocalDate;
@@ -382,7 +383,6 @@ public class Dieta {
     //REVISAR ESTO
     public Paciente getSQLPaciente(String dni) {
         String SQL = "SELECT b.dni, b.estado, nombre, apellido, edad, altura, pesoActual, pesoBuscado FROM dieta a JOIN paciente b ON a.dni=b.dni WHERE a.dni=" + dni;
-        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
@@ -402,7 +402,7 @@ public class Dieta {
                 paciente = new Paciente(dni1, estadoPaciente, name, apellido, edad, altura, pesoActual, pesoBuscado);
             }
         } 
-        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
+        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis getSQLPaciente."); }
         
         return paciente;
     }
@@ -449,7 +449,7 @@ public class Dieta {
         return dietaDiaria;
     }
 
-    /*MODIFICAR*/
+    /*MEPA QUE ESTE NO VA*/
     public void setSQLDietaDiaria(String dni, String nombreM, String dia, String momentoDelDia) {
         dietaDiaria.clear();
         getSQLID_Dieta(dni);
@@ -491,9 +491,10 @@ public class Dieta {
     }
 
     /*Probar*/
-    public void generarDietaDiara(String ingrediente, String dni) {
+    public void generarDietaDiara(String ingrediente, String dni, int count) {
         String SQL = "SELECT a.NombreM, NombreI, cantidadIng, valorTotal FROM menu a JOIN receta b on a.NombreM=b.NombreM WHERE b.NombreI LIKE '" + ingrediente + "%'";
-        float calTotal = 0;
+        System.out.println(SQL);
+        float calTotal;
         String name;
         try 
         {
@@ -514,9 +515,29 @@ public class Dieta {
                 dietaDiaria.add(menu);
             }
         } 
-        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis."); }
+        catch (SQLException ex) { System.out.println("Error en generarDietaDiaria."); }
         
-        ajustarAlObjetivo(dietaDiaria, dni);
+        int countI = (count == 2) ? 1 : 0;
+        String momento = "";
+        String dia = "";
+        for (int v = countI; v < 2; v++) 
+        {
+            switch (count) {
+                case 0 -> { momento = (v == 0) ? "Desayuno" : "Merienda"; }
+                case 1 -> { momento = (v == 0) ? "Almuerzo" : "Cena"; }
+                case 2 -> { momento = "Snack"; }
+            }
+            name = ajustarAlObjetivo(dietaDiaria, dni);
+            for (int d = 0; d < 3; d++) 
+            {
+                switch (d) {
+                    case 0 -> { dia = "Lunes"; }
+                    case 1 -> { dia = "Miercoles"; }
+                    case 2 -> { dia = "Viernes"; }
+                }
+                crearColacion(name, dni, dia, momento);
+            }
+        }
     }
     
     private String ajustarAlObjetivo(ArrayList<Menu> menus, String dni) {
@@ -532,19 +553,32 @@ public class Dieta {
                 {
                     name = menu.getNombre();
                     calTotal = menu.getCaloriasValorTotal();
+                    System.out.println("peso inicial > peso buscado");
                 }
             }
             else
             {
-                if (calTotal > menu.getCaloriasValorTotal() | calTotal == 0) 
+                if (calTotal > menu.getCaloriasValorTotal()) 
                 {
                     name = menu.getNombre();
                     calTotal = menu.getCaloriasValorTotal();
+                    System.out.println("peso inicial < peso buscado");
                 }
             }
         }
         Iterator<Menu> it = menus.iterator();
-        while (it.hasNext()) { if (it.next().getNombre().equals(name)) it.remove(); }
+        while (it.hasNext()) { if (it.next().getNombre().equals(name) & dietaDiaria.size() > 1) it.remove(); }
         return name;
+    }
+    
+    private void crearColacion(String name, String dni, String dia, String momento) {
+        String SQL = "INSERT INTO colacion(ID_Dieta, NombreM, dia, momentoDelDia, porciones) VALUES (" + getSQLID_Dieta(dni) + ", '" + name + "', '" + dia + "', '" + momento + "', 1)";
+        System.out.println(SQL);
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            sentencia.executeUpdate();
+        } 
+        catch (SQLException ex) { System.out.println("Error en crearColacion."); }
     }
 }

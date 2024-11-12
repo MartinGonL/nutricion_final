@@ -124,6 +124,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
         dniJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         dniJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        dniJTF.setName("DNI"); // NOI18N
         dniJTF.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 dniJTFFocusGained(evt);
@@ -657,6 +658,10 @@ public class RegistroIF extends javax.swing.JInternalFrame {
             }
         }
         return count;
+    }
+    
+    public String sendDNI() {
+        return dniJTF.getText();
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
