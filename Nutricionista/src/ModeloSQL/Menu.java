@@ -36,9 +36,8 @@ public class Menu {
         this.caloriasValorTotal = caloriasValorTotal;
     }
     
-    public Menu(String nombre, String nombreIng, Float cantidadIng, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
+    public Menu(String nombre, String dia, String momentoDelDia, Integer porciones, Float caloriasValorTotal) {
         this.nombre = nombre;
-        this.ingredientes.put(nombreIng, cantidadIng);
         this.dia = dia;
         this.momentoDelDia = momentoDelDia;
         this.porciones = porciones;
@@ -359,7 +358,6 @@ public class Menu {
         return caloriasValorTotal;
     }
 
-    /*Corroborar Calculo*/
     public void setSQLCaloriasValorTotal(String nomComida) {
         getSQLCaloriasValorTotal(nomComida);
         String SQL = "UPDATE menu SET valorTotal=" + caloriasValorTotal + " WHERE NombreM='" + nomComida + "'";
@@ -407,8 +405,18 @@ public class Menu {
         } 
         catch (SQLException ex) 
         {
-            JOptionPane.showMessageDialog(null, "Error en la Sintaxis.");
+            JOptionPane.showMessageDialog(null, "Error en la Sintaxis estructurar dieta.");
         }
         return count;
+    }
+    
+    public void modificarComida(String nomComida, String porcion, String idDieta, String day, String moment) {
+        String SQL = "UPDATE colacion SET NombreM='" + nomComida + "', porciones=" + porcion + " WHERE ID_Dieta=" + idDieta + " AND dia='" + day + "' AND momentoDelDia='" + moment + "'";
+        try 
+        {
+            sentencia = conexion.prepareStatement(SQL);
+            sentencia.executeUpdate();
+        } 
+        catch (SQLException ex) {}
     }
 }

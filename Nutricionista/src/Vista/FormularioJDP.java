@@ -1,8 +1,13 @@
 package Vista;
 
 import ModeloSQL.Dieta;
+import ModeloSQL.Ingrediente;
 import ModeloSQL.Menu;
+import ModeloSQL.Paciente;
+import Persistencia.Funciones;
+
 import java.util.ArrayList;
+import java.util.TreeMap;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -13,17 +18,24 @@ public class FormularioJDP extends javax.swing.JFrame {
     private MenuIF menuIF;
 
     private static DefaultTableModel modeloT;
+    
+    private final Paciente paciente;
     private final Dieta dieta;
+    private static Ingrediente ingrediente;
+    
+    private static final TreeMap<String, String> tab = new TreeMap();
     private int count = 0;
     
     public FormularioJDP() {
         initComponents();
+        this.paciente = new Paciente();
         this.dieta = new Dieta();
+        ingrediente = new Ingrediente();
         
         setResizable(false);
         setLocationRelativeTo(null);
 
-        setColumn();
+        setColumn("dietaDiaria");
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -74,6 +86,11 @@ public class FormularioJDP extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        tabla.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tabla);
         tabla.getTableHeader().setResizingAllowed(false);
         tabla.getTableHeader().setReorderingAllowed(false);
@@ -88,7 +105,18 @@ public class FormularioJDP extends javax.swing.JFrame {
 
         labelGenerarDieta.setFont(new java.awt.Font("sansserif", 1, 14)); // NOI18N
         labelGenerarDieta.setText("Generar dieta automatica ");
-        panelAutomatico.add(labelGenerarDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 0, -1, 50));
+        panelAutomatico.add(labelGenerarDieta, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 0, -1, 50));
+
+        datoJTF.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                datoJTFFocusGained(evt);
+            }
+        });
+        datoJTF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                datoJTFKeyReleased(evt);
+            }
+        });
         panelAutomatico.add(datoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(450, 10, 110, -1));
         datoJTF.setVisible(false);
 
@@ -98,7 +126,7 @@ public class FormularioJDP extends javax.swing.JFrame {
                 okJBActionPerformed(evt);
             }
         });
-        panelAutomatico.add(okJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(950, 10, 70, -1));
+        panelAutomatico.add(okJB, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, 90, -1));
 
         enviarJB.setText("Enviar");
         enviarJB.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +192,7 @@ public class FormularioJDP extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, 470, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(panelAutomatico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(panelAutomatico, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -207,39 +235,94 @@ public class FormularioJDP extends javax.swing.JFrame {
     }//GEN-LAST:event_ingredientesJMIActionPerformed
 
     private void okJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJBActionPerformed
+        if (count != 3 & count != 0) Funciones.eliminarRegistro("colacion", "ID_Dieta", dieta.getSQLID_Dieta(registroIF.sendDNI()).toString());
         okJB.setText((okJB.getText().equals("OK")) ? "Cancelar" : "OK");
         
         ingresarDatoJL.setVisible(okJB.getText().equals("Cancelar"));
         datoJTF.setVisible(okJB.getText().equals("Cancelar"));
         enviarJB.setVisible(okJB.getText().equals("Cancelar"));
         
+        resetTable();
+        setColumn((okJB.getText().equals("OK")) ? "dietaDiaria" : "ingrediente");
         count = 0;
     }//GEN-LAST:event_okJBActionPerformed
 
     private void enviarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarJBActionPerformed
         String pregunta = "Que ingrediente quiere que contenga su ";
-        String DNI = "";
-        
-        try { DNI = registroIF.sendDNI(); }
+        try 
+        { 
+            String DNI = registroIF.sendDNI(); 
+            
+            if (paciente.getSQLEstadoPaciente(DNI) & dieta.getSQLDietaDiaria(DNI).size() != 15) 
+            {
+                if (count < 3)
+                {
+                    if (!DNI.equals("")) 
+                    {
+                        count = dieta.generarDietaDiara(datoJTF.getText(), DNI, count);
+
+                        if (count > 0) 
+                        {    
+                            pregunta += (count == 1) ? "Almuerzo/Cena?" : "Snack?";
+                            ingresarDatoJL.setText(pregunta);
+                            datoJTF.setText("");
+                        }
+                    }
+                    else JOptionPane.showMessageDialog(rootPane, "Seleccione un pasiente en la pestaña registro.");
+                }
+                if (count == 3) 
+                {
+                    okJBActionPerformed(evt);
+                    armarDietaDiaria(dieta.getSQLDietaDiaria(DNI), DNI);
+                }
+            }
+            else 
+            {
+                JOptionPane.showMessageDialog(rootPane, "El paciente ya posee una Dieta Diaria o aun no a sido dado de alta.");
+                okJBActionPerformed(evt);
+            }
+        }
         catch (NullPointerException ex) {}
         
-        if (count < 3)
-        {
-            if (!DNI.equals("")) 
-            {
-                dieta.generarDietaDiara(datoJTF.getText(), DNI, count);
-                count++;
-                
-                pregunta += (count == 1) ? "Almuerzo/Cena?" : "Snack?";
-                ingresarDatoJL.setText(pregunta);
-                datoJTF.setText("");
-            }
-            else JOptionPane.showMessageDialog(rootPane, "Seleccione un pasiente en la pestaña registro.");
-        }
-        if (count == 3) okJBActionPerformed(evt);
     }//GEN-LAST:event_enviarJBActionPerformed
 
-    private void setColumn() {
+    private void datoJTFFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_datoJTFFocusGained
+        resetTable();
+        setRow(new String[0][0], "ingrediente");
+    }//GEN-LAST:event_datoJTFFocusGained
+
+    private void tablaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaMouseClicked
+        if (datoJTF.isVisible()) 
+        {
+            int filaSelect = tabla.getSelectedRow();
+            try
+            {
+                String nombreI = (String)tabla.getValueAt(filaSelect, 0);
+                datoJTF.setText(nombreI);
+            }
+            catch (Exception ex) {}
+        }
+        else 
+        {
+            int filaSelect = tabla.getSelectedRow();
+            tab.put("momento", String.valueOf(filaSelect));
+            
+            int columnSelect = tabla.getSelectedColumn();
+            tab.put("dia", String.valueOf(columnSelect));
+            
+            String nombreC = (String)tabla.getValueAt(filaSelect, columnSelect);
+            tab.put("nombreC", nombreC);
+            
+            menuIF.setearDatos(tab);
+        }
+    }//GEN-LAST:event_tablaMouseClicked
+
+    private void datoJTFKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_datoJTFKeyReleased
+        resetTable();
+        setRow(new String[0][0], "ingrediente");
+    }//GEN-LAST:event_datoJTFKeyReleased
+
+    private void setColumn(String tipo) {
         modeloT = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(int rowIndex, int colIndex) {
@@ -247,34 +330,58 @@ public class FormularioJDP extends javax.swing.JFrame {
             }
         };
 
-        modeloT.addColumn("Lunes");     //0
-        modeloT.addColumn("Martes");    //1
-        modeloT.addColumn("Miercoles"); //2
-        modeloT.addColumn("Jueves");    //3
-        modeloT.addColumn("Viernes");   //4
-        modeloT.addColumn("Sabado");    //5
-        modeloT.addColumn("Domingo");   //6
+        switch (tipo) {
+            case "dietaDiaria" -> 
+            {
+                modeloT.addColumn("Lunes");     //0
+                modeloT.addColumn("Martes");    //1
+                modeloT.addColumn("Miercoles"); //2
+                modeloT.addColumn("Jueves");    //3
+                modeloT.addColumn("Viernes");   //4
+                modeloT.addColumn("Sabado");    //5
+                modeloT.addColumn("Domingo");   //6
+            }
+            case "ingrediente" -> 
+            {
+                modeloT.addColumn("Nombre Ingrediente");     //0
+            }
+        }
 
         tabla.setModel(modeloT);
     }
 
-    private static void setRow(String[][] comidas) {
-        for (int c = 0; c < 5; c++) 
-        {
-            modeloT.addRow(new Object[]{
-                comidas[0][c],
-                comidas[1][c],
-                comidas[2][c],
-                comidas[3][c],
-                comidas[4][c],
-                comidas[5][c],
-                comidas[6][c],
-            });
+    private static void setRow(String[][] comidas, String tipo) {
+        switch (tipo) {
+            case "dietaDiaria" -> 
+            {
+                for (int c = 0; c < 5; c++) 
+                {
+                    modeloT.addRow(new Object[]{
+                        comidas[0][c],
+                        comidas[1][c],
+                        comidas[2][c],
+                        comidas[3][c],
+                        comidas[4][c],
+                        comidas[5][c],
+                        comidas[6][c],
+                    });
+                }
+            }
+            case "ingrediente" -> 
+            {
+                ArrayList<Ingrediente> ingredientes = new ArrayList(ingrediente.getAll(datoJTF.getText()));
+                for (Ingrediente ing : ingredientes)
+                {
+                    modeloT.addRow(new Object[]{
+                        ing.getNombre()
+                    });
+                }
+            }
         }
         tabla.setModel(modeloT);
     }
 
-    private static void resetTable() {
+    public static void resetTable() {
         int x = modeloT.getRowCount()-1;
         
         for (int c = x; c >= 0; c--) {
@@ -282,33 +389,36 @@ public class FormularioJDP extends javax.swing.JFrame {
         }
     }
     
-    public static void armarDietaDiaria(ArrayList<Menu> menus) {
+    public static void armarDietaDiaria(ArrayList<Menu> menus, String dni) {
         String[][] comidas = new String[7][5];
         int fila = 0;
         int colum = 0;
         for (Menu menu : menus) {
             String dia = menu.getDia();
             switch (dia) {
-                case "Lunes" -> { fila = 0; }
-                case "Martes" -> { fila = 1; }
-                case "Miercoles" -> { fila = 2; }
-                case "Jueves" -> { fila = 3; }
-                case "Viernes" -> { fila = 4; }
-                case "Sabado" -> { fila = 5; }
-                case "Domingo" -> { fila = 6; }
+                case "Lunes" -> { colum = 0; }
+                case "Martes" -> { colum = 1; }
+                case "Miercoles" -> { colum = 2; }
+                case "Jueves" -> { colum = 3; }
+                case "Viernes" -> { colum = 4; }
+                case "Sabado" -> { colum = 5; }
+                case "Domingo" -> { colum = 6; }
             }
             String momento = menu.getMomentoDelDia();
             switch (momento) {
-                case "Desayuno" -> { colum = 0; }
-                case "Almuerzo" -> { colum = 1; }
-                case "Snack" -> { colum = 2; }
-                case "Merienda" -> { colum = 3; }
-                case "Cena" -> { colum = 4; }
+                case "Desayuno" -> { fila = 0; }
+                case "Almuerzo" -> { fila = 1; }
+                case "Snack" -> { fila = 2; }
+                case "Merienda" -> { fila = 3; }
+                case "Cena" -> { fila = 4; }
             }
-            comidas[fila][colum] = menu.getNombre();
+            comidas[colum][fila] = menu.getNombre();
         }
+        tab.clear();
+        tab.put("paciente", dni);
+        
         resetTable();
-        setRow(comidas);
+        setRow(comidas, "dietaDiaria");
     }
 
     public static void main(String args[]) {
@@ -330,7 +440,7 @@ public class FormularioJDP extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu comidasJM;
     private javax.swing.JMenuItem comidasJMI;
-    private javax.swing.JTextField datoJTF;
+    private static javax.swing.JTextField datoJTF;
     private javax.swing.JButton enviarJB;
     private javax.swing.JMenu ingredientesJM;
     private javax.swing.JMenuItem ingredientesJMI;

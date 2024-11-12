@@ -105,7 +105,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelNombrePac, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 70, 30));
 
         nombrePacJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        nombrePacJTF.setText("john");
         nombrePacJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(nombrePacJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 50, 152, 30));
 
@@ -114,7 +113,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelApellido, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 70, 30));
 
         apellidoJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        apellidoJTF.setText("doe");
         apellidoJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(apellidoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 152, 30));
 
@@ -142,7 +140,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelEdad, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 130, 50, 30));
 
         edadJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        edadJTF.setText("37");
         edadJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(edadJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 130, 152, 30));
 
@@ -151,7 +148,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelPesoAct, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 50, 90, 30));
 
         pesoActualJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        pesoActualJTF.setText("90");
         pesoActualJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(pesoActualJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 50, 152, 30));
 
@@ -160,7 +156,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelPesoBusc, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 90, 100, 30));
 
         pesoBuscadoJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        pesoBuscadoJTF.setText("85");
         pesoBuscadoJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(pesoBuscadoJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 90, 152, 30));
 
@@ -169,7 +164,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosPaciente.add(labelAltura, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 10, 50, 30));
 
         alturaJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        alturaJTF.setText("1.83");
         alturaJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosPaciente.add(alturaJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 10, 152, 30));
 
@@ -218,7 +212,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         panelDatosDieta.add(labelDetalle, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 10, 60, 30));
 
         detalleJTF.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        detalleJTF.setText("low");
         detalleJTF.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         panelDatosDieta.add(detalleJTF, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 10, 152, 30));
 
@@ -403,6 +396,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         fechaIniJD.setDate(null);
         fechaFinJD.setDate(null);
         caloriasTotalesJL.setText("0");
+        FormularioJDP.resetTable();
         resetTable();
         setRow();
     }//GEN-LAST:event_limpiarJBActionPerformed
@@ -463,7 +457,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                 fechaFinJD.setCalendar(traducirCalendar(fechaF.toString()));
                 
                 indicarCaloriasTotales();
-                FormularioJDP.armarDietaDiaria(dieta.getSQLDietaDiaria(dniJTF.getText()));
+                FormularioJDP.armarDietaDiaria(dieta.getSQLDietaDiaria(dniJTF.getText()), String.valueOf(dni));
             }
             else
             {

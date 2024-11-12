@@ -3,6 +3,7 @@ package Vista;
 import ModeloSQL.Dieta;
 import ModeloSQL.Ingrediente;
 import ModeloSQL.Menu;
+import ModeloSQL.Paciente;
 import Persistencia.Funciones;
 import java.awt.Component;
 import java.awt.HeadlessException;
@@ -21,6 +22,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private final Menu menu;
     private final Ingrediente ingrediente;
     private final Dieta dieta;
+    private final Paciente paciente;
     private DefaultTableModel modeloT;
     
     private String FLAG;
@@ -32,6 +34,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         this.menu = new Menu();
         this.ingrediente = new Ingrediente();
         this.dieta = new Dieta();
+        this.paciente = new Paciente();
         
         manejarPaneles();
     }
@@ -395,6 +398,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
                     cantDiasJS.setValue(3);
                 }
             }
+            FormularioJDP.armarDietaDiaria(dieta.getSQLDietaDiaria(dniJT.getText()), dniJT.getText());
             limpiarJBActionPerformed(evt);
         }
     }//GEN-LAST:event_guardarJBActionPerformed
@@ -420,7 +424,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
         TreeMap<String, Float> ingredientes = new TreeMap(menu.getSQLIngredientes(nombreComidaJT.getText()));
         ArrayList<Menu> menus = new ArrayList(dieta.getSQLDietaDiaria(dniJT.getText()));
-        if (!ingredientes.isEmpty()) 
+        if (!ingredientes.isEmpty() & dniJT.getText().equals("")) 
         {
             if (modificarJB.getText().equals("Finalizar"))
             {
@@ -448,6 +452,11 @@ public class MenuIF extends javax.swing.JInternalFrame {
         }
         else if (!menus.isEmpty()) 
         {
+            if (Funciones.checkField(panelDatosComida)) 
+            {
+                menu.modificarComida(nombreComidaJT.getText(), porcionesJS.getValue().toString(), dieta.getSQLID_Dieta(dniJT.getText()).toString(), diaJCB.getSelectedItem().toString(), tipoComidaJCB.getSelectedItem().toString());
+                FormularioJDP.armarDietaDiaria(dieta.getSQLDietaDiaria(dniJT.getText()), dniJT.getText());
+            }
         }
         else JOptionPane.showMessageDialog(rootPane, "La receta no tiene Ingredientes");
     }//GEN-LAST:event_modificarJBActionPerformed
@@ -615,13 +624,15 @@ public class MenuIF extends javax.swing.JInternalFrame {
         int count = 0;
         try 
         {
-            Integer ID_Dieta = menu.getSQLID_Dieta(dniJT.getText());
+            boolean estadoPaciente = false;
+            try { estadoPaciente = paciente.getSQLEstadoPaciente(dniJT.getText()); }
+            catch (NullPointerException ex) {}
             
             if (dniJT.getText().length() >= 7) count++;
             else JOptionPane.showMessageDialog(rootPane, "Ingrese un numero valido. El que ingreso le faltan caracteres.");
             
-            if (ID_Dieta != null) count++;
-            else JOptionPane.showMessageDialog(rootPane, "DNI erroneo.\nQuizas el paciente no esta registrado, o aun no se le a asignado una Dieta.");
+            if (estadoPaciente) count++;
+            else JOptionPane.showMessageDialog(rootPane, "DNI erroneo.\nEl paciente aun no a sido dado de alta.");
             
             if (Integer.parseInt(dniJT.getText())*0 == 0) count++;
         } 
@@ -632,6 +643,23 @@ public class MenuIF extends javax.swing.JInternalFrame {
         }
         catch (HeadlessException ex) {}
         return count;
+    }
+    
+    public void setearDatos(TreeMap<String, String> tab) {
+        if (tab.size() == 4) 
+        {
+            for (Map.Entry<String, String> data : tab.entrySet()) 
+            {
+                switch (data.getKey()) {
+                    case "dia" -> { diaJCB.setSelectedIndex(Integer.parseInt(data.getValue())); }
+                    case "momento" -> { tipoComidaJCB.setSelectedIndex(Integer.parseInt(data.getValue())); }
+                    case "nombreC" -> { nombreComidaJT.setText(data.getValue()); }
+                    case "paciente" -> { dniJT.setText(data.getValue()); }
+                }
+            }
+            setColumn("receta");
+            setRow("receta");
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

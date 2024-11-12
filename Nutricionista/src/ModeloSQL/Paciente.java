@@ -182,7 +182,6 @@ public class Paciente {
         return pacientes;
     }
     
-    //metodo cargado por martin!
     public Boolean getSQLEstadoPaciente(String dni) {
         String SQL = "SELECT estado FROM paciente WHERE dni=" + dni;
         try 
@@ -195,20 +194,19 @@ public class Paciente {
                 estadoPaciente = resultado.getBoolean("estado");
             }
         } 
-        catch (SQLException ex) 
-        { JOptionPane.showMessageDialog(null, "Error en la Sintaxis de get Estado Paciente."); }
+        catch (SQLException ex) {}
         return estadoPaciente;
     }
 
-    //metodo cargado por martin!
     public void setSQLEstadoPaciente(Boolean estadoPaciente, String dni) {
         String SQL = "UPDATE paciente SET estado=" + estadoPaciente + " WHERE dni=" + dni;
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);
             sentencia.executeUpdate();
         } 
-        catch (SQLException ex) { JOptionPane.showMessageDialog(null, "Error en la Sintaxis de set Estado Paciente."); }
+        catch (SQLException ex) {}
     }
     
     public String getSQLNombre(String dni) {
