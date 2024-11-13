@@ -523,6 +523,7 @@ public class Dieta {
     
     private void crearColacion(String name, String dni, String dia, String momento) {
         String SQL = "INSERT INTO colacion(ID_Dieta, NombreM, dia, momentoDelDia, porciones) VALUES (" + getSQLID_Dieta(dni) + ", '" + name + "', '" + dia + "', '" + momento + "', 1)";
+        System.out.println(SQL);
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

@@ -235,6 +235,7 @@ public class FormularioJDP extends javax.swing.JFrame {
     }//GEN-LAST:event_ingredientesJMIActionPerformed
 
     private void okJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okJBActionPerformed
+        ingresarDatoJL.setText("Que ingrediente quiere que contenga su Desayuno/Merienda? ");
         if (count != 3 & count != 0) Funciones.eliminarRegistro("colacion", "ID_Dieta", dieta.getSQLID_Dieta(registroIF.sendDNI()).toString());
         okJB.setText((okJB.getText().equals("OK")) ? "Cancelar" : "OK");
         
