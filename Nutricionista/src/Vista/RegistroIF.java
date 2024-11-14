@@ -338,7 +338,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
         int verificacion = 0;
         if (!paciente.getAll(dniJTF.getText()).isEmpty()) verificacion = verificacion("paciente");
-        if (verificacion == 5) 
+        if (verificacion == 9) 
         {
             if (!nombrePacJTF.getText().equals("")) 
             {
@@ -375,7 +375,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
             }
         }
         if (!dieta.getAll(dniJTF.getText()).isEmpty()) verificacion += verificacion("dieta");
-        if (verificacion == 13) 
+        if (verificacion == 17) 
         {
             System.out.println("Verfificacion de dieta");
             if (!detalleJTF.getText().equals("")) 
@@ -412,7 +412,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
     private void eliminarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarJBActionPerformed
         int verificacion = verificacion("paciente");
-        if (!dniJTF.getText().equals("") & verificacion == 5)
+        if (!dniJTF.getText().equals("") & verificacion == 9)
         {
             int respuesta = JOptionPane.showConfirmDialog(rootPane, "Eliminar al paciente " + nombrePacJTF.getText() + " " + apellidoJTF.getText() + "?");
             if (respuesta == 0) Funciones.eliminarRegistro("paciente", "dni", dniJTF.getText());
@@ -499,7 +499,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         if (flagPaciente) verificacion = verificacion("paciente");
         else JOptionPane.showMessageDialog(rootPane, "Asegurece de haber completado todos los campos solicitados.");
         
-        if (verificacion == 5) 
+        if (verificacion == 9) 
         {
             String nombre = nombrePacJTF.getText();
             String apellido = apellidoJTF.getText();
@@ -647,8 +647,23 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
                 try { if (Integer.parseInt(apellidoJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Apellido solo acepta letras."); }
                 catch (NumberFormatException ex) { count++; }
+                
+                try { 
+                    if (Float.parseFloat(alturaJTF.getText())<= 0) JOptionPane.showMessageDialog(rootPane, "El campo altura solo acepta valores Positivos."); 
+                    else count++;
+                   
+                    if (Float.parseFloat(pesoActualJTF.getText())<= 0) JOptionPane.showMessageDialog(rootPane, "El campo peso Actual solo acepta valores Positivos."); 
+                    else count++;
+                   
+                    if (Float.parseFloat(pesoBuscadoJTF.getText())<= 0) JOptionPane.showMessageDialog(rootPane, "El campo peso Buscado solo acepta valores Positivos."); 
+                   
+                    if (pesoFinalJTF.isVisible() && Float.parseFloat(pesoFinalJTF.getText())<= 0) JOptionPane.showMessageDialog(rootPane, "El campo peso Final solo acepta valores Positivos."); 
+                    else count++;
+                } 
+                catch (NumberFormatException ex) { JOptionPane.showMessageDialog(rootPane, "el campo peso Final solo acepta Numeros Positivos"); }
+                
             }
-            case "dieta" -> 
+            case "dieta" ->     
             {
                 //Verificaicon de datos 'Dieta'. OK=8
                 try { if (Integer.parseInt(detalleJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Detalle solo acepta letras."); }
