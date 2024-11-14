@@ -338,7 +338,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
     private void modificarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modificarJBActionPerformed
         int verificacion = 0;
         if (!paciente.getAll(dniJTF.getText()).isEmpty()) verificacion = verificacion("paciente");
-        if (verificacion == 9) 
+        if (verificacion == 8) 
         {
             if (!nombrePacJTF.getText().equals("")) 
             {
@@ -375,7 +375,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
             }
         }
         if (!dieta.getAll(dniJTF.getText()).isEmpty()) verificacion += verificacion("dieta");
-        if (verificacion == 17) 
+        if (verificacion == 16) 
         {
             System.out.println("Verfificacion de dieta");
             if (!detalleJTF.getText().equals("")) 
@@ -412,7 +412,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
 
     private void eliminarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_eliminarJBActionPerformed
         int verificacion = verificacion("paciente");
-        if (!dniJTF.getText().equals("") & verificacion == 9)
+        if (!dniJTF.getText().equals("") & verificacion == 8)
         {
             int respuesta = JOptionPane.showConfirmDialog(rootPane, "Eliminar al paciente " + nombrePacJTF.getText() + " " + apellidoJTF.getText() + "?");
             if (respuesta == 0) Funciones.eliminarRegistro("paciente", "dni", dniJTF.getText());
@@ -499,7 +499,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         if (flagPaciente) verificacion = verificacion("paciente");
         else JOptionPane.showMessageDialog(rootPane, "Asegurece de haber completado todos los campos solicitados.");
         
-        if (verificacion == 9) 
+        if (verificacion == 8) 
         {
             String nombre = nombrePacJTF.getText();
             String apellido = apellidoJTF.getText();
