@@ -249,6 +249,8 @@ public class FormularioJDP extends javax.swing.JFrame {
     }//GEN-LAST:event_okJBActionPerformed
 
     private void enviarJBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enviarJBActionPerformed
+        if (!datoJTF.getText().equals("")) {            
+        
         String pregunta = "Que ingrediente quiere que contenga su ";
         try 
         { 
@@ -284,7 +286,7 @@ public class FormularioJDP extends javax.swing.JFrame {
             }
         }
         catch (NullPointerException ex) {}
-        
+        }
     }//GEN-LAST:event_enviarJBActionPerformed
 
     private void datoJTFFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_datoJTFFocusGained
