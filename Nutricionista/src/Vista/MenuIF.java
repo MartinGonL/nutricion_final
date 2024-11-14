@@ -365,7 +365,7 @@ public class MenuIF extends javax.swing.JInternalFrame {
         {
             boolean flag = Funciones.checkField(panelDatosComida);
             int ver = verificacion();
-            if (flag & ver == 3) 
+            if (flag & ver == 4) 
             {
                 contadorDias = (int)cantDiasJS.getValue();
                 if (contadorComidas > 0)
@@ -627,6 +627,9 @@ public class MenuIF extends javax.swing.JInternalFrame {
             boolean estadoPaciente = false;
             try { estadoPaciente = paciente.getSQLEstadoPaciente(dniJT.getText()); }
             catch (NullPointerException ex) {}
+            
+            try { if (Integer.parseInt(nombreComidaJT.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Nombre Comida solo acepta letras."); }
+            catch (NumberFormatException ex) { count++; }
             
             if (dniJT.getText().length() >= 7) count++;
             else JOptionPane.showMessageDialog(rootPane, "Ingrese un numero valido. El que ingreso le faltan caracteres.");

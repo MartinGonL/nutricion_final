@@ -165,7 +165,7 @@ public class Ingrediente {
     }
     
     public void setSQLCaloriasCda100g(float caloriasCda100g, String nom) {
-        String SQL = "UPDATE Ingrediente SET valorCD100G=" + caloriasCda100g + "WHERE NombreI='" + nom + "'";
+        String SQL = "UPDATE ingrediente SET valorCD100G=" + caloriasCda100g + "WHERE NombreI='" + nom + "'";
         try 
         {
             sentencia = conexion.prepareStatement(SQL);

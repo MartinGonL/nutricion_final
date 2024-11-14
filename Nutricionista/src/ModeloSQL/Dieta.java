@@ -435,7 +435,9 @@ public class Dieta {
         boolean confirm = false;
         getSQLFechaFin(dni);
         
-        if (fechaActual.compareTo(fechaFin.toString()) >= 0) confirm = true;
+        try { if (fechaActual.compareTo(fechaFin.toString()) >= 0) confirm = true; }
+        catch (NullPointerException ex) {}
+        
         return confirm;
     }
     

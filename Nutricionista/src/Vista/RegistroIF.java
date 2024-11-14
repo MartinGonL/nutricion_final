@@ -515,7 +515,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         
         if (!detalleJTF.getText().equals("")) verificacion = verificacion("dieta");
         
-        if (verificacion == 8) 
+        if (!detalleJTF.getText().equals("") & verificacion == 8) 
         {
             int DNI = Integer.parseInt(dniJTF.getText());
             LocalDate fIni = LocalDate.parse(traducirDate(fechaIniJD));
@@ -641,7 +641,7 @@ public class RegistroIF extends javax.swing.JInternalFrame {
         switch (campo) {
             case "paciente" -> 
             {
-                //Verificacion de datos 'Paciente'. OK=5
+                //Verificacion de datos 'Paciente'. OK=8
                 try { if (Integer.parseInt(nombrePacJTF.getText())*0 == 0) JOptionPane.showMessageDialog(rootPane, "El campo Nombre solo acepta letras."); }
                 catch (NumberFormatException ex) { count++; }
 
@@ -661,7 +661,6 @@ public class RegistroIF extends javax.swing.JInternalFrame {
                     else count++;
                 } 
                 catch (NumberFormatException ex) { JOptionPane.showMessageDialog(rootPane, "el campo peso Final solo acepta Numeros Positivos"); }
-                
             }
             case "dieta" ->     
             {
